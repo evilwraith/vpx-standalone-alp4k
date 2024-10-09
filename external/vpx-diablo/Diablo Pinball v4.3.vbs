@@ -2401,7 +2401,6 @@ Sub ShowTableInfo
     Else
         If Credits > 0 Then
             DMD "black.jpg", "CREDITS " &credits, "PRESS START", 2000
-			playmusic "intro-coins_Audio.mp3"
         Else
             DMD "black.jpg", "CREDITS " &credits, "INSERT COIN", 2000
         End If
@@ -2429,7 +2428,7 @@ Sub StopAttractMode()
     LightSeqFlasher.StopPlay
     StopRainbow
     ResetAllLightsColor
-	StopSong
+	'StopSong
 End Sub
 
 Sub StartLightSeq()
