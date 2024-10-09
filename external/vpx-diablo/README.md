@@ -1,6 +1,6 @@
 # Diablo Pinball
 
-![Table Preview](https://vpuniverse.com/screenshots/monthly_2021_06/1098682037_EightballChamp.jpg.43b2d60dc9daf58eff5385e44a9fe723.jpg)
+![Table Preview](https://github.com/evilwraith/vpx-images/blob/main/vpx-diablo.jpg)
 
 Authors: [jpsalas](https://www.vpforums.org/index.php?showuser=277)
 
