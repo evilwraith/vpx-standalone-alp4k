@@ -34,6 +34,5 @@ Minimum VPX Standalone build: 10.8.0-1989-a764013
 - Download the table and directb2s listed above and copy all contents into this folder
 - Make sure (.vpx), (.directb2s), and (.ini) files are all named the same
 - Place myMusic folder from Music Pack in pupvideos folder
-- Alternatively place a different album folder in myMusic
-- Edit line 1925 in PHISH (Neekzz 2024) v1.1.vbs with the name of the other album folder
+- Or use your own PHISH tracks in myMusic/PHISH-ABRA
 - "PHISH are friends, not food"
