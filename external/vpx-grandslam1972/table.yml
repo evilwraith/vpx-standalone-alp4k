@@ -1,7 +1,7 @@
 ---
 backglassBundled: true
 backglassVPSId: "oZhySmKn_A"
-backglassNotes: "Included with rom download"
+backglassNotes: "Included with table download"
 backglassChecksum: "8D3A7ACC6E81CDC08766A0F6AB319049"
 fps: 60
 tableVPSId: "duaA4qYH"
@@ -12,3 +12,5 @@ vpxVPSId: "oZhySmKn_A"
 vpxChecksum: "030E9F2BFF90D21C40789C704B1521E0"
 applyFixes:
   - "bass"
+tableNotes: >-
+  Note: You might need to use WinRAR to unzip the file, rather then Windows
