@@ -1,20 +1,26 @@
-﻿# 24 (Stern 2009)
+# 24 (Stern 2009)
 
-![Table Preview](../../images/vpx-24-preview.png)
+![Table Preview](../../images/vpx-24-preview.webp)
 
 <br>
 
 ## *️⃣  Table Statistics
 
+<<<<<<< Updated upstream
 | Playfield | Controls | Backglass | DMD | ROM Required | FPS | 
 |-----------|----------|-----------|-----|--------------|-----|
 | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | 60 |
+=======
+| Backglass | DMD | ROM Required | Has Puppack | FPS |
+|-----------|-----|-----|-----|-----|
+| :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 54 |
+>>>>>>> Stashed changes
 
 <br>
 
 **VPXS 4KP Testers:**
   - Bla1ze
-  - OminousOsie 🌸
+  - OminousOsie
 
 <br>
 
@@ -52,6 +58,7 @@ __*We hope you enjoy!!*__
 - Bla1ze           - evilwraith       - Silentkat        
 - mrandromeda      - SScorpio         - TechZombie
 </pre>
+
 
 <br>
 <br>
