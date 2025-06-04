@@ -6,7 +6,7 @@
 
 ## *️⃣  Table Statistics
 
-<<<<<<< Updated upstream
+
 | Playfield | Controls | Backglass | DMD | ROM Required | FPS | 
 |-----------|----------|-----------|-----|--------------|-----|
 | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | 60 |
@@ -14,7 +14,7 @@
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
 | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 54 |
->>>>>>> Stashed changes
+
 
 <br>
 
