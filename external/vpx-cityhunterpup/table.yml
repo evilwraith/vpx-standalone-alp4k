@@ -6,7 +6,7 @@ pupArchiveFormat: "zip"
 pupArchiveRoot: "Pup & Media/City_Hunter"
 pupChecksum: "dedc6826dccca51a5c2ab46b2dfab4b4"
 pupFileUrl: "https://vpuniverse.com/files/file/26187-city-hunter-original-2025/"
-pupNotes: "Download 'Pup & Média.zip' from table link"
+pupNotes: "Download 'Pup & Media.zip' from table link"
 pupRequired: true
 pupVersion: "1.0.0"
 tableNotes: "Download 'Table.zip'"
