@@ -12,7 +12,7 @@
 '***********************************
 Dim ModeChangeBallActive
 Dim ModeDifficulty
-Dim RailChoice: RailChoice = Cabinet
+Dim RailChoice: RailChoice = SideRails
 
 '----- VR Room -----
 Dim VRRoomChoice : VRRoomChoice = 2			  ' 1 - Cab Only, 2 - Minimal Room, 3 - MEGA room
@@ -49,11 +49,13 @@ Sub SetRails(Opt)
 		Case 0:
 			Ramp15.Visible = 0
 			Ramp16.Visible = 0
-			PinCab_Blades.visible = 1
+			Ramp17.visible = 0
+			PinCab_Blades.visible = 0
 		Case 1:
 			Ramp15.Visible = 1
 			Ramp16.Visible = 1
-			PinCab_Blades.visible = 0
+			Ramp17.visible = 1
+			PinCab_Blades.visible = 1
 	End Select
 End Sub
 
