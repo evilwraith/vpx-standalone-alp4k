@@ -2,17 +2,18 @@
 backglassVPSId: "ulmJn9mNE6"
 backglassChecksum: "18fdf34ee41e8cfb58672cfa675a07d4"
 romVPSId: "uML9auPR"
-romChecksum: "68a0d9b3221137ed2d7015a7c4094ca2"
+romChecksum: "68A0D9B3221137ED2D7015A7C4094CA2"
 romVersionOverride: "jupk_600"
-fps: 36
+fps: 45
 tableVPSId: "i47o-Nvr"
 tagline: "Welcome... to Jurassic Park!"
 testers:
   - "mcap"
   - "OminousOsie"
   - "CoffeeAtJoes"
+  - "evilwraith"
 vpxVPSId: "a4IeNxW1"
 vpxChecksum: "202A0FA0FF0869776026B182CEB8A029"
-vpxNotes: "Download Jurassic Park (Data East 1993)_Bigus(MOD)2.0.vpx.zip"
+tableNotes: "Download Jurassic Park (Data East 1993)_Bigus(MOD)2.0.vpx.zip"
 applyFixes:
   - "bass"
