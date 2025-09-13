@@ -2,12 +2,13 @@ import os
 import re
 import shutil
 import json
+import Auth
 import tempfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import vpsdb
 import git
-from github import Github
+from github import Github, Auth
 from pathlib import Path
 
 def find_table_yml(base_dir="external"):
@@ -69,7 +70,8 @@ def process_title(title, manufacturer, year):
 def upload_release_asset(github_token, repo_name, release_tag, file_path, clobber=True):
     # Uploads a file as a release asset.
     try:
-        g = Github(github_token)
+        auth = Auth.Token(github_token)
+		g = Github(auth=auth)
         repo = g.get_repo(repo_name)
         release = repo.get_release(release_tag)
         file_name = os.path.basename(file_path)
