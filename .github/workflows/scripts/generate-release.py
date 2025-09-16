@@ -71,7 +71,7 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
     # Uploads a file as a release asset.
     try:
         auth = Auth.Token(github_token)
-		g = Github(auth=auth)
+        g = Github(auth=auth)
         repo = g.get_repo(repo_name)
         release = repo.get_release(release_tag)
         file_name = os.path.basename(file_path)
