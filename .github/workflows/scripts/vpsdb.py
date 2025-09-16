@@ -266,8 +266,8 @@ def get_table_meta(files, warn_on_error=True):
                         table_meta["romFileUrl"] = urls_list[0].get("url", "")
                     else:
                         table_meta["romFileUrl"] = "" # Assign a default empty string
-                if not table_meta["romVersion"]:
-                    table_meta["romVersion"] = rom.get("version", "")
+                    if not table_meta["romVersion"]:
+                        table_meta["romVersion"] = rom.get("version", "")
             else:
                 print(f"{error_prefix}: ROM id {romVPSId} not found in VPSDB")
                 if warn_on_error:
