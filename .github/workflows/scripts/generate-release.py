@@ -2,7 +2,6 @@ import os
 import re
 import shutil
 import json
-import Auth
 import tempfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
