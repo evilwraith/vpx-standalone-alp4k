@@ -1,0 +1,19 @@
+---
+applyFixes:
+  - "bass"
+backglassChecksum: "DFB9025082E55722E5999BBE68A69717"
+backglassNotes: "HauntFreaks FullDMD"
+backglassVPSId: "bSD9BBBs_C"
+coloredROMChecksum: "8966B58F31E3209448ECAD6669A46256"
+coloredROMVPSId: "RLQ_mA-0Zo"
+fps: 55
+romChecksum: "06D1278FBB0984D8F23916B3BBC65B27"
+romNotes: "bcats_tcm"
+romVPSId: "xvBqDSL5HN"
+tableNotes: "Download Bad_Cats_B1X_1.2.1bGRHR.zip"
+tableVPSId: "9Z7eDRTt"
+tagline: "'There's more than one way to skin a bad cat.'"
+testers:
+  - "evilwraith"
+vpxChecksum: "07E81AE7A29404FF7DD64EEC04DA5382"
+vpxVPSId: "faS5VIwN"
