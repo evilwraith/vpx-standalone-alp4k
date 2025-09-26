@@ -12,8 +12,8 @@ testers:
   - "mcap"
   - "Sscorpio"
   - "OminousOsie"
-vpxVPSId: "HP5t0r1m"
-vpxChecksum: "f10f601997cf4581b383894f72238e6a"
-tableNotes: "Version 1.3"
+vpxVPSId: "-JAfQZzU"
+vpxChecksum: "7FADEDCA973C36D0E5412FB8395E4757"
+tableNotes: "Version 3.0"
 applyFixes:
   - "bass"
