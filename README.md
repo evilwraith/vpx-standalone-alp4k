@@ -1,4 +1,4 @@
-﻿# vpx-standalone-alp4k
+# vpx-standalone-alp4k
 Settings and configs for VPX Standalone on the AtGames ALP 4K Pinball
 
 ## Paying for the Legends Unchained Loader
@@ -275,7 +275,7 @@ Links to these products on Amazon are through affiliate links.
 | [Attack from Mars (Bally 1995)](external/vpx-attackfrommars) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 30 |
 | [Attack of the Killer Tomatoes (MusicMOD) (Iceman 2023)](external/vpx-attackofthekillertomatoes) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Attila The Hun (Game Plan 1984)](external/vpx-atilla) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
-| [Austin Powers (Stern 2001)](external/vpx-austinpowers) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 35 |
+| [Austin Powers (Stern 2001)](external/vpx-austinpowers) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Bad Cats (Williams 1989)](external/vpx-badcats) | :white_check_mark: |:white_check_mark: | :white_check_mark: | :x: | 50 |
 | [Bad Girls (Gottlieb 1988)](external/vpx-badgirls) | :white_check_mark: |:x: | :white_check_mark: | :x: | 50 |
 | [Balls-A-Poppin (Bally 1956)](external/vpx-ballsapoppin) | :white_check_mark: | :x: | :x: | :x: | 52 |
@@ -636,7 +636,7 @@ Links to these products on Amazon are through affiliate links.
 | [Scooby Doo! and KISS Rock n' Roll Mystery (Original 2021)](external/vpx-sdookiss) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Secret Agent (Original 2024)](external/vpx-secretagent) | :white_check_mark: | :white_check_mark: | :x: | :x: | 30 |
 | [Senna Prototype Edition (Culik Pinball 2020)](external/vpx-senna) | :white_check_mark: | :x: | :x: | :x: | 60 |
-| [Serious Sam (Original 2017)](external/vpx-ssam) | :white_check_mark: | :white_check_mark: | :x: | :x: | 47 |
+| [Serious Sam (Original 2017)](external/vpx-ssam) | :white_check_mark: | :white_check_mark: | :x: | :x: | 53 |
 | [Sesame Street (Original 2021)](external/vpx-sesamestreet) | :white_check_mark: | :x: | :white_check_mark: | :x: | 50 |
 | [Shadow, The (Bally 1994)](external/vpx-theshadow) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 52 |
 | [Shaq Attaq (Gottlieb 1995)](external/vpx-shaq) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 35 |

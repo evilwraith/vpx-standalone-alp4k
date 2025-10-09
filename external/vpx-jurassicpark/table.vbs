@@ -76,7 +76,7 @@ Dim DesktopMode:DesktopMode = Table1.ShowDT
 '********************
 'Standard definitions
 '********************
-   
+
 Const UseSolenoids = 2
 Const UseLamps = 0
 'Const UseGI = 0
@@ -134,19 +134,19 @@ Sub Table1_Init
  	Set bsTrough = New cvpmBallStack : With bsTrough
  		.Initsw 0,14,13,12,11,10,9,0
  		.CreateEvents "bsTrough", Drain
- 		.IsTrough = True 
- 		.Balls = 6 
+ 		.IsTrough = True
+ 		.Balls = 6
  	End With
- 
+
 	' Trough Ejector
   	Set bsTroughE = New cvpmBallStack : With bsTroughE
  		.Initsw 0,15,0,0,0,0,0,0
  		.InitKick BallRelease,150,7
   	End With
- 
+
 	'Turn GI ON
  	GIRelay 0
-		
+
 	Init_Trex
 
 	'*****************  Captive Ball  ***********************
@@ -155,26 +155,26 @@ Sub Table1_Init
 	Captive.enabled = false
 
 	If Table1.ShowDT = False then
-       leftrail.visible = 1
-       rightrail.visible = 1
-       sidewalls.visible = 1
+       leftrail.visible = 0
+       rightrail.visible = 0
+       sidewalls.visible = 0
        Ramp17.visible = 0
-     End If	
+     End If
 End Sub
 
 '******************************************************
 '					SOLENOIDS
 '******************************************************
 
-SolCallback(1)    	= "BoatDockSaucer"				' Boat Dock Eject 
+SolCallback(1)    	= "BoatDockSaucer"				' Boat Dock Eject
 SolCallback(2)		= "TroughRelease"				' Trough Release
 SolCallback(3)		= "Autofire"					' AutoLaunch
-SolCallback(4)    	= "LeftScoopEject"				' Left Scoop Eject 
-SolCallback(5)    	= "VukKick"						' Right VUK 
-SolCallback(6)    	= "Divert"						' Ramp Diverter 
-SolCallback(7)    	= "RexSaucer"					' TRex Saucer Eject 
-'SolCallback(8)    	= "vpmSolSound SfxKnocker,"		' Knocker 
-SolCallback(9)    	= "RaptorKick"					' Raptor Pit 
+SolCallback(4)    	= "LeftScoopEject"				' Left Scoop Eject
+SolCallback(5)    	= "VukKick"						' Right VUK
+SolCallback(6)    	= "Divert"						' Ramp Diverter
+SolCallback(7)    	= "RexSaucer"					' TRex Saucer Eject
+'SolCallback(8)    	= "vpmSolSound SfxKnocker,"		' Knocker
+SolCallback(9)    	= "RaptorKick"					' Raptor Pit
 'SolCallback(10)   	= ""							' L/R Relay (internal solenoid select for same numbered functions)
 SolCallback(11)   	= "GIRelay"						' GI
 SolCallback(12)   	= "RexLeftRight"				' TRex Left/Right Select
@@ -194,7 +194,7 @@ SolCallback(23)   	= "RelayAC"				    	' AC Relay
 '						FLIPPERS
 '******************************************************
 
-SolCallback(sLRFlipper)     = "SolRFlipper" 
+SolCallback(sLRFlipper)     = "SolRFlipper"
 SolCallback(sLLFlipper)     = "SolLFlipper"
 
 Sub SolLFlipper(Enabled)
@@ -211,15 +211,15 @@ Sub SolRFlipper(Enabled)
     If Enabled Then
         PlaySound SoundFX("fx_flipperup",DOFContactors), 0, 2*VolumeDial, 0.1, 0.25
         RightFlipper.RotateToEnd
-		UpperRightFlipper.RotateToEnd	
+		UpperRightFlipper.RotateToEnd
     Else
         PlaySound SoundFX("fx_flipperdown",DOFContactors), 0, 2*VolumeDial, 0.1, 0.25
         RightFlipper.RotateToStart
-		UpperRightFlipper.RotateToStart 
+		UpperRightFlipper.RotateToStart
     End If
 End Sub
 
-Sub TroughRelease(enabled) : if enabled then : bstroughE.solout 1 : end if : End Sub 
+Sub TroughRelease(enabled) : if enabled then : bstroughE.solout 1 : end if : End Sub
  Sub TroughLockout(enabled) : if enabled and bstrough.balls > 0 then : bstrough.balls = bstrough.balls - 1 : bstroughE.addball 1 : end if : End Sub
 
 
@@ -228,8 +228,8 @@ Sub TroughRelease(enabled) : if enabled then : bstroughE.solout 1 : end if : End
 '******************************************************
 
 Sub LeftScoopEject(enabled)
- 	If enabled Then		
-		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial			
+ 	If enabled Then
+		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial
 		sw35.kick 0,30,1.5
 		sw35wall.collidable = False
 		Controller.Switch(35) = False
@@ -249,7 +249,7 @@ End sub
 '					Middle Scoop Trough
 '******************************************************
 
-sub sw37_hit	
+sub sw37_hit
 	vpmTimer.PulseSw 37
     Playsound "Hit1", 0, 2*VolumeDial
 End sub
@@ -305,13 +305,13 @@ End sub
 '******************************************************
 
 Sub BoatDockSaucer(enabled)
-	If enabled Then		
-		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial		
+	If enabled Then
+		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial
 		sw56.Kick 160,10
         Controller.Switch(56) = False
 		KickerArm2.TransY = 10
 		vpmTimer.AddTimer 150, "KickerArm2.TransY = 0'"
-	End If	
+	End If
 End Sub
 
 sub sw56_hit()
@@ -322,7 +322,7 @@ End sub
 '******************************************************
 '					Raptor Pit
 '******************************************************
-  
+
 Sub RaptorKick(enabled)
 	If enabled Then
 		sw29.Kick 180, 41
@@ -398,7 +398,7 @@ Sub Autofire(enabled)
 End Sub
 
 '*****************  GI Stuff  ***********************
- 
+
 Sub GIRelay(enabled)
 	If enabled Then
 		GiOFF
@@ -415,7 +415,7 @@ Table1.colorgradeimage = "ColorGradeLUT256x16_ConSat"
 		Playsound "fx_relay_on", 0, 2*VolumeDial
 		setlamp 140, 0
 		setlamp 141, 0
-		setlamp 142, 0	
+		setlamp 142, 0
 	    dino.blenddisablelighting = 0.3
 		dino1.blenddisablelighting = 0.3
 End If
@@ -431,10 +431,10 @@ Sub GiOFF
 	For each x in Gi:x.State = 0:Next
 End Sub
 
-Sub RelayAC(enabled)  
+Sub RelayAC(enabled)
 	vpmNudge.SolGameOn enabled 	' Tie In Nudge to AC Relay
-End Sub	
- 
+End Sub
+
 
 '******************************************************
 ' 						KEYS
@@ -444,14 +444,14 @@ Sub Table1_KeyDown(ByVal keycode)
 
  	If keycode = PlungerKey Then  'Launch Trigger
 		controller.switch(41) = True
-	End If 
+	End If
 
 	If keycode = RightMagnaSave or keycode = LeftMagnaSave or keycode = 3 Then  'Smart Bomb Button
-		controller.switch(42) = True 
-	End If 
+		controller.switch(42) = True
+	End If
 
-If keycode = LeftTiltKey Then vpmNudge.DoNudge 5, 3.5 
-If keycode = RightTiltKey Then vpmNudge.DoNudge 355, 3.5 
+If keycode = LeftTiltKey Then vpmNudge.DoNudge 5, 3.5
+If keycode = RightTiltKey Then vpmNudge.DoNudge 355, 3.5
 If keycode = CenterTiltKey Then vpmNudge.DoNudge 0, 3.5
 If vpmKeyDown(keycode) Then Exit Sub
 End Sub
@@ -460,10 +460,10 @@ Sub Table1_KeyUp(ByVal keycode)
 	If keycode = PlungerKey Then   'Launch Trigger
 		controller.switch(41) = False
 	End If
-	
+
 	If keycode = RightMagnaSave or keycode = LeftMagnaSave Then  'Smart Bomb Button
 		controller.switch(42) = False
-	End If 	
+	End If
 If vpmKeyUp(keycode) Then Exit Sub
 End Sub
 
@@ -472,61 +472,61 @@ End Sub
 '******************************************************
 
 'Rollover and Optos
-	
+
 
 Sub Sw17_Hit() ' Outer Loop Low
 	Controller.Switch(17) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw17_UnHit()
 	Controller.Switch(17) = False
 End Sub
 Sub Sw18_Hit() ' Outer Loop Top
 	Controller.Switch(18) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw18_UnHit()
 	Controller.Switch(18) = False
 End Sub
 Sub Sw19_Hit() ' Inner Loop Low
 	Controller.Switch(19) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw19_UnHit()
 	Controller.Switch(19) = False
 End Sub
 Sub Sw20_Hit() ' Inner Loop Top
 	Controller.Switch(20) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw20_UnHit()
 	Controller.Switch(20) = False
 End Sub
 Sub Sw21_Hit() ' Right Outlane
 	Controller.Switch(21) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw21_UnHit()
 	Controller.Switch(21) = False
 End Sub
 Sub Sw22_Hit() ' Right Return
 	Controller.Switch(22) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw22_UnHit()
 	Controller.Switch(22) = False
 End Sub
 Sub Sw23_Hit() ' Left Return
 	Controller.Switch(23) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw23_UnHit()
 	Controller.Switch(23) = False
 End Sub
 Sub Sw24_Hit() ' Left Outlane
 	Controller.Switch(24) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub Sw24_UnHit()
 	Controller.Switch(24) = False
 End Sub
@@ -535,14 +535,14 @@ End Sub
 Sub swPLS_Hit() ' Left Outlane
 	Controller.Switch(16) = True
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub swPLS_UnHit()
 	Controller.Switch(16) = False
 End Sub
 
 Sub lsw29_Hit() ' Center Outlane
 	PlaySound "sensor"
-End Sub 
+End Sub
 Sub lsw29_UnHit()
 End Sub
  Sub sw33_Hit()  	  : controller.switch (33) = true  : End Sub	' Right Ramp Enter
@@ -575,13 +575,13 @@ End Sub
   Sub sw52_Timer:sw52p.transZ = 0:Me.TimerEnabled = 0:End Sub
   Sub sw48_Hit:sw48p.transZ = 5:Me.TimerEnabled = 1:vpmTimer.PulseSw 48:End Sub ' Mostquito Captive Ball
   Sub sw48_Timer:sw48p.transZ = 0:Me.TimerEnabled = 0:End Sub
-		
+
   'Pop Bumpers
 
   Sub sw45_Hit() :PlaySound SoundFX("fx_bumper1",DOFContactors),0,1*VolumeDial: vpmtimer.pulsesw 45: End Sub	' Jet Bumper (Top)
   Sub sw46_Hit() :PlaySound SoundFX("fx_bumper2",DOFContactors),0,1*VolumeDial: vpmtimer.pulsesw 46: End Sub	' Jet Bumper (Left)
   Sub sw47_Hit() :PlaySound SoundFX("fx_bumper3",DOFContactors),0,1*VolumeDial: vpmtimer.pulsesw 47: End Sub	' Jet Bumper (Right)
- 
+
 
 'Raptor Pit
    Sub sw29_Hit() : Primitive16.transZ = -30 : controller.switch (29) = true : End Sub
@@ -617,13 +617,13 @@ end sub
 Dim TrexBall
 
 Sub RexSaucer(enabled)
-	If enabled Then				
-		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial		        
-		sw55.Kick 170,15 
+	If enabled Then
+		Playsound SoundFX(SSolenoidOn,DOFContactors), 0, 2*VolumeDial
+		sw55.Kick 170,15
         Controller.Switch(55) = False
         TrexBall = Empty
 		KickerArm1.TransY = 10
-		vpmTimer.AddTimer 150, "KickerArm1.TransY = 0'"                 
+		vpmTimer.AddTimer 150, "KickerArm1.TransY = 0'"
 	End If
 End Sub
 
@@ -638,8 +638,8 @@ End sub
 '					TRex Toy Handling
 '*********************************************************
 
-dim trrightangle, trleftangle, trforwardangle, trcenterangle 
-dim RexBendDir, RexRotSpeed, RexLift, RexRand 
+dim trrightangle, trleftangle, trforwardangle, trcenterangle
+dim RexBendDir, RexRotSpeed, RexLift, RexRand
 
 '**************  Start TRex Control Variables ******************
 
@@ -654,7 +654,7 @@ RexRand = 0.5					'Randomness of Rexlift: 0 is no randomness, 1 is full randomne
 
 '**************  End TRex Control Variables ******************
 
-'If DesktopMode = 0 Then RexLift = Rexlift/2 
+'If DesktopMode = 0 Then RexLift = Rexlift/2
 
 Sub Init_Trex()
 	controller.switch(31) = False	'TRex Right
@@ -689,7 +689,7 @@ trexmainradius = Distance(trexpivotx,trexpivoty,0,trexmainx,trexmainy,0)
 
 '********** TRex Up/Down Control **********
 Sub RexUpDown(enabled)
-	If enabled then		
+	If enabled then
 		UpDownTimer.enabled = 1
 TrexMain.blenddisablelighting = 0.3
 TrexJaw.blenddisablelighting = 0.3
@@ -700,7 +700,7 @@ TrexJaw.blenddisablelighting = 0.1
 	end if
 End Sub
 
-dim ballinmouth : ballinmouth = 0 
+dim ballinmouth : ballinmouth = 0
 dim RexBendRot : RexBendRot = 0
 dim xd, yd, zd
 
@@ -720,33 +720,33 @@ If RexBendRot < trforwardangle + 1 Then RexBendRot = RexBendRot + RexBendDir/10 
 		If RexBendRot <= trforwardangle then
 			RexBendRot = trforwardangle
 			RexBendDir = -RexBendDir
-			if  Controller.Switch(55) = True then             
+			if  Controller.Switch(55) = True then
 				Playsound "1-Pickup"
-				ballinmouth = 1				
+				ballinmouth = 1
 				trexballradius = Distance(trexball.x,trexball.y,trexball.z,trexmain.x,trexmain.y,trexmain.z)
 				trexballanglez = Degrees(acos((trexball.z-trexmainz)/trexballradius))
 				trexballanglexy = Degrees(acos((trexball.x-trexmainx)/trexballradius))
 			end if
 		end if
-		If RexBendRot <= trforwardangle+1 Then 
+		If RexBendRot <= trforwardangle+1 Then
 			Controller.Switch(58) = True
-		Else 
+		Else
 			Controller.Switch(58) = False
 		End If
 
 		If RexBendRot > 0 Then RexBendRot = 0: RexBendDir = -RexBendDir
-		If RexBendRot >= 0-1.5 Then			
+		If RexBendRot >= 0-1.5 Then
 			Controller.Switch(57) = True
 			if ballinmouth = 1 then
-				PlaySound "2-Swallow"                
-				sw55.Kick -13,2	 
+				PlaySound "2-Swallow"
+				sw55.Kick -13,2
              	Controller.Switch(55) = False
-				ballinmouth = 0 
+				ballinmouth = 0
                 TrexBall = Empty
                 UpDownTimer.Enabled = 0
 			end if
-		Else 
-			Controller.Switch(57) = False 
+		Else
+			Controller.Switch(57) = False
 		end if
 End Sub
 
@@ -756,18 +756,18 @@ Sub TrexBend()
 
 	trexjaw.x = trexmain.x - trexjawradiusz*cos(radians(90-RexRot))*Sin(Radians(-trexjawanglez - RexBendRot)) - 4  ' -4 to correct for a slight error in calculations used
 	trexjaw.y = trexmain.y + trexjawradiusz*sin(radians(90-RexRot))*Sin(Radians(-trexjawanglez - RexBendRot))
-	trexjaw.z = trexmain.z + trexjawradiusz*cos(radians(-trexjawanglez - RexBendRot)) 
+	trexjaw.z = trexmain.z + trexjawradiusz*cos(radians(-trexjawanglez - RexBendRot))
 End Sub
 
 'TRex Mouth Handling
 Sub RexMouth(enabled)
-	If enabled Then	
+	If enabled Then
 		MouthDir = 1
 		MouthOpener.Enabled = True
 		Playsound "3-Chew"
 TrexMain.blenddisablelighting = 0.3
 TrexJaw.blenddisablelighting = 0.3
-	Else 
+	Else
 		MouthDir = -1
 		MouthOpener.Enabled = True
 TrexMain.blenddisablelighting = 0.1
@@ -786,7 +786,7 @@ Sub MouthOpener_Timer()
 	If MouthPos = 0 Or MouthPos = 6 then MouthOpener.Enabled = 0
 
 	trexjaw.objrotx = Mouthpos*2
-	
+
 	If RexBendRot >= -1.5 Then
 		RexBendRot = MouthPos * RexLift * (RandLift + (1 - RexRand))
 		TrexBend()
@@ -796,15 +796,15 @@ End Sub
 'TRex Select Left/Right Direction
 dim goleft : goleft = 1
 
-Sub RexLeftRight(enabled) 
+Sub RexLeftRight(enabled)
 	If enabled then
  		goleft = -1
  	else
  		goleft = 1
  	end if
 End Sub
- 
-'TRex Left/Right Motor Control 
+
+'TRex Left/Right Motor Control
 Sub RexMotor(enabled)
     if enabled then
 	MotorTimer.enabled = ABS(enabled)
@@ -819,10 +819,10 @@ Dim RexRot: RexRot = trcenterangle
 Sub MotorTimer_Timer()
 	if Controller.Switch(57) = True then ' if trex is up
 		RexRot = RexRot + goleft*RexRotSpeed
-		
+
 		TrexMain.ObjRotZ = RexRot
 		TrexJaw.ObjRotZ = RexRot
-		TrexPlastic.ObjRotZ = RexRot 
+		TrexPlastic.ObjRotZ = RexRot
         TrexShadow.objrotz=RexRot
 	    Trexplate.objrotz=RexRot
 	    TrexPlasticRivets.objrotz=RexRot
@@ -832,17 +832,17 @@ Sub MotorTimer_Timer()
 		trexmain.x = trexmainx + trexmainradius*cos(radians(RexRot+90)) - trexmainradius*cos(radians(180-trexcenterangle))
 		trexmain.y = trexmainy + trexmainradius*sin(radians(RexRot+90)) - trexmainradius*sin(radians(180-trexcenterangle))
 
-		If RexRot <= trrightangle then 
+		If RexRot <= trrightangle then
 			controller.switch(31) = true
 		else
 			controller.switch(31) = False
 		end If
-		If RexRot >= trleftangle then 
+		If RexRot >= trleftangle then
 			controller.switch(32) = true
 		else
 			controller.switch(32) = False
 		end If
-		If RexRot > trcenterangle - 0.6 and RexRot < trcenterangle + 0.6 then 
+		If RexRot > trcenterangle - 0.6 and RexRot < trcenterangle + 0.6 then
 			controller.switch(36) = true
 		else
 			controller.switch(36) = False
@@ -922,7 +922,7 @@ End Function
 Function ASin(val)
     ASin = 2 * Atn(val / (1 + Sqr(1 - (val * val))))
 End Function
- 
+
 Function ACos(val)
     ACos = PI / 2 - ASin(val)
 End Function
@@ -938,11 +938,11 @@ Function InRect(px,py,ax,ay,bx,by,cx,cy,dx,dy)
 	BC = (cx*py) - (cy*px) - (bx*py) + (by*px) + (bx*cy) - (by*cx)
 	CD = (dx*py) - (dy*px) - (cx*py) + (cy*px) + (cx*dy) - (cy*dx)
 	DA = (ax*py) - (ay*px) - (dx*py) + (dy*px) + (dx*ay) - (dy*ax)
- 
+
 	If (AB <= 0 AND BC <=0 AND CD <= 0 AND DA <= 0) Or (AB >= 0 AND BC >=0 AND CD >= 0 AND DA >= 0) Then
 		InRect = True
 	Else
-		InRect = False       
+		InRect = False
 	End If
 End Function
 
@@ -955,7 +955,7 @@ End Function
 
 
 '-----------------------------------
-' Flipper Primitives 
+' Flipper Primitives
 '-----------------------------------
 sub FlipperTimer_Timer()
 	LFLogo.objRotZ = LeftFlipper.CurrentAngle
@@ -985,7 +985,7 @@ Sub timergate_Timer
 	Else
 		if Gate2Angle > 0 Then
 			Gate2Angle = Gate2Angle - GateSpeed
-		Else 
+		Else
 			Gate2Angle = 0
 		End If
 		Primitive_GatePivot.rotz=-Gate2Angle
@@ -1004,7 +1004,7 @@ If Gate3Open Then
 	Else
 		if Gate3Angle > 0 Then
 			Gate3Angle = Gate3Angle - GateSpeed
-		Else 
+		Else
 			Gate3Angle = 0
 		End If
 		Primitive_GatePivot1.rotz=-Gate3Angle
@@ -1017,7 +1017,7 @@ If Gate3Open Then
 		else
 			rswitchP.ObjRotY = RampSwitch
 		end if
-End Sub       
+End Sub
 
 Dim GateSpeed
 GateSpeed = 1
@@ -1043,7 +1043,7 @@ Sub RightSlingShot_Slingshot
     RSling1.Visible = 1
     sling1.TransZ = -20
     RStep = 0
-    RightSlingShot.TimerEnabled = 1	
+    RightSlingShot.TimerEnabled = 1
 End Sub
 
 Sub RightSlingShot_Timer
@@ -1061,7 +1061,7 @@ Sub LeftSlingShot_Slingshot
     LSling1.Visible = 1
     sling2.TransZ = -20
     LStep = 0
-    LeftSlingShot.TimerEnabled = 1	
+    LeftSlingShot.TimerEnabled = 1
 End Sub
 
 Sub LeftSlingShot_Timer
@@ -1081,74 +1081,74 @@ End Sub
  SolModCallBack(30) = "Flash195" 		'6R Middle Left Flasher
  SolModCallBack(31) = "Flash196"		 	'7R
  SolModCallBack(32) = "Flash197"		 	'8R
- 
+
 
 Sub Flash190(m)
 m=m/64
-	l1r.state = m 	
+	l1r.state = m
 end Sub
 
-  
+
 Sub Flash191(m)
-m=m/64 
+m=m/64
 	L2r1.state = m
-	l2ra.state = m	
-	l2rb.state = m	
-	Flasherdome1.blenddisablelighting = m+0.2		
-    fwl.state=m	    
+	l2ra.state = m
+	l2rb.state = m
+	Flasherdome1.blenddisablelighting = m+0.2
+    fwl.state=m
 end Sub
 
 Sub Flash192(m)
 m=m/64
 frl.state=m
-	l3r.state = m 
+	l3r.state = m
 	l3ra.state = m
 	l3rb.state = m
 	l3rc.state = m
 	l3rd.state = m
-	Flasherdome3.blenddisablelighting = m+0.2		
+	Flasherdome3.blenddisablelighting = m+0.2
 end Sub
 
 Sub Flash193(m)
 m=m/64
 frr.state=m
-    l4r.state = m 
+    l4r.state = m
 	l4ra.state = m
 	l4rb.state = m
-	l4rc.state = m	
-	Flasherdome4.blenddisablelighting = m+0.2		
+	l4rc.state = m
+	Flasherdome4.blenddisablelighting = m+0.2
 end Sub
-  
+
 
 Sub Flash194(m)
 m=m/64
 	l5r.state = m
 	l5ra.state = m
-	l5rb.state = m	
-End Sub 
+	l5rb.state = m
+End Sub
 
 Sub Flash195(m)
 m=m/64
 	l6r.state = m
-	l6ra.state = m	
-	l6rb.state = m		
-	Flasherdome2.blenddisablelighting = m+0.2		
-    fwr.state=m	
-End Sub 
+	l6ra.state = m
+	l6rb.state = m
+	Flasherdome2.blenddisablelighting = m+0.2
+    fwr.state=m
+End Sub
 
 Sub Flash196(m)
 m=m/64
 	l7ra.state = m
 	l7rb.state = m
 	l7rc.state = m
-	l7rd.state = m	
+	l7rd.state = m
 End Sub
 
 Sub Flash197(m)
 m=m/64
-	l8r.state = m	
+	l8r.state = m
 	l8rb.state = m
-End Sub 
+End Sub
 
 '***************************************************
 '       JP's VP10 Fading Lamps & Flashers
@@ -1192,28 +1192,28 @@ Sub InitLamps()
     Next
 End Sub
 
-Sub UpdateLamps	
-	nFadeLm 1, l1	
+Sub UpdateLamps
+	nFadeLm 1, l1
 	nFadeL 1, l1a
 	NFadeLm 2, l2
 	NFadeLm 2, l2a1
 	NFadeLm 2, l2a2
-	nFadeL 2, l2a	
-    nFadeL 3, l3	
-	nFadeL 4, l4	
-    nFadeL 5, l5	
-    nFadeL 6, l6	
-    nFadeL 7, l7	
+	nFadeL 2, l2a
+    nFadeL 3, l3
+	nFadeL 4, l4
+    nFadeL 5, l5
+    nFadeL 6, l6
+    nFadeL 7, l7
     nFadeL 8, l8
-    'nFadeL 9, l9 		'Credit Button   
+    'nFadeL 9, l9 		'Credit Button
 	NFadeLm 10, l10 		' Mosquito 2 bulbs
 	NFadeLm 10, l10a		' Mosquito 2 bulbs
-    FadeDisableLighting 10, mosq, 0.1	
-    nFadeL 11, l11	
-    nFadeL 12, l12	
-	nFadeL 13, l13	
-    NFadeL 14, l14	
-    nFadeL 15, l15	
+    FadeDisableLighting 10, mosq, 0.1
+    nFadeL 11, l11
+    nFadeL 12, l12
+	nFadeL 13, l13
+    NFadeL 14, l14
+    nFadeL 15, l15
     nFadeL 16, l16
 	nFadeLm 17, l17b
 	nFadeLm 17, l17
@@ -1222,26 +1222,26 @@ Sub UpdateLamps
 	nFadeLm 18, l18b
 	nFadeLm 18, l18
 '    Flashm 18, f18a
-'	Flash 18, f18 'Left scoop top	
-	nFadeLm 19, l19a	
-    NFadeL 19, l19	
-    nFadeL 20, l20 	
-    nFadeL 21, l21	
-    nFadeL 22, l22	
-    NFadeL 23, l23	
-    nFadeL 24, l24	
-	nFadeL 25, L25	
-	nFadeL 26, l26	
+'	Flash 18, f18 'Left scoop top
+	nFadeLm 19, l19a
+    NFadeL 19, l19
+    nFadeL 20, l20
+    nFadeL 21, l21
+    nFadeL 22, l22
+    NFadeL 23, l23
+    nFadeL 24, l24
+	nFadeL 25, L25
+	nFadeL 26, l26
 	nFadeL 27, l27
-	nFadeLm 28, l28a	
-	nFadeL 28, l28	
-	nFadeL 29, l29	
+	nFadeLm 28, l28a
+	nFadeL 28, l28
+	nFadeL 29, l29
     nFadeL 30, l30
 	nFadeLm 31, l31b
 	nFadeLm 31, L31a
 	nFadeLm 31, L31a2
     nFadeL 31, l31
-   	nFadeLm 32, l32b	
+   	nFadeLm 32, l32b
 	nFadeLm 32, l32a
 	nFadeL 32, l32
 	NFadeLm 33, l33b
@@ -1249,22 +1249,22 @@ Sub UpdateLamps
 '	Flashm 33, f33a
 '    Flash 33, f33 ' Center scoop bottom
 	NFadeLm 34, l34b
-	NFadeLm 34, l34	
+	NFadeLm 34, l34
 '	Flashm 34, f34a
-'    Flash 34, f34 ' Center scoop top	
-	nFadeL 35, l35	
-	nFadeL 36, l36	
-	nFadeLm 37, l37	
+'    Flash 34, f34 ' Center scoop top
+	nFadeL 35, l35
+	nFadeL 36, l36
+	nFadeLm 37, l37
 	nFadeLm 37, l37bb
-	Flash 37, f37	
-	nFadeL 38, l38	
-    nFadeL 39, l39	
-    nFadeL 40, l40	
-    nFadeL 41, l41	
-    nFadeL 42, l42	
-    nFadeL 43, l43	
-	nFadeL 44, l44	
-	nFadeL 45, l45	
+	Flash 37, f37
+	nFadeL 38, l38
+    nFadeL 39, l39
+    nFadeL 40, l40
+    nFadeL 41, l41
+    nFadeL 42, l42
+    nFadeL 43, l43
+	nFadeL 44, l44
+	nFadeL 45, l45
 	NFadeLm 46, l46
 	NFadeLm 46, l46a
 	Flashm  46, f46a
@@ -1276,31 +1276,31 @@ Sub UpdateLamps
     nFadeLm 48, l48
 	nFadeLm 48, l48a1
 	nFadeLm 48, l48a2
-	nFadeL 48, l48a		
-	nFadeL 49, l49	
-	nFadeL 50, l50	
-	nFadeL 51, l51	
-	nFadeL 52, l52	
-	nFadeL 53, l53	
-	nFadeL 54, l54	
+	nFadeL 48, l48a
+	nFadeL 49, l49
+	nFadeL 50, l50
+	nFadeL 51, l51
+	nFadeL 52, l52
+	nFadeL 53, l53
+	nFadeL 54, l54
 	nFadeLm 55, L55a
-	nFadeL 55, L55	
+	nFadeL 55, L55
     nFadeL 56, l56
 	NFadeLm 57, l57b
-    Flashm 57, f57a   
-	Flash 57, f57 ' Right Scoop bottom	
-	Flashm 58, f58a   
-	Flash 58, f58 ' Right Scoop top	
+    Flashm 57, f57a
+	Flash 57, f57 ' Right Scoop bottom
+	Flashm 58, f58a
+	Flash 58, f58 ' Right Scoop top
     nFadeL 59, l59
     nFadeLm 60, l60
 	nFadeLm 60, l60a1
 	nFadeLm 60, l60a2
-	nFadeL 60, l60a	
-    nFadeL 61, l61	
-	nFadeLm 62, l62b	
+	nFadeL 60, l60a
+    nFadeL 61, l61
+	nFadeLm 62, l62b
 	nFadeLm 62, L62a
-    nFadeL 62, l62	
-    NFadeL 63, l63	
+    nFadeL 62, l62
+    NFadeL 63, l63
     nFadeL 64, l64
     FadePrim 140, TrexMain, "Trex-Main-Map", "Trex-Main-Map-ON1", "Trex-Main-Map-ON1", "Trex-Main-Map-ON2"
 	FadePrim 141, TrexMain, "Trex-Main-Map", "Trex-Main-Map-ON1", "Trex-Main-Map-ON1", "Trex-Main-Map-ON2"
@@ -1415,14 +1415,14 @@ Sub FadeDisableLighting(nr, a, alvl)
 	Select Case FadingLevel(nr)
 		Case 4
 			a.UserValue = a.UserValue - 0.1
-			If a.UserValue < 0 Then 
+			If a.UserValue < 0 Then
 				a.UserValue = 0
 				FadingLevel(nr) = 0
 			end If
 			a.BlendDisableLighting = alvl * a.UserValue 'brightness
 		Case 5
 			a.UserValue = a.UserValue + 0.50
-			If a.UserValue > 1 Then 
+			If a.UserValue > 1 Then
 				a.UserValue = 1
 				FadingLevel(nr) = 1
 			end If
@@ -1544,7 +1544,7 @@ Sub RollingTimer_Timer()
  ' play ball drop sounds
         If BOT(b).VelZ < -1 and BOT(b).z <55 and BOT(b).z >27 Then 'height adjust for ball drop sounds
             PlaySound "fx_ball_drop" & b, 0, ABS(BOT(b).velz)/17, AudioPan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b))
-        End If 
+        End If
 Next
 End Sub
 
@@ -1576,20 +1576,20 @@ Sub BallShadowUpdate_timer()
     ' render the shadow for each ball
     For b = 0 to UBound(BOT)
 		BallShadow(b).X = BOT(b).X
-		ballShadow(b).Y = BOT(b).Y + 10                       
+		ballShadow(b).Y = BOT(b).Y + 10
         If BOT(b).Z > 20 and BOT(b).Z < 200 Then
             BallShadow(b).visible = 1
         Else
             BallShadow(b).visible = 0
         End If
-if BOT(b).z > 30 Then 
+if BOT(b).z > 30 Then
 ballShadow(b).height = BOT(b).Z - 20
 ballShadow(b).opacity = 80
 Else
 ballShadow(b).height = BOT(b).Z - 24
 ballShadow(b).opacity = 90
 End If
-    Next	
+    Next
 End Sub
 
 
@@ -1630,7 +1630,7 @@ End Sub
 Sub Rubbers_Hit(idx)
  	dim finalspeed
   	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
- 	If finalspeed > 20 then 
+ 	If finalspeed > 20 then
 		PlaySound "fx_rubber2", 0, Vol(ActiveBall)*CollectionVolume, Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0
 	End if
 	If finalspeed >= 6 AND finalspeed <= 20 then
@@ -1641,7 +1641,7 @@ End Sub
 Sub Posts_Hit(idx)
  	dim finalspeed
   	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
- 	If finalspeed > 16 then 
+ 	If finalspeed > 16 then
 		PlaySound "fx_rubber2", 0, Vol(ActiveBall)*CollectionVolume, Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0
 	End if
 	If finalspeed >= 6 AND finalspeed <= 16 then

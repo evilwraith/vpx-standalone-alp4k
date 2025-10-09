@@ -1,20 +1,21 @@
-# Austin Powers (Stern 2001)
+﻿# Seawitch, JP's (Stern 1980)
 
-![Table Preview](../../images/LMBHaBou-preview.webp)
+![Table Preview](../../images/vpx-seawitch.jpg)
 
 <br>
 
 ## *️⃣  Table Statistics
 
-| Backglass | DMD | ROM Required | Has Puppack | FPS |
-|-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 60 |
+| Playfield | Controls | Backglass | DMD | ROM Required | FPS | 
+|-----------|----------|-----------|-----|--------------|-----|
+| :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | 60 |
 
 <br>
 
 **VPXS 4KP Testers:**
-  - Bla1ze
-  - T3chZombie
+  - mcap
+  - Sscorpio
+  - CoffeeAtJoes
 
 <br>
 
@@ -33,9 +34,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`Austin Powers (Stern 2001)`**
+4.  Find and select this table from the dropdown menu: **`Seawitch, JP's`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"Yeah baby yeah!"*
+6. *"Beware the Sorcery of Seawitch!"*
 
 <br>
 
@@ -52,7 +53,6 @@ __*We hope you enjoy!!*__
 - Bla1ze           - evilwraith       - Silentkat        
 - mrandromeda      - SScorpio         - pointdablame
 </pre>
-
 
 <br>
 <br>
