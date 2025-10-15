@@ -1,6 +1,6 @@
-# Harley-Davidson (Sega 1999)
+# Fireball Classic (Bally 1985)
 
-![Table Preview](../../images/eoovupCgVg-preview.webp)
+![Table Preview](../../images/uzPhhqXVa7-preview.webp)
 
 <br>
 
@@ -8,14 +8,13 @@
 
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 54 |
+| ✅ | ✅ | ✅ | ❌ | 60 |
 
 <br>
 
 **VPXS 4KP Testers:**
-  - kaoticBPR
-  - Ominous Osie 🌸
   - evilwraith
+  - CoffeeAtJoes
 
 <br>
 
@@ -34,9 +33,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`Harley-Davidson (Sega 1999)`**
+4.  Find and select this table from the dropdown menu: **`Fireball Classic (Bally 1985)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"Born to be Wild"*
+6. *"'Not to be confused with Fireball Cinnamon Whisky'"*
 
 <br>
 
