@@ -1,5 +1,8 @@
 name: Create External Folder Releases and Manifest
 
+permissions:
+  contents: write
+
 on:
   release:
     types: [published]
@@ -7,8 +10,9 @@ on:
 jobs:
   create_zips_and_manifest:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     env:
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
       GITHUB_REPOSITORY: ${{ github.repository }}
       GITHUB_REF_NAME: ${{ github.event.release.tag_name }}
 
