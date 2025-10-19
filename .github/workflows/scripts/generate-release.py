@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import vpsdb
 import git
 from github import Github, Auth
+from github.GithubException import GithubException
 from pathlib import Path
 
 def find_table_yml(base_dir="external"):
@@ -66,30 +67,98 @@ def process_title(title, manufacturer, year):
         name = title
     return f"{name} ({manufacturer} {year})"
 
-def upload_release_asset(github_token, repo_name, release_tag, file_path, clobber=True):
-    # Uploads a file as a release asset.
+import time
+from github.GithubException import GithubException
+
+def upload_release_asset(github_token, repo_name, release_tag, file_path, clobber=True, max_attempts=3):
+    """
+    Uploads a file as a release asset using PyGithub. Returns the browser_download_url or None.
+
+    Common 403 causes handled here:
+    - "Resource not accessible by integration" => GITHUB_TOKEN lacks contents:write or repo setting is read-only
+    - Wrong repo (GITHUB_TOKEN can't write across repos)
+    - Race while deleting/creating assets
+    """
+    file_name = os.path.basename(file_path)
     try:
         auth = Auth.Token(github_token)
         g = Github(auth=auth)
         repo = g.get_repo(repo_name)
-        release = repo.get_release(release_tag)
-        file_name = os.path.basename(file_path)
-        # Check if the asset already exists and clobber if needed
-        existing_assets = list(release.get_assets())
-        for asset in existing_assets:
-            if asset.name == file_name and clobber:
-                asset.delete_asset()
+
+        # Sanity: fetch the release by tag, raise clear error if missing
+        try:
+            release = repo.get_release(release_tag)
+        except GithubException as ge:
+            if ge.status == 404:
+                print(f"[ERROR] Release with tag '{release_tag}' not found in {repo_name}.")
+            else:
+                print(f"[ERROR] Could not read release '{release_tag}' ({ge.status}): {ge.data}")
+            return None
+
+        # Optional clobber of existing asset (by name)
+        if clobber:
+            try:
+                for asset in release.get_assets():
+                    if asset.name == file_name:
+                        print(f"[INFO] Deleting existing asset '{file_name}'...")
+                        asset.delete_asset()
+                        # tiny delay to avoid race with eventual consistency
+                        time.sleep(0.8)
+                        break
+            except GithubException as ge:
+                print(f"[WARN] Could not list/delete existing assets ({ge.status}): {ge.data}")
+
+        # Upload with correct content type (zip) and stable name
+        attempt = 0
+        while attempt < max_attempts:
+            attempt += 1
+            try:
+                print(f"[INFO] Uploading '{file_name}' (attempt {attempt}/{max_attempts})...")
+                # PyGithub signature: upload_asset(path, label=None, name=None, content_type='application/octet-stream')
+                asset = release.upload_asset(
+                    file_path,
+                    label=file_name,
+                    name=file_name,
+                    content_type="application/zip" if file_name.endswith(".zip") else "application/octet-stream",
+                )
+                print(f"[INFO] Uploaded {file_name} to release {release_tag}")
+
+                # Refresh and return URL
+                release = repo.get_release(release_tag)
+                for a in release.get_assets():
+                    if a.name == file_name:
+                        return a.browser_download_url
+                print(f"[WARN] Uploaded asset '{file_name}' not visible yet; retrying index refresh...")
+                time.sleep(1.0)
+            except GithubException as ge:
+                # 403s need actionable messages
+                if ge.status == 403:
+                    msg = ge.data if isinstance(ge.data, dict) else str(ge.data)
+                    print(f"[ERROR] 403 Forbidden while uploading '{file_name}': {msg}")
+                    print(
+                        "HINTS: "
+                        "1) Ensure workflow has `permissions: contents: write` "
+                        "2) Ensure repo setting 'Workflow permissions' is 'Read and write' "
+                        "3) Ensure you're uploading to the SAME repo the workflow runs in "
+                        "4) Fine-grained PAT needed if targeting a different repo"
+                    )
+                    # 403 is usually not transient—break
+                    break
+                elif ge.status in (502, 503, 504):
+                    print(f"[WARN] Transient server error ({ge.status}); will retry...")
+                    time.sleep(2 ** attempt)
+                else:
+                    print(f"[ERROR] Upload failed ({ge.status}): {ge.data}")
+                    break
+            except Exception as e:
+                print(f"[ERROR] Unexpected upload error: {e}")
                 break
-        asset = release.upload_asset(file_path, label=file_name)
-        print(f"Uploaded {file_name} to release {release_tag}")
-        # Refresh the release object and return download URL
-        release = repo.get_release(release_tag)
-        for asset in release.get_assets():
-            if asset.name == file_name:
-                return asset.browser_download_url
-    except Exception as e:
-        print(f"Error uploading asset: {e}")
+
         return None
+    except Exception as e:
+        print(f"[ERROR] upload_release_asset fatal: {e}")
+        return None
+
 
 def process_table(args):
     # Unpack for ThreadPoolExecutor compatibility
@@ -134,14 +203,37 @@ def process_table(args):
             print(f"Error processing {table}: {e}")
     return result
 
+
 if __name__ == "__main__":
     github_token = os.environ.get("GITHUB_TOKEN")
     repo_name = os.environ.get("GITHUB_REPOSITORY")
     release_tag = os.environ.get("GITHUB_REF_NAME")
+
     if not github_token or not repo_name or not release_tag:
         print("Error: Required environment variables not set.")
-        exit(1)
+        sys.exit(1)
 
+    try:
+        g = Github(auth=Auth.Token(github_token))
+        repo = g.get_repo(repo_name)
+        rel = repo.get_release(release_tag)
+
+        # Capability probe: listing assets should succeed with a write-capable token
+        _ = list(rel.get_assets())
+
+    except GithubException as ge:
+        if ge.status == 403:
+            print("[ERROR] Token cannot access the release. Likely missing 'contents: write' or repo workflow perms set to read-only.")
+        elif ge.status == 404:
+            print(f"[ERROR] Release '{release_tag}' not found in '{repo_name}'.")
+        else:
+            print(f"[ERROR] Unable to access release ({ge.status}): {ge.data}")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"[ERROR] Unexpected error while probing release access: {e}")
+        sys.exit(1)
+	
     files = find_table_yml()
     tables = vpsdb.get_table_meta(files)
 
