@@ -3,19 +3,25 @@ name: Validate table.yml
 on:
   pull_request:
     paths:
-      - '**table.yml'
+      - '**/table.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/table.yml'
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 50 # Adjust this value as needed
+          # Full history so diffs work for merges/squashes/rebases
+          fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -26,19 +32,37 @@ jobs:
 
       - name: Get changed table.yml files
         id: changed-files
+        shell: bash
         run: |
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -w 'table\.yml$')
-          echo "CHANGED_FILES=$(echo "$CHANGED_FILES" | tr '\n' ',')" >> $GITHUB_OUTPUT
-  
-      - name: Validate table.yml files
-        run: |
-          if [[ -n "${{ steps.changed-files.outputs.CHANGED_FILES }}" ]]; then
-            IFS=',' read -ra FILES <<< "${{ steps.changed-files.outputs.CHANGED_FILES }}"
-            for file in "${FILES[@]}"; do
-              echo "Checking \"$file\""
-              python .github/workflows/scripts/validate-table-yaml.py "$file"
-              yamllint -c .yamllint "$file"
-            done
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
           else
-            echo "No table.yml files were changed."
+            # push event (e.g., merge/squash to main)
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
           fi
+
+          echo "Diffing $BASE...$HEAD"
+          CHANGED_FILES=$(git diff --name-only "$BASE" "$HEAD" | grep -E '(^|/)table\.yml$' || true)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Comma-separated list for output (no trailing comma)
+          CHANGED_FILES_CSV=$(echo "$CHANGED_FILES" | tr '\n' ',' | sed 's/,$//')
+          echo "CHANGED_FILES=$CHANGED_FILES_CSV" >> "$GITHUB_OUTPUT"
+
+      - name: Validate table.yml files
+        if: ${{ steps.changed-files.outputs.CHANGED_FILES != '' }}
+        shell: bash
+        run: |
+          IFS=',' read -ra FILES <<< "${{ steps.changed-files.outputs.CHANGED_FILES }}"
+          for file in "${FILES[@]}"; do
+            echo "Checking \"$file\""
+            python .github/workflows/scripts/validate-table-yaml.py "$file"
+            yamllint -c .yamllint "$file"
+          done
+
+      - name: No changes message
+        if: ${{ steps.changed-files.outputs.CHANGED_FILES == '' }}
+        run: echo "No table.yml files were changed."
