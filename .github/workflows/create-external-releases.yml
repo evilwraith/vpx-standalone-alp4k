@@ -10,7 +10,7 @@ on:
 jobs:
   create_zips_and_manifest:
     runs-on: ubuntu-latest
-     env:
+    env:                       # ← fixed: aligned with runs-on
       GH_TOKEN: ${{ github.token }}
       GITHUB_TOKEN: ${{ github.token }}
       GITHUB_REPOSITORY: ${{ github.repository }}
@@ -20,9 +20,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-              fetch-depth: 1
-              submodules: false
-              lfs: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
 
       - name: Set up Python 3.11.2
         uses: actions/setup-python@v4
