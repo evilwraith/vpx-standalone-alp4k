@@ -24,18 +24,12 @@ jobs:
           submodules: false
           lfs: false
 
-      - name: Set up Python 3.11.2
+      - name: Set up Python 3.11.2 (with cache)
         uses: actions/setup-python@v4
         with:
           python-version: "3.11.2"
-
-      - name: Cache Python packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          cache: "pip"
+          cache-dependency-path: .github/workflows/scripts/requirements.txt
 
       - name: Install Python dependencies
         run: |
