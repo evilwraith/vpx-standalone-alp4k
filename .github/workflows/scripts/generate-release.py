@@ -3,13 +3,17 @@ import re
 import shutil
 import json
 import tempfile
+import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import requests
 import vpsdb
 import git
 from github import Github, Auth
 from github.GithubException import GithubException
 from pathlib import Path
+
 
 def find_table_yml(base_dir="external"):
     result = []
@@ -24,11 +28,12 @@ def find_table_yml(base_dir="external"):
                 result.append(table_yml)
     return result
 
+
 def get_latest_commit_hash(repo_path, folder_path):
     """
     Retrieves the latest commit hash that modified files in a specific folder.
-    
-	Args:
+
+    Args:
         repo_path (str): The path to the local Git repository.
         folder_path (str): The folder path within the repository.
 
@@ -49,6 +54,7 @@ def get_latest_commit_hash(repo_path, folder_path):
         print(f"An error occurred: {e}")
         return None
 
+
 def process_title(title, manufacturer, year):
     """
     Transforms a title for proper sorting, moving leading "The" to the end,
@@ -67,8 +73,6 @@ def process_title(title, manufacturer, year):
         name = title
     return f"{name} ({manufacturer} {year})"
 
-import time
-from github.GithubException import GithubException
 
 def upload_release_asset(github_token, repo_name, release_tag, file_path, clobber=True, max_attempts=3):
     """
@@ -84,16 +88,7 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
         auth = Auth.Token(github_token)
         g = Github(auth=auth)
         repo = g.get_repo(repo_name)
-
-        # Sanity: fetch the release by tag, raise clear error if missing
-        try:
-            release = repo.get_release(release_tag)
-        except GithubException as ge:
-            if ge.status == 404:
-                print(f"[ERROR] Release with tag '{release_tag}' not found in {repo_name}.")
-            else:
-                print(f"[ERROR] Could not read release '{release_tag}' ({ge.status}): {ge.data}")
-            return None
+        release = repo.get_release(release_tag)
 
         # Optional clobber of existing asset (by name)
         if clobber:
@@ -128,7 +123,7 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
                 for a in release.get_assets():
                     if a.name == file_name:
                         return a.browser_download_url
-                print(f"[WARN] Uploaded asset '{file_name}' not visible yet; retrying index refresh...")
+                print(f"[WARN] Uploaded asset '{file_name}' not visible yet; retrying index refresh.")
                 time.sleep(1.0)
             except GithubException as ge:
                 # 403s need actionable messages
@@ -145,7 +140,7 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
                     # 403 is usually not transient—break
                     break
                 elif ge.status in (502, 503, 504):
-                    print(f"[WARN] Transient server error ({ge.status}); will retry...")
+                    print(f"[WARN] Transient server error ({ge.status}); will retry.")
                     time.sleep(2 ** attempt)
                 else:
                     print(f"[ERROR] Upload failed ({ge.status}): {ge.data}")
@@ -158,6 +153,32 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
     except Exception as e:
         print(f"[ERROR] upload_release_asset fatal: {e}")
         return None
+
+
+def fetch_existing_manifest(github_token, repo_name, release_tag):
+    """
+    Fetch manifest.json (if present) from the target release and return it as a dict.
+    Keys are expected to be table folder names; values include 'configVersion'.
+    """
+    try:
+        auth = Auth.Token(github_token)
+        g = Github(auth=auth)
+        repo = g.get_repo(repo_name)
+        rel = repo.get_release(release_tag)
+        for asset in rel.get_assets():
+            if asset.name == "manifest.json":
+                url = asset.browser_download_url
+                headers = {
+                    "Authorization": f"token {github_token}",
+                    "Accept": "application/octet-stream",
+                }
+                r = requests.get(url, headers=headers, timeout=30)
+                r.raise_for_status()
+                print("[INFO] Loaded previous manifest.json from release")
+                return json.loads(r.text)
+    except Exception as e:
+        print(f"[INFO] No previous manifest found or failed to load it: {e}")
+    return {}
 
 
 def process_table(args):
@@ -175,19 +196,13 @@ def process_table(args):
         print(f"Error: No commit found for {external_path}, skipping {table}.")
         return result
 
-    # Optional: Skip if unchanged (requires storing previous version info in manifest)
-    # Uncomment below if you want to skip tables whose hash matches what's already in manifest:
-    # if table_data.get("configVersion") == config_version[:7]:
-    #     print(f"Skipping unchanged table: {table}")
-    #     return result
-
     # Zip the table directory in a temp folder
     with tempfile.TemporaryDirectory() as tmpdir:
         zip_base = os.path.join(tmpdir, table)
         try:
             shutil.make_archive(zip_base, "zip", external_path)
             zip_path = zip_base + ".zip"
-            print(f"Uploading {zip_path} to GitHub...")
+            print(f"Uploading {zip_path} to GitHub.")
             download_url = upload_release_asset(
                 github_token, repo_name, release_tag, zip_path
             )
@@ -213,6 +228,7 @@ if __name__ == "__main__":
         print("Error: Required environment variables not set.")
         sys.exit(1)
 
+    # Sanity probe: ensure we can reach the release
     try:
         g = Github(auth=Auth.Token(github_token))
         repo = g.get_repo(repo_name)
@@ -233,7 +249,8 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"[ERROR] Unexpected error while probing release access: {e}")
         sys.exit(1)
-	
+
+    # Discover tables
     files = find_table_yml()
     tables = vpsdb.get_table_meta(files)
 
@@ -243,13 +260,45 @@ if __name__ == "__main__":
         print(f"Skipping disabled table: {table}")
         del tables[table]
 
-    # Prepare arguments for parallel processing
+    # Load previous manifest (if any) to enable unchanged-skip
+    prev_manifest = fetch_existing_manifest(github_token, repo_name, release_tag)
+    changed_tables = {}
+    unchanged_tables = []
+
+    # Decide which tables changed by comparing latest commit short hash with manifest configVersion
+    for table, data in list(tables.items()):
+        external_path = os.path.join("external", table)
+        latest = get_latest_commit_hash(".", external_path)
+        short = (latest or "")[:7]
+        prev_short = ""
+        if isinstance(prev_manifest, dict):
+            prev_short = (prev_manifest.get(table, {}) or {}).get("configVersion", "")
+        if short and short == prev_short:
+            unchanged_tables.append(table)
+        else:
+            changed_tables[table] = data
+
+    if unchanged_tables:
+        print(f"[INFO] Skipping unchanged tables: {', '.join(sorted(unchanged_tables))}")
+
+    if not changed_tables:
+        print("[INFO] No changed tables detected; nothing to build.")
+        # Still upload the previous manifest if it exists (keeps release consistent)
+        if isinstance(prev_manifest, dict) and prev_manifest:
+            manifest_file = "manifest.json"
+            with open(manifest_file, "w") as f:
+                json.dump(prev_manifest, f, indent=2)
+            _ = upload_release_asset(github_token, repo_name, release_tag, manifest_file)
+            os.remove(manifest_file)
+        sys.exit(0)
+
+    # Prepare arguments for parallel processing (only changed)
     pool_args = [
-        (table, tables[table], github_token, repo_name, release_tag)
-        for table in tables
+        (table, changed_tables[table], github_token, repo_name, release_tag)
+        for table in changed_tables
     ]
 
-    # Process tables in parallel (adjust max_workers as needed)
+    # Process in parallel
     updated_tables = {}
     with ThreadPoolExecutor(max_workers=4) as executor:
         futures = {executor.submit(process_table, arg): arg[0] for arg in pool_args}
@@ -257,14 +306,20 @@ if __name__ == "__main__":
             table, updated_data = future.result()
             updated_tables[table] = updated_data
 
-    # Write updated manifest
+    # Merge manifest: keep previous entries for unchanged tables, update changed ones
+    merged_manifest = dict(prev_manifest) if isinstance(prev_manifest, dict) else {}
+    merged_manifest.update(updated_tables)
+
+    # Write & upload manifest
     manifest_file = "manifest.json"
     with open(manifest_file, "w") as f:
-        json.dump(updated_tables, f, indent=2)
+        json.dump(merged_manifest, f, indent=2)
 
-    # Upload manifest.json to release
     manifest_url = upload_release_asset(github_token, repo_name, release_tag, manifest_file)
     print(f"Uploaded manifest.json to release: {manifest_url}")
 
-    # Optional: remove manifest after upload
-    os.remove(manifest_file)
+    # Optional cleanup
+    try:
+        os.remove(manifest_file)
+    except OSError:
+        pass
