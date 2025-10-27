@@ -185,7 +185,8 @@ def main():
         sys.exit(1)
 
     try:
-        g = Github(github_token)
+        from github import Auth
+    g = Github(auth=Auth.Token(github_token))
         repo = g.get_repo(repository or os.environ.get("GITHUB_REPOSITORY"))
     except Exception as e:
         print(f"Error connecting to GitHub: {e}", file=sys.stderr)
@@ -208,7 +209,7 @@ def main():
                 sys.exit(0)
             try:
                 release = repo.get_release(end_tag)
-                release.update_release(name=release.title, message=new_release_notes)
+                release.update_release(name=release.name, message=new_release_notes)
                 print(f"Release notes for tag '{end_tag}' updated successfully.")
             except Exception as e:
                 print(f"Error editing release notes: {e}", file=sys.stderr)
@@ -232,7 +233,7 @@ def main():
         print(new_release_notes)
         try:
             release = repo.get_release(end_tag)
-            release.update_release(name=release.title, message=new_release_notes)
+            release.update_release(name=release.name, message=new_release_notes)
             print(f"Release notes for tag '{end_tag}' updated successfully.")
         except Exception as e:
             print(f"Error editing release notes: {e}", file=sys.stderr)
