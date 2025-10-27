@@ -95,18 +95,11 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
                 print(f"[ERROR] Could not read release '{release_tag}' ({ge.status}): {ge.data}")
             return None
 
-        # Optional clobber of existing asset (by name)
-        if clobber:
-            try:
-                for asset in release.get_assets():
-                    if asset.name == file_name:
-                        print(f"[INFO] Deleting existing asset '{file_name}'...")
-                        asset.delete_asset()
-                        # tiny delay to avoid race with eventual consistency
-                        time.sleep(0.8)
-                        break
-            except GithubException as ge:
-                print(f"[WARN] Could not list/delete existing assets ({ge.status}): {ge.data}")
+        # Check if asset already exists by name
+        existing_assets = {a.name: a for a in release.get_assets()}
+        if file_name in existing_assets:
+            print(f"[INFO] Asset '{file_name}' already exists in release. Skipping upload.")
+        return existing_assets[file_name].browser_download_url
 
         # Upload with correct content type (zip) and stable name
         attempt = 0
