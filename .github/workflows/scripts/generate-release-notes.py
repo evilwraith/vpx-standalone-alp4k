@@ -186,11 +186,11 @@ def main():
 
     try:
         from github import Auth
-    g = Github(auth=Auth.Token(github_token))
-        repo = g.get_repo(repository or os.environ.get("GITHUB_REPOSITORY"))
-    except Exception as e:
-        print(f"Error connecting to GitHub: {e}", file=sys.stderr)
-        sys.exit(1)
+          g = Github(auth=Auth.Token(github_token))
+          repo = g.get_repo(repository or os.environ.get("GITHUB_REPOSITORY"))
+        except Exception as e:
+          print(f"Error connecting to GitHub: {e}", file=sys.stderr)
+          sys.exit(1)
 
     if not start_tag:
         start_tag = get_previous_tag(repo, end_tag)
