@@ -8,7 +8,7 @@ import sys
 
 import yaml
 
-from github import Github
+from github import Github, Auth
 from pathlib import Path
 
 
