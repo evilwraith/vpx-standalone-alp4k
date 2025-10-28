@@ -99,7 +99,7 @@ def upload_release_asset(github_token, repo_name, release_tag, file_path, clobbe
         existing_assets = {a.name: a for a in release.get_assets()}
         if file_name in existing_assets:
             print(f"[INFO] Asset '{file_name}' already exists in release. Skipping upload.")
-        return existing_assets[file_name].browser_download_url
+            return existing_assets[file_name].browser_download_url
 
         # Upload with correct content type (zip) and stable name
         attempt = 0
