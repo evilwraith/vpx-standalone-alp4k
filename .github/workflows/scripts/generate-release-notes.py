@@ -185,6 +185,7 @@ def main():
         sys.exit(1)
 
     try:
+        from github import Auth
         g = Github(auth=Auth.Token(github_token))
         repo = g.get_repo(repository or os.environ.get("GITHUB_REPOSITORY"))
     except Exception as e:
