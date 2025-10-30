@@ -9,10 +9,10 @@ romVersionOverride: "lotr"
 romNotes: "Download - lotr.zip"
 tableVPSId: "3cxx1oTt"
 tagline: "It's a dangerous business, Frodo, going out your door..."
-tableNotes: "Download version v55_VPX8"
+tableNotes: "Download 'JP's Lord of the Rings (Stern 2003) v600'"
 testers:
   - "OminousOsie"
 vpxVPSId: "q8ac-RuR"
-vpxChecksum: "30739e394118a0e794ea34d83c67e4d7"
+vpxChecksum: "478EAA101AC88F6B062F39ACB055697C"
 applyFixes:
   - "bass"
