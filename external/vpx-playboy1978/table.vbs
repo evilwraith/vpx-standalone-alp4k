@@ -2303,7 +2303,7 @@ End Function
 Sub DoDTAnim()
 	Dim i
 	For i = 0 To UBound(DTArray)
-		DTArray(i).Animate = DTAnimate(DTArray(i).Primary, DTArray(i).Secondary, DTArray(i).Prim, DTArray(i).Sw, DTArray(i).Animate)
+		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
 	Next
 End Sub
 
