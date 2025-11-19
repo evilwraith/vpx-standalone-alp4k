@@ -8,6 +8,7 @@ fps: 40
 romChecksum: "AFEB7DC9BE8D567F246CDC821ACEF15B"
 romNotes: "Download hh7.zip"
 romUrlOverride: "https://pinballnirvana.com/forums/resources/hh7.1934/"
+romVersionOverride: "hh7"
 tableVPSId: "q0RmE-GZ"
 tagline: "'G-g-g-g-GHOSTS?!' - Scooby Doo and Shaggy"
 testers:
