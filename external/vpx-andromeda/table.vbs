@@ -1,5 +1,5 @@
 ' Andromeda / IPD No. 73 / Game Plan / September, 1985 / 4 Players
-' VPX - version by JPSalas 2020, version 4.0.0. Graphics by Siggi
+' VPX8 - version by JPSalas 2024, version 6.0.0. Graphics by Siggi
 ' vpinmame script based on destruk script
 
 Option Explicit
@@ -16,7 +16,7 @@ On Error Goto 0
 LoadVPM "01120100", "GamePlan.VBS", 3.1
 
 Const UseSolenoids = 2
-Const UseLamps = 1
+Const UseLamps = 0
 Const UseSync = 0
 Const HandleMech = 0
 Const SSolenoidOn = "fx_solenoidon"
@@ -50,7 +50,7 @@ Sub Table1_Init
     With Controller
         .GameName = cGameName
         'If Err Then MsgBox "Can't start Game" & cGameName & vbNewLine & Err.Description:Exit Sub
-        .SplashInfoLine = "Andromeda, GamePlan, 1985" & vbnewline & "Table by jpsalas v4.0"
+        .SplashInfoLine = "Andromeda, GamePlan, 1985" & vbnewline & "Table by jpsalas v6.0.0"
         .Games(cGameName).Settings.Value("rol") = 0   '1= rotated display, 0= normal
         .Games(cGameName).Settings.Value("sound") = 1 '1 enabled rom sound
         .HandleMechanics = 0
@@ -65,16 +65,7 @@ Sub Table1_Init
         If Err Then MsgBox Err.Description
         On Error Goto 0
     End With
-' ----------------------------------------------------------
-' balls per play:            &H00800000  = 3 balls
-' high game to date award:   &HC0000000  = 1 credit
-' replay or free ball award: &H10000000  = extra ball
-' ----------------------------------------------------------
-' all combined:              &HD0800000 
-Controller.Dip(0) = 0
-Controller.Dip(1) = 0
-Controller.Dip(2) = &H80
-Controller.Dip(3) = &HD0
+
     vpmNudge.TiltSwitch = swTilt
     vpmNudge.Sensitivity = 5
     vpmNudge.TiltObj = Array(bumper1, bumper2, bumper3, bumper4, RightSlingshot)
@@ -108,8 +99,6 @@ Controller.Dip(3) = &HD0
     ' Init through
     Drain2.CreateBall
     Drain2.Kick 180, 1
-
-    LoadLUT
 End Sub
 
 '******************
@@ -131,73 +120,19 @@ Sub table1_KeyDown(ByVal Keycode)
     If keycode = LeftTiltKey Then Nudge 90, 5:PlaySound SoundFX("fx_nudge", 0), 0, 1, -0.1, 0.25
     If keycode = RightTiltKey Then Nudge 270, 5:PlaySound SoundFX("fx_nudge", 0), 0, 1, 0.1, 0.25
     If keycode = CenterTiltKey Then Nudge 0, 6:PlaySound SoundFX("fx_nudge", 0), 0, 1, 0, 0.25
-    If keycode = LeftMagnaSave Then bLutActive = True: Lutbox.text = "level of darkness " & LUTImage + 1
-    If keycode = RightMagnaSave Then
-        If bLutActive Then NextLUT:End If
-    End If
     If KeyDownHandler(KeyCode)Then Exit Sub
     If keycode = PlungerKey Then PlaySoundAt "fx_PlungerPull", Plunger:Plunger.Pullback
 End Sub
 
 Sub table1_KeyUp(ByVal Keycode)
-    If keycode = LeftMagnaSave Then bLutActive = False: LutBox.text = ""
     If KeyCode = RightFlipperKey Then Controller.Switch(40) = 0
     If KeyUpHandler(KeyCode)Then Exit Sub
     If keycode = PlungerKey Then PlaySoundAt "fx_plunger", plunger:Plunger.Fire
 End Sub
 
-'***************************
-'   LUT - Darkness control 
-'***************************
-
-Dim bLutActive, LUTImage
-
-Sub LoadLUT
-    bLutActive = False
-    x = LoadValue(cGameName, "LUTImage")
-    If(x <> "")Then LUTImage = x Else LUTImage = 0
-    UpdateLUT
-End Sub
-
-Sub SaveLUT
-    SaveValue cGameName, "LUTImage", LUTImage
-End Sub
-
-Sub NextLUT:LUTImage = (LUTImage + 1)MOD 15:UpdateLUT:SaveLUT:Lutbox.text = "level of darkness " & LUTImage + 1:End Sub
-
-Sub UpdateLUT
-    Select Case LutImage
-        Case 0:table1.ColorGradeImage = "LUT0":GiIntensity = 1:ChangeGIIntensity 1
-        Case 1:table1.ColorGradeImage = "LUT1":GiIntensity = 1.05:ChangeGIIntensity 1
-        Case 2:table1.ColorGradeImage = "LUT2":GiIntensity = 1.1:ChangeGIIntensity 1
-        Case 3:table1.ColorGradeImage = "LUT3":GiIntensity = 1.15:ChangeGIIntensity 1
-        Case 4:table1.ColorGradeImage = "LUT4":GiIntensity = 1.2:ChangeGIIntensity 1
-        Case 5:table1.ColorGradeImage = "LUT5":GiIntensity = 1.25:ChangeGIIntensity 1
-        Case 6:table1.ColorGradeImage = "LUT6":GiIntensity = 1.3:ChangeGIIntensity 1
-        Case 7:table1.ColorGradeImage = "LUT7":GiIntensity = 1.35:ChangeGIIntensity 1
-        Case 8:table1.ColorGradeImage = "LUT8":GiIntensity = 1.4:ChangeGIIntensity 1
-        Case 9:table1.ColorGradeImage = "LUT9":GiIntensity = 1.45:ChangeGIIntensity 1
-        Case 10:table1.ColorGradeImage = "LUT10":GiIntensity = 1.5:ChangeGIIntensity 1
-        Case 11:table1.ColorGradeImage = "LUT11":GiIntensity = 1.55:ChangeGIIntensity 1
-        Case 12:table1.ColorGradeImage = "LUT12":GiIntensity = 1.6:ChangeGIIntensity 1
-        Case 13:table1.ColorGradeImage = "LUT13":GiIntensity = 1.65:ChangeGIIntensity 1
-        Case 14:table1.ColorGradeImage = "LUT14":GiIntensity = 1.7:ChangeGIIntensity 1
-    End Select
-End Sub
-
-Dim GiIntensity
-GiIntensity = 1   'used by the LUT changing to increase the GI lights when the table is darker
-
-Sub ChangeGiIntensity(factor) 'changes the intensity scale
-    Dim bulb
-    For each bulb in aGiLights
-        bulb.IntensityScale = GiIntensity * factor
-    Next
-End Sub
-
-'********************
-'     Flippers
-'********************
+'*******************
+' Flipper Subs Rev3
+'*******************
 
 SolCallback(sLRFlipper) = "SolRFlipper"
 SolCallback(sLLFlipper) = "SolLFlipper"
@@ -205,29 +140,120 @@ SolCallback(sLLFlipper) = "SolLFlipper"
 Sub SolLFlipper(Enabled)
     If Enabled Then
         PlaySoundAt SoundFX("fx_flipperup", DOFFlippers), LeftFlipper
-        LeftFlipper.EOSTorque = 0.65:LeftFlipper.RotateToEnd
+        LeftFlipper.RotateToEnd
+        LeftFlipperOn = 1
     Else
         PlaySoundAt SoundFX("fx_flipperdown", DOFFlippers), LeftFlipper
-        LeftFlipper.EOSTorque = 0.15:LeftFlipper.RotateToStart
+        LeftFlipper.RotateToStart
+        LeftFlipperOn = 0
     End If
 End Sub
 
 Sub SolRFlipper(Enabled)
     If Enabled Then
         PlaySoundAt SoundFX("fx_flipperup", DOFFlippers), RightFlipper
-        RightFlipper.EOSTorque = 0.65:RightFlipper.RotateToEnd
+        RightFlipper.RotateToEnd
+        RightFlipperOn = 1
     Else
         PlaySoundAt SoundFX("fx_flipperdown", DOFFlippers), RightFlipper
-        RightFlipper.EOSTorque = 0.15:RightFlipper.RotateToStart
+        RightFlipper.RotateToStart
+        RightFlipperOn = 0
     End If
 End Sub
 
+' flippers top animations
+
+'Sub LeftFlipper_Animate:LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle: End Sub
+'Sub RightFlipper_Animate: RightFlipperTop.RotZ = RightFlipper.CurrentAngle: End Sub
+
+' flippers hit Sound
+
 Sub LeftFlipper_Collide(parm)
-    PlaySound "fx_rubber_flipper", 0, Vol(ActiveBall), pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
+    PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0.1, 0, 0, 0, AudioFade(ActiveBall)
 End Sub
 
 Sub RightFlipper_Collide(parm)
-    PlaySound "fx_rubber_flipper", 0, Vol(ActiveBall), pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
+    PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0.1, 0, 0, 0, AudioFade(ActiveBall)
+End Sub
+
+'*********************************************************
+' Real Time Flipper adjustments - by JLouLouLou & JPSalas
+'        (to enable flipper tricks) 
+'*********************************************************
+
+Dim FlipperPower
+Dim FlipperElasticity
+Dim SOSTorque, SOSAngle
+Dim FullStrokeEOS_Torque, LiveStrokeEOS_Torque
+Dim LeftFlipperOn
+Dim RightFlipperOn
+
+Dim LLiveCatchTimer
+Dim RLiveCatchTimer
+Dim LiveCatchSensivity
+
+FlipperPower = 3600
+FlipperElasticity = 0.6
+FullStrokeEOS_Torque = 0.6 ' EOS Torque when flipper hold up ( EOS Coil is fully charged. Ampere increase due to flipper can't move or when it pushed back when "On". EOS Coil have more power )
+LiveStrokeEOS_Torque = 0.3 ' EOS Torque when flipper rotate to end ( When flipper move, EOS coil have less Ampere due to flipper can freely move. EOS Coil have less power )
+
+LeftFlipper.EOSTorqueAngle = 10
+RightFlipper.EOSTorqueAngle = 10
+
+SOSTorque = 0.2
+SOSAngle = 6
+
+LiveCatchSensivity = 10
+
+LLiveCatchTimer = 0
+RLiveCatchTimer = 0
+
+LeftFlipper.TimerInterval = 1
+LeftFlipper.TimerEnabled = 1
+
+Sub LeftFlipper_Timer 'flipper's tricks timer
+'Start Of Stroke Flipper Stroke Routine : Start of Stroke for Tap pass and Tap shoot
+    If LeftFlipper.CurrentAngle >= LeftFlipper.StartAngle - SOSAngle Then LeftFlipper.Strength = FlipperPower * SOSTorque else LeftFlipper.Strength = FlipperPower : End If
+ 
+'End Of Stroke Routine : Livecatch and Emply/Full-Charged EOS
+	If LeftFlipperOn = 1 Then
+		If LeftFlipper.CurrentAngle = LeftFlipper.EndAngle then
+			LeftFlipper.EOSTorque = FullStrokeEOS_Torque
+			LLiveCatchTimer = LLiveCatchTimer + 1
+			If LLiveCatchTimer < LiveCatchSensivity Then
+				LeftFlipper.Elasticity = 0
+			Else
+				LeftFlipper.Elasticity = FlipperElasticity
+				LLiveCatchTimer = LiveCatchSensivity
+			End If
+		End If
+	Else
+		LeftFlipper.Elasticity = FlipperElasticity
+		LeftFlipper.EOSTorque = LiveStrokeEOS_Torque
+		LLiveCatchTimer = 0
+	End If
+	
+
+'Start Of Stroke Flipper Stroke Routine : Start of Stroke for Tap pass and Tap shoot
+    If RightFlipper.CurrentAngle <= RightFlipper.StartAngle + SOSAngle Then RightFlipper.Strength = FlipperPower * SOSTorque else RightFlipper.Strength = FlipperPower : End If
+ 
+'End Of Stroke Routine : Livecatch and Emply/Full-Charged EOS
+ 	If RightFlipperOn = 1 Then
+		If RightFlipper.CurrentAngle = RightFlipper.EndAngle Then
+			RightFlipper.EOSTorque = FullStrokeEOS_Torque
+			RLiveCatchTimer = RLiveCatchTimer + 1
+			If RLiveCatchTimer < LiveCatchSensivity Then
+				RightFlipper.Elasticity = 0
+			Else
+				RightFlipper.Elasticity = FlipperElasticity
+				RLiveCatchTimer = LiveCatchSensivity
+			End If
+		End If
+	Else
+		RightFlipper.Elasticity = FlipperElasticity
+		RightFlipper.EOSTorque = LiveStrokeEOS_Torque
+		RLiveCatchTimer = 0
+	End If
 End Sub
 
 '*********
@@ -526,9 +552,13 @@ Sub UpdateLamps()
     Lamp 51, li51
     NFReelm 52, ShootAgainR
     Lamp 52, li52
+    Lampm 53, li53a
     Lamp 53, li53
+    Lampm 54, li54a
     Lamp 54, li54
+    Lampm 55, li55a
     Lamp 55, li55
+    Lampm 56, li56a
     Lamp 56, li56
 
     'Flashers
@@ -815,7 +845,7 @@ Sub RollingUpdate()
                 ballvol = Vol(BOT(b))
             Else
                 ballpitch = Pitch(BOT(b)) + 50000 'increase the pitch on a ramp
-                ballvol = Vol(BOT(b)) * 10
+                ballvol = Vol(BOT(b)) * 5
             End If
             rolling(b) = True
             PlaySound("fx_ballrolling" & b), -1, ballvol, Pan(BOT(b)), 0, ballpitch, 1, 0, AudioFade(BOT(b))
@@ -831,7 +861,8 @@ Sub RollingUpdate()
             PlaySound "fx_balldrop", 0, ABS(BOT(b).velz) / 17, Pan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b))
         End If
 
-        ' jps ball speed control
+        ' jps ball speed & spin control
+        BOT(b).AngMomZ = BOT(b).AngMomZ * 0.95
         If BOT(b).VelX AND BOT(b).VelY <> 0 Then
             speedfactorx = ABS(maxvel / BOT(b).VelX)
             speedfactory = ABS(maxvel / BOT(b).VelY)
@@ -931,7 +962,7 @@ Sub editDips
     Dim vpmDips:Set vpmDips = New cvpmDips
     With vpmDips
         .AddForm 700, 400, "Gameplan Andromeda - DIP switches"
-        .AddFrame 2, 0, 190, "Credits per coin", &H0000001F, Array("1 credit - 2 coins", &H00000031, "1 credit - 1 coin", &H00000002, "2 credits - 1 coin", &H00000004, "5 credits - 1 coin", &H0000000A) 'dip 1-5
+        .AddFrame 2, 0, 190, "Credits per coin", &H0000001F, Array("1 credit - 2 coins", &H00000001, "1 credit - 1 coin", &H00000002, "2 credits - 1 coin", &H00000004, "5 credits - 1 coin", &H0000000A) 'dip 1-5
         .AddFrame 2, 76, 190, "Maximum credits", &H06000000, Array("10 credits", 0, "20 credits", &H02000000, "30 credits", &H04000000, "40 credits", &H06000000)                                          'dip 26&27
         .AddFrame 2, 152, 190, "High game to date award", &HC0000000, Array("no award", 0, "1 credit", &H40000000, "2 credits", &H80000000, "3 credits", &HC0000000)                                       'dip 31&32
         .AddFrame 210, 0, 190, "Replay or free ball award", &H18000000, Array("no award", 0, "50,000 points", &H08000000, "extra ball", &H10000000, "replay", &H18000000)                                  'dip 28+29
@@ -944,3 +975,51 @@ Sub editDips
     End With
 End Sub
 Set vpmShowDips = GetRef("editDips")
+
+'*********************************
+' Table Options F12 User Options
+'*********************************
+' Table1.Option arguments are: 
+' - option name, minimum value, maximum value, step between valid values, default value, unit (0=None, 1=Percent), an optional array of literal strings
+
+Dim LUTImage
+
+Sub Table1_OptionEvent(ByVal eventId)
+    Dim x, y
+
+    'LUT
+    LutImage = Table1.Option("Select LUT", 0, 21, 1, 0, 0, Array("Normal 0", "Normal 1", "Normal 2", "Normal 3", "Normal 4", "Normal 5", "Normal 6", "Normal 7", "Normal 8", "Normal 9", "Normal 10", _
+        "Warm 0", "Warm 1", "Warm 2", "Warm 3", "Warm 4", "Warm 5", "Warm 6", "Warm 7", "Warm 8", "Warm 9", "Warm 10") )
+    UpdateLUT
+
+    ' Cabinet rails
+    x = Table1.Option("Cabinet Rails", 0, 1, 1, 1, 0, Array("Hide", "Show") )
+    For each y in aRails:y.visible = x:next
+End Sub
+
+Sub UpdateLUT
+    Select Case LutImage
+        Case 0:table1.ColorGradeImage = "LUT0"
+        Case 1:table1.ColorGradeImage = "LUT1"
+        Case 2:table1.ColorGradeImage = "LUT2"
+        Case 3:table1.ColorGradeImage = "LUT3"
+        Case 4:table1.ColorGradeImage = "LUT4"
+        Case 5:table1.ColorGradeImage = "LUT5"
+        Case 6:table1.ColorGradeImage = "LUT6"
+        Case 7:table1.ColorGradeImage = "LUT7"
+        Case 8:table1.ColorGradeImage = "LUT8"
+        Case 9:table1.ColorGradeImage = "LUT9"
+        Case 10:table1.ColorGradeImage = "LUT10"
+        Case 11:table1.ColorGradeImage = "LUT Warm 0"
+        Case 12:table1.ColorGradeImage = "LUT Warm 1"
+        Case 13:table1.ColorGradeImage = "LUT Warm 2"
+        Case 14:table1.ColorGradeImage = "LUT Warm 3"
+        Case 15:table1.ColorGradeImage = "LUT Warm 4"
+        Case 16:table1.ColorGradeImage = "LUT Warm 5"
+        Case 17:table1.ColorGradeImage = "LUT Warm 6"
+        Case 18:table1.ColorGradeImage = "LUT Warm 7"
+        Case 19:table1.ColorGradeImage = "LUT Warm 8"
+        Case 20:table1.ColorGradeImage = "LUT Warm 9"
+        Case 21:table1.ColorGradeImage = "LUT Warm 10"
+    End Select
+End Sub

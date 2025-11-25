@@ -150,7 +150,10 @@ def get_table_meta(files, warn_on_error=True):
             "fps": data.get("fps"),
             "mainNotes": data.get("mainNotes"),
             "name": data.get("tableNameOverride"),
+            "manufacturer": data.get("tableManufacturerOverride"),
+            "year": data.get("tableYearOverride"),
             "pupArchiveRoot": data.get("pupArchiveRoot"),
+            "pupBundled": data.get("pupBundled"),
             "pupChecksum": pupChecksum,
             "pupFileUrl": data.get("pupFileUrl"),
             "pupNotes": data.get("pupNotes"),
@@ -179,15 +182,19 @@ def get_table_meta(files, warn_on_error=True):
 
             table_meta["designers"] = table.get("designers", [])
             table_meta["image"] = table.get("imgUrl", "")
-            table_meta["manufacturer"] = table.get("manufacturer", "")
 
             if not table_meta["name"]:
                 table_meta["name"] = table.get("name", "")
+                
+            if not table_meta["manufacturer"]:
+                table_meta["manufacturer"] = table.get("manufacturer", "")
 
+            if not table_meta["year"]:
+                table_meta["year"] = table.get("year", 0)
+                
             table_meta["players"] = table.get("players", 0)
             table_meta["type"] = table.get("type", "")
             table_meta["version"] = table.get("version", "")
-            table_meta["year"] = table.get("year", 0)
 
         if vpxVPSId:
             tableFile = vpsdb.get_tablefile_by_id(vpxVPSId)
@@ -255,7 +262,11 @@ def get_table_meta(files, warn_on_error=True):
                 print(f"Parsing ROM {romVPSId} for {folder_name}")
                 table_meta["romAuthors"] = rom.get("authors", [])
                 table_meta["romComment"] = rom.get("comment", "")
-                table_meta["romFileUrl"] = rom.get("urls", [])[0].get("url", "")
+                urls_list = rom.get("urls", [])
+                if urls_list:  # This checks if the list is not empty
+                    table_meta["romFileUrl"] = urls_list[0].get("url", "")
+                else:
+                    table_meta["romFileUrl"] = "" # Assign a default empty string
                 if not table_meta["romVersion"]:
                     table_meta["romVersion"] = rom.get("version", "")
             else:

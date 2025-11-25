@@ -5,7 +5,6 @@ backglassBundled: true
 backglassChecksum: "A2E5C8CCAE3E74877B4758ED03D84880"
 backglassNotes: "Download Black Magic 4 (Recel 1980).directb2s.zip"
 backglassImageOverride: "https://virtualpinballspreadsheet.github.io/vps-db/img/FD7syId0L-_1745159362482.webp"
-enabled: false # evilwraith: Removed this table for now. Logic issues that need fixing on Standalone.
 fps: 60
 mainNotes: "The artwork is gorgeous."
 tableNotes: "Download the 4-player version. Black Magic 4 (Recel 1980).zip"
@@ -13,5 +12,6 @@ tableVPSId: "91XAmtrDdM"
 tagline: "'Voodoo? Who do? You do.'"
 testers:
   - "evilwraith"
-vpxChecksum: "FA37BA769C4D34B4D496A228C9B2D48A"
+  - "pointdablame"
+vpxChecksum: "6EFB001EA93E31A3AE25D136B93265B9"
 vpxVPSId: "FD7syId0L-"
