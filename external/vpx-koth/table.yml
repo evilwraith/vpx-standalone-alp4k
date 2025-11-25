@@ -3,15 +3,15 @@ applyFixes:
   - "bass"
 fps: 60
 pupArchiveFormat: "zip"
-pupArchiveRoot: "pupvideos/kingofthehill"
+pupArchiveRoot: "kingofthehill"
 pupChecksum: "7C12832D003267AFB6EFCB5178CA5B15"
 pupNotes: "Download kinbgofthehill-PuP-v1.00.zip same location as vpx"
 pupRequired: true
-tableNotes: "Download KOTH-Original-v1.00.vpx"
+tableNotes: "Download KOTH-Original-v1.03.vpx"
 tableVPSId: "G2R9RT47DC"
 tagline: "'I don't know you!'"
 testers:
   - "evilwraith"
   - "silentkat"
-vpxChecksum: "202114E67C25B64DFD0E9C31288AA71B"
+vpxChecksum: "E2EB0251053E29CE1A54E11D29080427"
 vpxVPSId: "iQC3YbzBzM"
