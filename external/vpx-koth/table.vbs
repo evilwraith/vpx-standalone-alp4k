@@ -157,6 +157,12 @@
 '		Case 19
 '	End Select
 
+'v1.01 - Supressed messaging during Til warnings
+' Changed propane reward to 2x in mode 0, 1x in any other Mode
+' Fixed rulecard disable in tweak menu
+' Added lockdownbar option in tweak menu
+' Fixed bug in hank mode 1 - football target was coutning for mode 1 instead of mode 3
+
 
 Option Explicit
 Randomize
@@ -235,7 +241,7 @@ Dim tablewidth: tablewidth = Table1.width
 Dim tableheight: tableheight = Table1.height
 Dim lightCtrl : Set lightCtrl = new LStateController
 
-Const myVersion = "1.0.0"
+Const myVersion = "1.0.3"
 Const MaxPlayers = 4     ' from 1 to 4
 Const BallSaverTime = 20 ' in seconds
 Const MaxMultiplier = 5  ' limit to 3x in this game, both bonus multiplier and playfield multiplier
@@ -309,6 +315,7 @@ Const LargeSeqUpdate = 120
 Dim nBallsPerGame 		' used for tweak menu
 Dim stagedFlipper
 Dim TrustOpt 
+Dim LockOpt
 Dim bSupressModeMessages
 Dim nCard
 Dim bRuleCards
@@ -544,14 +551,25 @@ Sub Table1_OptionEvent(ByVal eventId)
 	'Freeplay
 	bFreeplay = Table1.Option("Freeplay On", 0, 1, 1, 1, 0, Array("False", "True (Default)"))
 
+	'Trust Post
 	TrustOpt = Table1.Option("Trust Post", 0, 1, 1, 1, 0, Array("False", "True (Default)"))
 	SetTrustPost TrustOpt
 	
+	'Lockdown bar Visible
+	LockOpt = Table1.Option("Lockdown Bar Visible", 0, 1, 1, 1, 0, Array("False", "True (Default)"))
+	SetlockdownBar LockOpt
 
 	If eventId = 3 And dspTriggered Then dspTriggered = False : DisableStaticPreRendering = False : End If
 
 End Sub
 '================================================================================================================================================================
+Sub SetLockdownBar(Opt)
+	Select Case Opt
+		Case 0: Ramp17.Visible = 0
+		Case 1:	Ramp17.Visible = 1
+	End Select
+End Sub
+
 Sub SetBallsPerGame(Opt)
 	Select Case Opt
 		Case 0: nBallsPerGame = 3
@@ -591,7 +609,11 @@ Sub Table1_Init()
 
 
 	'Randomize
-	bAlreadyPlayed = True
+	if bRulecards Then
+		bAlreadyPlayed = False
+	Else
+		bAlreadyPlayed = True
+	End If
 	bGameReady = True
 
 	Dim x,y
@@ -1231,6 +1253,11 @@ End Sub
 '*********
 ' TILT
 '*********
+Sub ClearSupress
+	bSupressModeMessages = True
+	UpdateModeMessages.Enabled = 0
+	UpdateModeMessages.Enabled = 1
+End Sub
 
 'NOTE: The TiltDecreaseTimer Subtracts .01 from the "Tilt" variable every round
 
@@ -1240,6 +1267,11 @@ Sub CheckTilt                                    'Called when table is nudged
     If(Tilt> TiltSensitivity) AND(Tilt <15) Then 'show a warning
 '        DMD "_", CL(1, "CAREFUL!"), "", eNone, eBlinkFast, eNone, 500, True, ""
 
+	bSupressModeMessages = True
+	UpdateModeMessages.Enabled = 0
+	UpdateModeMessages.Enabled = 1
+	DMDQueue.Add "ClearSupress","ClearSupress",85,3200,0,0,0,True
+
 	pDMDSplashTwoLines "TILT", "WARNING", 3, cYellow
 	DMDQueue.Add "ClearTwoLines","ClearTwoLines",95,3100,0,0,0,True
     End if
@@ -1248,6 +1280,11 @@ Sub CheckTilt                                    'Called when table is nudged
         'display Tilt
 '        DMDFlush
 '        DMD "", "", "TILT", eNone, eNone, eBlink, 200, False, ""
+
+		bSupressModeMessages = True
+		UpdateModeMessages.Enabled = 0
+		UpdateModeMessages.Enabled = 1
+		DMDQueue.Add "ClearSupress","ClearSupress",85,3200,0,0,0,True
 
 		pDMDSplashTwoLines "TILT", "BALL LOST", 3, cRed
 		DMDQueue.Add "ClearTwoLines","ClearTwoLines",95,3100,0,0,0,True
@@ -1731,7 +1768,7 @@ Sub RollingUpdate()
 	' stop the sound of deleted balls
 	For b = UBound(BOT) + 1 To tnob - 1
 		' Comment the next line if you are not implementing Dyanmic Ball Shadows
-'		If AmbientBallShadowOn = 0 Then BallShadowA(b).visible = 0
+		If AmbientBallShadowOn = 0 Then BallShadowA(b).visible = 0
 		rolling(b) = False
 		StopSound("BallRoll_" & b)
 	Next
@@ -1769,16 +1806,16 @@ Sub RollingUpdate()
 		
 		' "Static" Ball Shadows
 		' Comment the next If block, if you are not implementing the Dynamic Ball Shadows
-'		If AmbientBallShadowOn = 0 Then
-'			If BOT(b).Z > 30 Then
-'				BallShadowA(b).height = BOT(b).z - BallSize / 4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping the ramp
-'			Else
-'				BallShadowA(b).height = 0.1
-'			End If
-'			BallShadowA(b).Y = BOT(b).Y + offsetY
-'			BallShadowA(b).X = BOT(b).X + offsetX
-'			BallShadowA(b).visible = 1
-'		End If
+		If AmbientBallShadowOn = 0 Then
+			If BOT(b).Z > 30 Then
+				BallShadowA(b).height = BOT(b).z - BallSize / 4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping the ramp
+			Else
+				BallShadowA(b).height = 0.1
+			End If
+			BallShadowA(b).Y = BOT(b).Y + offsetY
+			BallShadowA(b).X = BOT(b).X + offsetX
+			BallShadowA(b).visible = 1
+		End If
 	Next
 End Sub
 
@@ -2421,9 +2458,9 @@ Sub EndOfBall()
 	If(Tilted = False) Then
 
 		AwardPoints(1) = RampCount*SCORE_RAMP*nPlayfieldX(CurrentPlayer)
-		AwardPoints(2) = OrbitCount*SCORE_RAMP*nPlayfieldX(CurrentPlayer)
-		AwardPoints(3) = TargetCount*SCORE_RAMP*nPlayfieldX(CurrentPlayer)
-		AwardPoints(4) = BumperCount*SCORE_RAMP*nPlayfieldX(CurrentPlayer)
+		AwardPoints(2) = OrbitCount*SCORE_ORBIT*nPlayfieldX(CurrentPlayer)
+		AwardPoints(3) = TargetCount*SCORE_TARGET*nPlayfieldX(CurrentPlayer)
+		AwardPoints(4) = BumperCount*SCORE_BUMPER*nPlayfieldX(CurrentPlayer)
 		AwardPoints(5) = BonusPoints(CurrentPlayer) * nBonusX(CurrentPlayer)
 		
 		EOBQueue.Add "Line1", "DisplayEOB1", 50, 100, 0,0,0,False 
@@ -2763,7 +2800,7 @@ Sub Drain_Hit()
                 End If
             End If
             ' was that the last ball on the playfield
-            If(BallsOnPlayfield <= 0) Then
+            If(BallsOnPlayfield < 1) Then
 
                 ' End Mode and timers
 				StopAllMusic
@@ -9654,7 +9691,6 @@ End If
 
 	PuPlayer.LabelNew pDMD,"CurrScore",         dmddef,5,cWhite   ,0,1,1, 50,88.5,1,0
 	PuPlayer.LabelNew pDMD,"CurrName",	             dmddef,5,cWhite   ,0,0,0,50,79.5,1,0
-	PuPlayer.LabelNew pDMD,"Position1Name",	             dmddef,5,cBlack   ,0,0,0,0,89,1,0
 	PuPlayer.LabelNew pDMD,"Position1Score",	             dmddef,5,cBlack   ,0,0,1,33,79.5,1,0
 	PuPlayer.LabelNew pDMD,"Position2Name",	             dmddef,5,cBlack   ,0,0,0,20,89,1,0
 	PuPlayer.LabelNew pDMD,"Position2Score",	             dmddef,5,cBlack  ,0,0,1,20,94,1,0
@@ -11743,9 +11779,10 @@ Sub RampTrigger003a_Hit()
 
 	RampCount = RampCount + 1
 
-	Select Case Mode(CurrentPlayer,0)
-		Case 0
+	debug.print "PROPANE HIT: "&anPropane(CurrentPlayer,0)
 			anPropane(CurrentPlayer,0) = anPropane(CurrentPlayer,0) + 1
+			if anPropane(CurrentPlayer,0) > 6 Then anPropane(CurrentPlayer,0) = 7
+			anPropane(CurrentPlayer,anPropane(CurrentPlayer,0)) = 1
 			' Hit Yep target to light collect multiplier and set nYEPReady = 2
 			if anPropane(CurrentPlayer,0) > 6 Then 
 				anPropane(CurrentPlayer,0) = 7
@@ -11754,7 +11791,20 @@ Sub RampTrigger003a_Hit()
 				anYEP(CurrentPlayer,2) = 1
 				anYEP(CurrentPlayer,3) = 1
 			End If
-			anPropane(CurrentPlayer,anPropane(CurrentPlayer,0)) = 1
+
+
+	Select Case Mode(CurrentPlayer,0)
+		Case 0
+'			anPropane(CurrentPlayer,0) = anPropane(CurrentPlayer,0) + 1
+'			' Hit Yep target to light collect multiplier and set nYEPReady = 2
+'			if anPropane(CurrentPlayer,0) > 6 Then 
+'				anPropane(CurrentPlayer,0) = 7
+'				nYepReady = 1
+'				anYEP(CurrentPlayer,1) = 1
+'				anYEP(CurrentPlayer,2) = 1
+'				anYEP(CurrentPlayer,3) = 1
+'			End If
+'			anPropane(CurrentPlayer,anPropane(CurrentPlayer,0)) = 1
 		Case 1
 			if Mode(CurrentPlayer,1) = 2 Then
 				if nPeggyMode1Progress(6) = 0 Then
@@ -14218,7 +14268,7 @@ Sub Target007_Hit()  'Target Near Football
 	'Addscore SCORE_SMALL_TARGET
 
 	if Mode(CurrentPlayer,6) = 2 Then addscore SCORE_JACKPOT ' Bill Mode
-	if Mode(CurrentPlayer,7) = 2 Then nHankMode1Progress = nHankMode1Progress + 1
+	if Mode(CurrentPlayer,9) = 2 Then nHankMode3Progress = nHankMode3Progress + 1 : CheckHankMode3Progress
 End Sub
 
 '***************************************************************
