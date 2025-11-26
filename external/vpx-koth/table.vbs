@@ -630,7 +630,7 @@ Sub Table1_Init()
 	CottonModeChase.Interval = ChaseTime
 
 
-	'debug.print "Starting Game"
+	Debug.print "Starting Game"
 
 
 'Impulse Plunger as autoplunger
@@ -966,7 +966,7 @@ Sub Table1_KeyDown(ByVal Keycode)
 						DMDUpdatePlayerName
                         If Credits <1 And bFreePlay = False Then DOF 125, DOFOff
                         Else 
-						'debug.print "WTF MAN"
+						debug.print "WTF MAN"
 							pDMDSplashTwoLines "ADD CREDITS", "CREDITS 0", 3, cRed
 							DMDQueue.Add "ClearTwoLines","ClearTwoLines",95,3100,0,0,0,True
                     End If
@@ -990,7 +990,7 @@ Sub Table1_KeyDown(ByVal Keycode)
                             ResetForNewGame()
                         End If
                     Else
-						'debug.print "WTF MAN2 " &bFreeplay
+						debug.print "WTF MAN2 " &bFreeplay
 						pDMDSplashTwoLines "ADD CREDITS", "CREDITS 0", 3, cRed
 						DMDQueue.Add "ClearTwoLines","ClearTwoLines",95,3100,0,0,0,True
                     End If
@@ -2300,7 +2300,7 @@ Sub CreateNewBall()
         bAutoPlunger = True
         'ChangeSong
 	Else
-		'debug.print"BallSaverTime: " &BallSaverTime
+		debug.print"BallSaverTime: " &BallSaverTime
 		if bBallSaverReady Then Playsound "IdleTruck", -1, 1
     End If
 
@@ -2407,7 +2407,7 @@ Sub DisplayEOB5(Round)
 	EOB_Bonus.Enabled = 1
 	CurrRound = Round
 
-	'debug.print "ROUND:"&Round
+	Debug.print "ROUND:"&Round
 	TmpPoints = AwardPoints(Round)/STEPCOUNT
 
   
@@ -2597,7 +2597,7 @@ Sub EndOfBallComplete()
     Dim NextPlayer
 	bSqueal = True  ' reset for new ball
 
-    'debug.print "EndOfBall - Complete"
+    debug.print "EndOfBall - Complete"
 
     ' are there multiple players playing this game ?
     If(PlayersPlayingGame> 1) Then
@@ -3664,7 +3664,7 @@ End Sub
 
 Sub UpdateLights
 	
-	'debug.print "INSIDE UPDATE LIGHTS"
+'	debug.print "INSIDE UPDATE LIGHTS"
 	'Bill
 	'Light106.State = 1		' Main Light
 
@@ -3998,10 +3998,10 @@ Sub Game_Init() 'called at the start of a new game
     TurnOffPlayfieldLights()
 	
 
-		'debug.print "Starting Game"
+		debug.print "Starting Game"
 
 	if ScorbitActive = 1 And (Scorbit.bNeedsPairing) = False Then 
-		'debug.print "Starting Scorbit"
+		debug.print "Starting Scorbit"
 		Scorbit.StartSession()
 		GameModeStrTmp="BL{Red}: Starting Game"
 		Scorbit.SetGameMode(GameModeStrTmp)
@@ -5372,7 +5372,7 @@ Sub Waddball(input, RampInput) 'This subroutine is called from WireRampOn to Add
 			Exit Sub
 		End If
 		If x = UBound(RampBalls) Then	 'debug
-			'debug.print "WireRampOn error, ball queue Is full: " & vbNewLine & _
+			Debug.print "WireRampOn error, ball queue Is full: " & vbNewLine & _
 			RampBalls(0, 0) & vbNewLine & _
 			TypeName(RampBalls(1, 0)) & " ID:" & RampBalls(1, 1) & "type:" & RampType(1) & vbNewLine & _
 			TypeName(RampBalls(2, 0)) & " ID:" & RampBalls(2, 1) & "type:" & RampType(2) & vbNewLine & _
@@ -5386,7 +5386,7 @@ End Sub
 
 ' WRemoveBall (BallId)
 Sub WRemoveBall(ID) 'This subroutine is called from the RampRollUpdate subroutine and is used to remove and stop the ball rolling sounds
-	  'debug.print "In WRemoveBall() + Remove ball from loop array"
+	'   Debug.Print "In WRemoveBall() + Remove ball from loop array"
 	Dim ballcount
 	ballcount = 0
 	Dim x
@@ -5464,7 +5464,7 @@ End Function
 
 Sub swplunger_Hit()
 	BIPL = True
-	'debug.print"BIPL True"
+	debug.print"BIPL True"
 End Sub
 
 Sub swplunger_UnHit
@@ -5478,7 +5478,7 @@ End Sub
 
 Sub RampTrigger002_Hit()	' Main Center Ramp
 	WireRampOn True	 'Play Plastic Ramp Sound
-	'debug.print "HANK Ramp 1"
+	debug.print "HANK Ramp 1"
 End Sub
 
 Sub RampTrigger003_Hit()	' propane Ramp
@@ -5616,7 +5616,7 @@ Dim Steps, tmpX, tmpY, tmpZ,tmpRotY
 
 
 Sub MoveLawnMowerForward
-'debug.print "Move Forward"
+Debug.print "Move Forward"
 	if lawnmowerforward.enabled = True Then vpmtimer.addtimer 1100, "MoveLawnMowerForward '": Exit Sub
 	Playsound "LawnMowerWAV"
 	
@@ -5660,10 +5660,10 @@ Sub MoveLawnMowerForward
 			tmpRotY = (New_RotY-Curr_RotY)/Steps
 			MasterMowerLocation = 2
 
-			'debug.print "X:" &tmpX
-			'debug.print "Y:" &tmpY
-			'debug.print "Z:" &tmpZ
-			'debug.print "Rot Y:" &tmpRotY
+'			Debug.print "X:" &tmpX
+'			Debug.print "Y:" &tmpY
+'			Debug.print "Z:" &tmpZ
+'			Debug.print "Rot Y:" &tmpRotY
 
 			vpmtimer.addtimer 1000, "LawnMowerForward.Enabled = True ' "
 		Case 3
@@ -5848,7 +5848,7 @@ Sub LawnMowerForward_Timer()
 End Sub
 
 Sub LawnMowerReverse_Timer()
-'	'debug.print "Y:" &tmpY
+'	Debug.print "Y:" &tmpY
 
 	primitive152.x = NewX - tmpX
 	NewX = NewX - TmpX
@@ -5878,7 +5878,7 @@ Const TargetBouncerFactor = 0.7	 'Level of bounces. Recommmended value of 0.7
 Sub TargetBouncer(aBall,defvalue)
 	Dim zMultiplier, vel, vratio
 	If TargetBouncerEnabled = 1 And aball.z < 30 Then
-		   'debug.print "velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		'   debug.print "velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
 		vel = BallSpeed(aBall)
 		If aBall.velx = 0 Then vratio = 1 Else vratio = aBall.vely / aBall.velx
 		Select Case Int(Rnd * 6) + 1
@@ -5898,8 +5898,8 @@ Sub TargetBouncer(aBall,defvalue)
 		aBall.velz = Abs(vel * zMultiplier * TargetBouncerFactor)
 		aBall.velx = Sgn(aBall.velx) * Sqr(Abs((vel ^ 2 - aBall.velz ^ 2) / (1 + vratio ^ 2)))
 		aBall.vely = aBall.velx * vratio
-		   'debug.print "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
-		   'debug.print "conservation check: " & BallSpeed(aBall)/vel
+		'   debug.print "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		'   debug.print "conservation check: " & BallSpeed(aBall)/vel
 	End If
 End Sub
 
@@ -5985,7 +5985,7 @@ Class Dampener
 		coef = desiredcor / realcor
 		If debugOn Then str = name & " In vel:" & Round(cor.ballvel(aBall.id),2 ) & vbNewLine & "desired cor: " & Round(desiredcor,4) & vbNewLine & _
 		"actual cor: " & Round(realCOR,4) & vbNewLine & "ballspeed coef: " & Round(coef, 3) & vbNewLine
-		If Print Then debug.print Round(cor.ballvel(aBall.id),2) & ", " & Round(desiredcor,3)
+		If Print Then Debug.print Round(cor.ballvel(aBall.id),2) & ", " & Round(desiredcor,3)
 		
 		aBall.velx = aBall.velx * coef
 		aBall.vely = aBall.vely * coef
@@ -6641,11 +6641,11 @@ Sub FlipperNudge(Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
 	
 	If Flipper1.currentangle = Endangle1 And EOSNudge1 <> 1 Then
 		EOSNudge1 = 1
-		   'debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
+		'   debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
 		If Flipper2.currentangle = EndAngle2 Then
 			For b = 0 To UBound(BOT)
 				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper1) Then
-					'debug.print "ball in flip1. exit"
+					'Debug.Print "ball in flip1. exit"
 					Exit Sub
 				End If
 			Next
@@ -6971,9 +6971,9 @@ ChargeFrames = Array( "CH-011", "CH-012", "CH-013", "CH-014", "CH-015", "CH-016"
 "CH-0162", "CH-0163", "CH-0164", "CH-0165", "CH-0166", "CH-0167", "CH-0168", "CH-0169", "CH-0170", "CH-0171", "CH-0172", "CH-0173", "CH-0174", "CH-0175", "CH-0176", "CH-0177", "CH-0178", "CH-0179")
 
 Sub StartCharge
-	'debug.print"PRE-Pos:" &Charge1Pos
+	debug.print"PRE-Pos:" &Charge1Pos
 	Charge1Pos = 0
-	'debug.print"Pos:" &Charge1Pos
+	debug.print"Pos:" &Charge1Pos
 	ChargeFlash.visible = 1
 	ChargeTimer.Enabled = 1
 End Sub
@@ -6984,7 +6984,7 @@ Sub ChargeTimer_timer
 End Sub
  
 Sub StopCharge
-	'debug.print"Called StopCHARGE"
+	debug.print"Called StopCHARGE"
 	ChargeFlash.visible = 0
 	Charge1Pos = 0
 	ChargeTimer.Enabled = 0
@@ -6996,7 +6996,7 @@ End Sub
 
 Sub Gate003_Hit()
 	BIPL = True
-	'debug.print "BIPL True"
+	Debug.print "BIPL True"
 End Sub
 
 
@@ -7161,7 +7161,7 @@ Class LStateController
         objFileToWrite.WriteLine(lights)
         objFileToWrite.Close
         Set objFileToWrite = Nothing
-        'debug.print("Lights YAML File saved to: " & cGameName & "LightShows/lights-"&name&".yaml")
+        Debug.print("Lights YAML File saved to: " & cGameName & "LightShows/lights-"&name&".yaml")
     End Sub
 
     Dim leds
@@ -7186,7 +7186,7 @@ Class LStateController
         objFileToWrite.WriteLine(lights)
         objFileToWrite.Close
         Set objFileToWrite = Nothing
-        'debug.print("Lights File saved to: " & cGameName & "LightShows/led-grid.txt")
+        Debug.print("Lights File saved to: " & cGameName & "LightShows/led-grid.txt")
 
 
         lights = ""
@@ -7205,7 +7205,7 @@ Class LStateController
         objFileToWrite.WriteLine(lights)
         objFileToWrite.Close
         Set objFileToWrite = Nothing
-        'debug.print("Lights File saved to: " & cGameName & "LightShows/coordsX.txt")
+        Debug.print("Lights File saved to: " & cGameName & "LightShows/coordsX.txt")
 
 
     End Sub
@@ -7229,12 +7229,12 @@ Class LStateController
                 If IsArray(Lights(idx)) Then
                     tmp = Lights(idx)
                     Set vpxLight = tmp(0)
-                    'debug.print("TEMP LIGHT NAME for idx:" & idx & ", light: " & vpxLight.name)
+                    debug.print("TEMP LIGHT NAME for idx:" & idx & ", light: " & vpxLight.name)
                 ElseIf IsObject(Lights(idx)) Then
                     Set vpxLight = Lights(idx)
                 End If
                 If Not IsNull(vpxLight) Then
-                    'debug.print("Registering Light: "& vpxLight.name)
+                    'Debug.print("Registering Light: "& vpxLight.name)
 
 
                     Dim r : r = Round(vpxLight.y/20)
@@ -7256,7 +7256,7 @@ Class LStateController
                     Dim e, lmStr: lmStr = "lmArr = Array("    
                     For Each e in GetElements()
                         If InStr(e.Name, "_" & vpxLight.Name & "_") Or InStr(e.Name, "_" & vpxLight.UserValue & "_") Then
-                            'debug.print(e.Name)
+                            Debug.Print(e.Name)
                             lmStr = lmStr & e.Name & ","
                         End If
                     Next
@@ -7264,7 +7264,7 @@ Class LStateController
                     lmStr = Replace(lmStr, ",Null)", ")")
                     ExecuteGlobal "Dim lmArr : "&lmStr
                     m_lightmaps.Add vpxLight.Name, lmArr
-                    'debug.print("Registering Light: "& vpxLight.name) 
+                    'Debug.print("Registering Light: "& vpxLight.name) 
                     lcItem.Init idx, vpxLight.BlinkInterval, Array(vpxLight.color, vpxLight.colorFull), vpxLight.name, vpxLight.x, vpxLight.y
                     m_lights.Add vpxLight.Name, lcItem
                     m_seqRunners.Add "lSeqRunner" & CStr(vpxLight.name), new LCSeqRunner
@@ -8696,7 +8696,7 @@ Class PulseState
     Public default function init(light, pulses, idx, interval, cnt, color)
         Set m_light = light
         m_pulses = pulses
-        'debug.print(Join(Pulses))
+        'debug.Print(Join(Pulses))
         m_idx = idx 
         m_interval = interval
         m_cnt = cnt
@@ -9106,7 +9106,7 @@ Sub TLeftOutlane_Hit
 	Else
 		lightCtrl.Pulse LeftOutlane,1
 	End If
-'debug.print "leftoutlanehit    "  & Healer(1)
+DEBUG.PRINT "leftoutlanehit    "  & Healer(1)
 End Sub
 
 Sub TLeftInlane_hit
@@ -9212,12 +9212,12 @@ End Sub
 'PlaySound(string, int loopcount, float volume, float pan, float randompitch, int pitch, bool useexisting, bool restart, float front_rear_fade)
 Sub SwitchMusic(sTrack)
 
-	'debug.print "ST:"&sTrack
-	'debug.print "MT:" &sMusicTrack
+	Debug.print "ST:"&sTrack
+	Debug.print "MT:" &sMusicTrack
 	If sTrack <> sMusicTrack Then
 		if sMusicTrack <> "" Then StopSound sMusicTrack
 		sMusicTrack = sTrack
-		'debug.print "WTH Man:" &sTrack
+		'Debug.print "WTH Man:" &sTrack
 		PlaySound sTrack,-1,fMusicVolume,0,0,0,1,0,0
 		fCurrentMusicVol = fMusicVolume
 	End If
@@ -10564,7 +10564,7 @@ Sub CalcDale
 	DaleLightsCount = 0
 	DaleLightsCount = anDaleLights1(CurrentPlayer) + anDaleLights2(CurrentPlayer) + anDaleLights3(CurrentPlayer)
 
-	'debug.print "Dale: "&DaleLightsCount
+	Debug.print "Dale: "&DaleLightsCount
 	if DaleLightsCount = 9 Then bDaleReady = True
 End Sub
 
@@ -11042,11 +11042,11 @@ End Sub
 '  Bobby Code   '
 '%%%%%%%%%%%%%%%%
 Sub MVTarget_Hit()
-	'debug.print "Ball: " &activeball.vely
-	if activeball.vely < 0 Then 'debug.print "DIDNT COUNT" : Exit Sub ' dont count if ball is dropping from above
+	'Debug.print "Ball: " &activeball.vely
+	if activeball.vely < 0 Then debug.print "DIDNT COUNT" : Exit Sub ' dont count if ball is dropping from above
 	if Mode(CurrentPlayer,2) = 2 Then BobbyTargetCount = BobbyTargetCount + 1
 	if Mode(CurrentPlayer,12) = 2 Then BobbyTargetCount = BobbyTargetCount + 1
-	'debug.print "Total Bobby Hits: " & BobbyTargetCount
+	'Debug.print "Total Bobby Hits: " & BobbyTargetCount
 	CheckBobbyTargetCount
 End Sub
 
@@ -11106,7 +11106,7 @@ Sub MVTargetMove_Timer
 	MapBobbyTarget
 	if bMovingRight Then
 		if mvTarget.rotY > 208 Then 
-			'debug.print "Start moving left"
+			'Debug.print "Start moving left"
 			bMovingRight = False
 			bMovingLeft = True
 		Else
@@ -11114,7 +11114,7 @@ Sub MVTargetMove_Timer
 		End If
 	Else
 		if mvTarget.rotY < 154 Then
-			'debug.print "Started to move Right"
+			'Debug.print "Started to move Right"
 			bMovingRight = True
 			bMovingLeft = False
 		Else
@@ -11128,57 +11128,57 @@ Sub MapBobbyTarget
 
 	Select Case MVTarget.rotY
 		Case 150,151,152,153,154,155,156:
-			'debug.print "Zone 1: "&MVTarget.rotY
+'			Debug.print "Zone 1: "&MVTarget.rotY
 			p10.collidable = False
 			p1.collidable = True
 			p2.collidable = False
 		Case 157,158,159,160,161,162:
-			'debug.print "Zone 2: " &MVTarget.rotY
+'			Debug.print "Zone 2: " &MVTarget.rotY
 			p1.collidable = False
 			p2.collidable = True
 			p3.collidable = False
 		Case 163,164,165,166,167,168:
-			'debug.print "Zone 3: " &MVTarget.rotY
+'			Debug.print "Zone 3: " &MVTarget.rotY
 			p2.collidable = False
 			p3.collidable = True
 			p4.collidable = False
 		Case 169,170,171,172,173,174:
-			'debug.print "Zone 4: " &MVTarget.rotY
+'			Debug.print "Zone 4: " &MVTarget.rotY
 			p3.collidable = False
 			p4.collidable = True
 			p5.collidable = False
 		Case 175,176,177,178,179,180:
-			'debug.print "Zone 5: " &MVTarget.rotY
+'			Debug.print "Zone 5: " &MVTarget.rotY
 			p4.collidable = False
 			p5.collidable = True
 			p6.collidable = False
 		Case 181,182,183,184,185,186:
-			'debug.print "Zone 6: " &MVTarget.rotY
+'			Debug.print "Zone 6: " &MVTarget.rotY
 			p5.collidable = False
 			p6.collidable = True
 			p7.collidable = False
 		Case 187,188,189,190,191,192:
-			'debug.print "Zone 7: " &MVTarget.rotY
+'			Debug.print "Zone 7: " &MVTarget.rotY
 			p6.collidable = False
 			p7.collidable = True
 			p8.collidable = False
 		Case 193,194,195,196,197,198:
-			'debug.print "Zone 8: " &MVTarget.rotY
+'			Debug.print "Zone 8: " &MVTarget.rotY
 			p7.collidable = False
 			p8.collidable = True
 			p9.collidable = False
 		Case 199,200,201,202,203,204:
-			'debug.print "Zone 9: " &MVTarget.rotY
+'			Debug.print "Zone 9: " &MVTarget.rotY
 			p8.collidable = False
 			p9.collidable = True
 			p10.collidable = False
 		Case 205,206,207,208,209,210:
-			'debug.print "Zone 10: " &MVTarget.rotY
+'			Debug.print "Zone 10: " &MVTarget.rotY
 			p9.collidable = False
 			p10.collidable = True
 			p1.collidable = False
 		Case Else
-			'debug.print "Zone Else: "&MVTarget.rotY
+'			Debug.print "Zone Else: "&MVTarget.rotY
 	End Select
 End Sub
 
@@ -11197,7 +11197,7 @@ Sub RemoveCollisionsBobby
 End Sub
 
 Sub aBobbyTargets_Hit(Index)
-	'debug.print "HIT BOBBY : " &Index
+'	Debug.print "HIT BOBBY : " &Index
 
 	MVTarget_Hit
 '	PuPlayer.LabelSet pDMD,"Line1b","HIT BOBBY :" &BobbyTargetCount,1,"{'mt':2,'color': "&cWhite&" ,'xalign':1,'yalign':1,'xpos':50,'ypos':35.0}"
@@ -11245,7 +11245,7 @@ Sub Target004_Hit()
 	End Select
 
 	LastSwitchHit = "Target004"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub Target005_Hit()
@@ -11264,7 +11264,7 @@ Sub Target005_Hit()
 	End Select
 
 	LastSwitchHit = "Target005"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub Target006_Hit()
@@ -11282,7 +11282,7 @@ Sub Target006_Hit()
 	End Select
 
 	LastSwitchHit = "Target006"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub DaleTrigger_Hit()
@@ -11305,7 +11305,7 @@ Sub DaleTrigger_Hit()
 
 
 	LastSwitchHit = "DaleTrigger"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 '-------------------
@@ -11317,14 +11317,14 @@ End Sub
 Sub BoomTrigger_Hit()
 	if Tilted Then Exit Sub
 
-	'debug.print "Ball Info Boom:" &activeball.vely
+	Debug.print "Ball Info Boom:" &activeball.vely
 '	if LastSwitchHit = "LuanneTrigger" Then
 '	if activeball.vely < -1  Then 
 	if LastTRiggerHit = "BoomPrepTrigger" Then
 	OrbitCount = OrbitCount + 1
 
 	LastTriggerHit = "BoomTrigger"
-	'debug.print "Last Switch Boom: "&LastTriggerHit
+	Debug.print "Last Switch Boom: "&LastTriggerHit
 		Select Case Mode(CurrentPlayer,0)
 			Case 0
 				anBoomLights(CurrentPlayer,0) = anBoomLights(CurrentPlayer,0) + 1
@@ -11383,7 +11383,7 @@ Sub BoomTrigger_Hit()
 	End If
 
 '	LastSwitchHit = "BoomTrigger"
-'debug.print "Last Switch: "&LastSwitchHit
+'Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 '------------------
@@ -11421,7 +11421,7 @@ Sub Target008_Hit()
 
 
 	LastSwitchHit = "Target008"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 	'CheckYEP
 End Sub
 
@@ -11494,7 +11494,7 @@ Sub RampTrigger001a_Hit()
 			if Mode(CurrentPlayer,19) = 2 Then addscore SCORE_SUPER_JACKPOT
 	End Select
 	LastSwitchHit = "BeerRamp"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub CheckBeer
@@ -11535,7 +11535,7 @@ Sub Target001_Hit()
 	End Select
 
 	LastSwitchHit = "Target011"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 '------------------
@@ -11637,7 +11637,7 @@ Sub LadyBirdTrigger_Hit()
 '	End If
 
 	LastSwitchHit = "LadybirdTrigger"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 '------------------
@@ -11673,11 +11673,11 @@ Sub RampTrigger005a_Hit()
 		if bLockEngaged Then
 			' need to remove the locked ball from playfield Count
 			ballsonplayfield = Ballsonplayfield - 1
-			'debug.print "###############################"
-			'debug.print "SHOULD BE " &ballsonplayfield & "Balls in play"
-			'debug.print "###############################"
+			Debug.print "###############################"
+			Debug.print "SHOULD BE " &ballsonplayfield & "Balls in play"
+			Debug.print "###############################"
 		Else
-			'debug.print "Moving Mower"
+			Debug.Print "Moving Mower"
 			MoveLawnMowerForward
 		End If
 
@@ -11740,7 +11740,7 @@ Sub RampTrigger002c_Hit()
 '	if mode(currentplayer,14) = 2 Then nBeerMode2Progress = nBeerMode2Progress + 1 :  CheckBeerMode2
 
 	LastSwitchHit = "HankRamp"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub CheckHank
@@ -11779,7 +11779,7 @@ Sub RampTrigger003a_Hit()
 
 	RampCount = RampCount + 1
 
-	'debug.print "PROPANE HIT: "&anPropane(CurrentPlayer,0)
+	debug.print "PROPANE HIT: "&anPropane(CurrentPlayer,0)
 			anPropane(CurrentPlayer,0) = anPropane(CurrentPlayer,0) + 1
 			if anPropane(CurrentPlayer,0) > 6 Then anPropane(CurrentPlayer,0) = 7
 			anPropane(CurrentPlayer,anPropane(CurrentPlayer,0)) = 1
@@ -11857,7 +11857,7 @@ Sub RampTrigger003a_Hit()
 			if Mode(CurrentPlayer,19) = 2 Then addscore SCORE_SUPER_JACKPOT
 	End Select
 	LastSwitchHit = "PropaneRamp"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 '-------------------
@@ -11869,7 +11869,7 @@ Sub BillTrigger_Hit()
 	DOF 140, DOFPulse
 
 
-	'debug.print "LS:" &LastSwitchHit
+	debug.print "LS:" &LastSwitchHit
 	if LastSwitchHit <> "CottonTrigger" Then
 		OrbitCount = OrbitCount + 1
 
@@ -11936,7 +11936,7 @@ Sub BillTrigger_Hit()
 
 
 	LastSwitchHit = "BillTrigger"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 
 	BallHandlingQueue.Add "LastSwitchHit = Empty","LastSwitchHit = ""Empty""",50,400,0,0,0,False
 	
@@ -12017,7 +12017,7 @@ Sub RampTrigger004b_Hit()   ' Ramp into Grill
 	End Select
 
 	LastSwitchHit = "BBQRamp"
-'debug.print "Last Switch: "&LastSwitchHit
+Debug.print "Last Switch: "&LastSwitchHit
 End Sub
 
 Sub CheckBBQFeast
@@ -12088,7 +12088,7 @@ Sub CottonTrigger_Hit()
 
 
 	LastSwitchHit = "CottonTrigger"
-	'debug.print "Last Switch: "&LastSwitchHit
+	Debug.print "Last Switch: "&LastSwitchHit
 	BallHandlingQueue.Add "LastSwitchHit = Empty","LastSwitchHit = ""Empty""",50,400,0,0,0,False
 End Sub
 
@@ -12103,18 +12103,18 @@ End Sub
 Sub LuannePrepTrigger_Hit
 	WireRampOff	 'Turn off the Plastic Ramp Sound
 	LastTriggerHit = "LuannePrepTrigger"
-	'debug.print "Last Switch Luanne: "&LastTriggerHit
+	Debug.print "Last Switch Luanne: "&LastTriggerHit
 End Sub
 
 Sub LuanneTrigger_Hit()
 	if Tilted Then Exit Sub
 
 	DOF 140, DOFPulse
-	'debug.print "Ball Info Luanne:" &activeball.vely
+	Debug.print "Ball Info Luanne:" &activeball.vely
 	if LastTriggerHit = "LuannePrepTrigger" Then
 		OrbitCount = OrbitCount + 1
 		LastTriggerHit = "LuanneTrigger"
-		'debug.print "Last Switch Luanne: "&LastTriggerHit
+		Debug.print "Last Switch Luanne: "&LastTriggerHit
 
 		Select Case Mode(CurrentPlayer,0)
 			Case 0
@@ -12848,29 +12848,29 @@ Sub ChaseLights
 
 	StopAllModeSeq
 
-	'debug.print "PRE CP: " &nCottonModeProgress
+	Debug.print "PRE CP: " &nCottonModeProgress
 
 	if nCottonModeProgress > 5 Then 
 		CottonModeChase.Enabled = False
 		BallHandlingQueue.Add "WinCotton","WinCotton",90,50,0,0,0,False
-		'debug.print " SHOULD STOP COTTON"
+		Debug.print " SHOULD STOP COTTON"
 		Exit Sub
 	End If
 
-	'debug.print "CP: " &nCottonModeProgress
+	Debug.print "CP: " &nCottonModeProgress
 
 
 		FindChaseLight
-		'debug.print "Phase 2 X: "&nNewCottonShot
+		Debug.print "Phase 2 X: "&nNewCottonShot
 '        Cnt = 0
 '        For Cnt = 1 to 10
  '          Cnt = Cnt + 1
-			'debug.print "Value " & Cnt &" - " & nCottonShots(cnt)
+			'Debug.print "Value " & Cnt &" - " & nCottonShots(cnt)
  '          If nCottonShots(cnt) = 0 Then 
 
  '               If Cnt = nNewCottonShot Then 'Turn on this Light Sequence
 					nCottonActive = nNewCottonShot
-					'debug.print "Chase Lights:: turning on light Sequence : "&Cnt
+					'Debug.print "Chase Lights:: turning on light Sequence : "&Cnt
 					Select Case nCottonActive
 						Case 1
 							LightSeqBoom.UpdateInterval = LargeSeqInterval
@@ -13347,7 +13347,7 @@ End Sub
 
 sub StopHank1
 
-	'debug.print "Stop hank"
+	debug.print "Stop hank"
 	LightSeqPeggy.StopPlay
 	Mode(CurrentPlayer,0) = 0
 	Mode(CurrentPlayer,7) = 0
@@ -14178,7 +14178,7 @@ Sub CheckMowerProgress
 		if nMowerProgress(i) = 1 Then tmpX = TmpX + 1
 	Next
 	nMowerProgress(0) = tmpX
-	'debug.print "PEGGY PROGRESS: " & tmpX 
+	Debug.print "PEGGY PROGRESS: " & tmpX 
 	if tmpX = 5 or TmpX = 10 Then 
 		Addscore SCORE_SUPER_JACKPOT
 	Else
@@ -14194,7 +14194,7 @@ Sub CheckPeggyProgress
 		if nPeggyMode1Progress(i) = 1 Then tmpX = TmpX + 1
 	Next
 	nPeggyMode1Progress(0) = tmpX
-	'debug.print "PEGGY PROGRESS: " & nPeggyMode1Progress(0)
+	Debug.print "PEGGY PROGRESS: " & nPeggyMode1Progress(0)
 	if tmpX > 9 Then 
 		WinPeggy1
 	Else
@@ -14208,7 +14208,7 @@ Sub CheckPeggy3Progress
 	for i = 1 to 4
 		if nPeggyMode3Progress(i) = 1 Then tmpX = TmpX + 1
 	Next
-	'debug.print "PEGGY PROGRESS: " & tmpX 
+	Debug.print "PEGGY PROGRESS: " & tmpX 
 	if tmpX > 3 Then 
 		WinPeggy3
 	Else
@@ -15009,7 +15009,7 @@ Sub AwardSkillshot
 End Sub
 
 Sub Gate004_Hit()
-	'debug.print "Gate 4"
+	Debug.print "Gate 4"
 	if Tilted Then Exit Sub
 
 	RampCount = RampCount + 1
@@ -15092,16 +15092,16 @@ End Sub
 
 dim bOneBall
 Sub TractorKicker1_Hit()
-If TractorKicker1.BallCntOver = 0 Then debug.print "Ball CNT: " 
+If TractorKicker1.BallCntOver = 0 Then Debug.print "Ball CNT: " 
 
 	if bReleasingBalls Then
 		'Do Nothing
-		'debug.print "ball b1"
+		Debug.print "ball b1"
 	Elseif Mode(CurrentPlayer,0) <> 0 Then 
 		AdvanceLockedBallsOnce
 		'UpdateTrough
 	Else
-		'debug.print "ball 1: " &bReleasingBalls
+		Debug.print "ball 1: " &bReleasingBalls
 		bAutoPlunger = True
 		addmultiball 1
 		nLockedBalls = 1
@@ -15113,12 +15113,12 @@ End Sub
 Sub TractorKicker2_Hit()
 	if bReleasingBalls Then
 		'Do Nothing
-		'debug.print "ball b2"
+		Debug.print "ball b2"
 	Elseif Mode(CurrentPlayer,0) <> 0 Then 
 		AdvanceLockedBallsOnce
 		'UpdateTrough
 	Else
-		'debug.print "ball 2: " &bReleasingBalls
+		Debug.print "ball 2: " &bReleasingBalls
 		bAutoPlunger = True
 		addmultiball 1
 		nLockedBalls = 2
@@ -15133,12 +15133,12 @@ Sub TractorKicker3_Hit()
 '	UpdateLockKickers
 	if bReleasingBalls Then
 		'Do Nothing
-		'debug.print "ball b3"
+		Debug.print "ball b3"
 	Elseif Mode(CurrentPlayer,0) <> 0 Then 
 		AdvanceLockedBallsOnce
 		'UpdateTrough
 	Else
-		'debug.print "ball 3"
+		Debug.print "ball 3"
 		bAutoPlunger = True
 		addmultiball 1
 		nLockedBalls = 3
@@ -15150,12 +15150,12 @@ End Sub
 Sub TractorKicker4_Hit()
 	if bReleasingBalls Then
 		'Do Nothing
-		'debug.print "ball b4"
+		Debug.print "ball b4"
 	Elseif Mode(CurrentPlayer,0) <> 0 Then 
 		AdvanceLockedBallsOnce
 		'UpdateTrough
 	Else
-		'debug.print "ball 4"
+		Debug.print "ball 4"
 		bAutoPlunger = True
 		addmultiball 1
 		nLockedBalls = 4
@@ -15169,12 +15169,12 @@ Sub TractorKicker5_Hit()
 	' Start Multiball
 	if bReleasingBalls Then
 		'Do Nothing
-		'debug.print "ball b1"
+		Debug.print "ball b1"
 	Elseif Mode(CurrentPlayer,0) <> 0 Then 
 		AdvanceLockedBallsOnce
 		'UpdateTrough
 	Else
-		'debug.print "START MULTIBALL"
+		Debug.print "START MULTIBALL"
 		bReleasingBalls = True
 		nLockedBalls = 5
 		if Mode(CurrentPlayer,0) = 0 Then
@@ -15221,9 +15221,9 @@ Sub AdvanceKickers_Timer
 	Select Case nLockedBalls
 		Case 0
 			' Should never hit this
-			'debug.print " *****************"
-			'debug.print " ******  WTF *****"
-			'debug.print " *****************"
+			Debug.print " *****************"
+			Debug.print " ******  WTF *****"
+			Debug.print " *****************"
 			bReleasingBalls = False
 			bLockEngaged = False	
 			UpdateLockKickers
@@ -15312,7 +15312,7 @@ End Sub
 'End Sub
 
 'Sub UpdateTroughTimer_Timer
-'debug.print " In Trough Timer"	'
+'Debug.print " In Trough Timer"	'
 '	bReleasingBalls = True
 '	If TractorKicker1.BallCntOver = 1 Then TractorKicker1.kick 150, 2
 '	If TractorKicker2.BallCntOver = 1 Then TractorKicker2.kick 150, 2
@@ -17060,16 +17060,16 @@ Sub WobbleBeerCan_Timer()
 
 
 	if BeerLeft Then
-	'if BeerWobbleCount > 80 And BeerWobbleCount Mod 4 = 0 Then BeerMaxZ = BeerMaxZ - .1 : 'debug.print "Test Left"
+	'if BeerWobbleCount > 80 And BeerWobbleCount Mod 4 = 0 Then BeerMaxZ = BeerMaxZ - .1 : Debug.print "Test Left"
 		BeerCanZ = BeerCanZ - WobbleSpeed
-		'debug.print  "Z Left:" &BeerCanZ
+		'Debug.print  "Z Left:" &BeerCanZ
 		primitive014.rotZ = primitive014.rotZ + BeerCanZ
 		primitive130.rotZ = primitive130.rotZ + BeerCanZ
 		if primitive014.rotZ < -BeerMaxZ Then BeerLeft = 0:BeerRight = 1: BeerCanZ = 0 : BeerMaxZ = BeerMaxZ -.1
 	Elseif BeerRight Then
-	'if BeerWobbleCount > 80 And BeerWobbleCount Mod 4 = 0 Then BeerMaxZ = BeerMaxZ - .1: 'debug.print "Test Right"
+	'if BeerWobbleCount > 80 And BeerWobbleCount Mod 4 = 0 Then BeerMaxZ = BeerMaxZ - .1: Debug.print "Test Right"
 		BeerCanZ = BeerCanZ + WobbleSpeed
-		'debug.print  "Z Right:" &BeerCanZ
+		'Debug.print  "Z Right:" &BeerCanZ
 		primitive014.rotZ = primitive014.rotZ + BeerCanZ
 		primitive130.rotZ = primitive130.rotZ + BeerCanZ
 		if primitive014.rotZ > BeerMaxZ Then BeerLeft = 1:BeerRight = 0: BeerCanZ = 0 : BeerMaxZ = BeerMaxZ -.1
