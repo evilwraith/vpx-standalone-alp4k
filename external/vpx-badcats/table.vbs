@@ -42,7 +42,7 @@ On Error Goto 0
 LoadVPM "01550000", "S11.vbs", 3.26
 
 Dim bsTrough, bsDog, bsTrash, dtBird, dtMilk
-Const cGameName = "bcats_tcm"
+Const cGameName = "bcats_l5"
 
 Const UseSolenoids = 1
 Const UseLamps = 0
