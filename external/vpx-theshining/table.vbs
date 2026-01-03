@@ -3428,10 +3428,6 @@ Timer021.enabled=False
 end Sub
 
 sub kicker042_hit()
-kicker039.enabled=False
-kicker040.enabled=False
-Kicker041.enabled=False
-Kicker042.enabled=False
 PlaySoundAtLevelStatic "ball_collide_3", 1, Kicker042
 set jumpball5 = activeball
 PicSelect 5
@@ -3450,14 +3446,6 @@ light116.state=1
 if ballsonplayfield = 1 then
 If Rnd < 0.5 Then
   ghostmulti
-ramp003.collidable=0
-ramp040.collidable=0
-ramp041.collidable=0
-ramp042.collidable=0
-ramp010.collidable=0
-ramp002.collidable=0
-ramp036.collidable=0
-ramp009.collidable=0
 'POTENTIAL_INSERTPUP - ghost multiball
 Else
   multi1
@@ -5262,7 +5250,6 @@ qtimer.enabled=0
 if ultramode=1 then
 LoadUltraDMD
 timer080.enabled = True   'Delay loading UltraDMD fixes PinballX backglass issue
-	
 hightext = "HIGH SCORE " & Highscore1 'txtHigh1.text
 haltext = "OVERLOOK " & HALScore '
 'DMD_DisplaySceneTextWithPause "The Shining", hightext, 10000
@@ -7676,42 +7663,38 @@ dim jumpball3
 dim jumpball4
 dim jumpball5
 
-'Sub BallJumpTimer2_Timer()
-'    If Not JumpBall2 Is Nothing Then
-'        Debug.Print "BallJumpTimer2 fired"
-'        'PlaySound "fx_kicker"
-' Kicker039.Enabled = False 
-' Kicker040.Enabled = False 
-' Kicker041.Enabled = False 
-' Kicker042.Enabled = False 
-'        JumpBall2.VelZ = 1
-'        JumpBall2.VelX = 1
-'        JumpBall2.VelY = 1
-'        JumpBall3.VelZ = 1
-'        JumpBall3.VelX = 1
-'        JumpBall3.VelY = 1
-'        JumpBall4.VelZ = 1
-'        JumpBall4.VelX = 1
-'        JumpBall4.VelY = 1
-'        JumpBall5.VelZ = 1
-'        JumpBall5.VelX = 1
- '       JumpBall5.VelY = 1
- '       Set JumpBall2 = Nothing
-  '      Set JumpBall3 = Nothing
- '       Set JumpBall4 = Nothing
- '       Set JumpBall5 = Nothing
- '   Else
- '       Debug.Print "JumpBall2 was Nothing"
- '   End If
- '   BallJumpTimer2.Enabled = False
-'End Sub
+Sub BallJumpTimer2_Timer()
+    If Not JumpBall2 Is Nothing Then
+        Debug.Print "BallJumpTimer2 fired"
+        'PlaySound "fx_kicker"
+ Kicker039.Enabled = False 
+ Kicker040.Enabled = False 
+ Kicker041.Enabled = False 
+ Kicker042.Enabled = False 
+        JumpBall2.VelZ = 1
+        JumpBall2.VelX = 1
+        JumpBall2.VelY = 1
+        JumpBall3.VelZ = 1
+        JumpBall3.VelX = 1
+        JumpBall3.VelY = 1
+        JumpBall4.VelZ = 1
+        JumpBall4.VelX = 1
+        JumpBall4.VelY = 1
+        JumpBall5.VelZ = 1
+        JumpBall5.VelX = 1
+        JumpBall5.VelY = 1
+        Set JumpBall2 = Nothing
+        Set JumpBall3 = Nothing
+        Set JumpBall4 = Nothing
+        Set JumpBall5 = Nothing
+    Else
+        Debug.Print "JumpBall2 was Nothing"
+    End If
+    BallJumpTimer2.Enabled = False
+End Sub
 
 
 sub ghostmulti
-kicker033.enabled=1 
-kicker032.enabled=1 
-Kicker008.enabled=1
-Kicker036.enabled=1
 kicker042.timerEnabled=1
 ballsonplayfield=4
 if usePUP=true Then
@@ -7754,9 +7737,7 @@ LightSeq1.Play SeqBlinking, , 15, 20
 ghost.enabled=1
 end Sub
 
-sub ghost_timer '1.5 seconds
-ramp009.collidable=0
-Ramp036.collidable=0
+sub ghost_timer
 TriggerJump
 ghost.enabled=0
 end Sub
@@ -7764,10 +7745,6 @@ end Sub
 
 Sub TriggerJump()
 Ramp036.collidable=0 'sets ramp above to not collidable so balls dont hit it
- Kicker039.Enabled = False 
- Kicker040.Enabled = False 
- Kicker041.Enabled = False 
- Kicker042.Enabled = False 
 PlaySound SoundFX("creaky", DOFDropTargets)
 OpenDoor
 Flasher024.visible=1
@@ -7784,8 +7761,10 @@ Kicker042.Kick 0, 1 ' Or whatever angle/power you like
 if usepup=false Then
         PlaySound "spooky"
 end If
-Ramp036.collidable=0
-ramp009.collidable=0
+ Kicker039.Enabled = False 
+ Kicker040.Enabled = False 
+ Kicker041.Enabled = False 
+ Kicker042.Enabled = False 
         JumpBall2.VelZ = 20
         JumpBall2.VelX = 0
         JumpBall2.VelY = 0
@@ -10526,7 +10505,6 @@ Dim RailChoice: RailChoice = True
 'VROptions
 Dim VRRoomChoice : VRRoomChoice = 3  	' 1 = Cab, 2 = Minimal, 3 = Mega
 Dim VRTest : VRTest = False				' Display VR in Desktop Mode
-
 ' Called when options are tweaked by the player. 
 ' - 0: game has started, good time to load options and adjust accordingly
 ' - 1: an option has changed
@@ -10547,7 +10525,6 @@ Sub Table1_OptionEvent(ByVal eventId)
 	
     RailChoice = Table1.Option("Rails Visible", 0, 1, 1, 1, 0, Array("Cabinet", "SideRails (Default)"))
 	SetRails RailChoice
-
     
     ' VRRoom
 	VRRoomChoice = Table1.Option("VR Room", 1, 3, 1, 2, 0, Array("Cab", "Mega", "Minimal"))
@@ -11221,103 +11198,41 @@ End Function
 RightFlipper.timerinterval = 1
 Rightflipper.timerenabled = True
 
-'========================
-' Bulletproof FlipperNudge
-'========================
-
-' Make sure these are numeric and persist between calls
-Dim LFEOSNudge : LFEOSNudge = 0
-Dim RFEOSNudge : RFEOSNudge = 0
-
-Sub RightFlipper_Timer()
-    On Error Resume Next
-
-    ' Your existing tricks
-    FlipperTricks LeftFlipper,  LFPress, LFCount, LFEndAngle, LFState
-    FlipperTricks RightFlipper, RFPress, RFCount, RFEndAngle, RFState
-
-    ' Nudge logic (safe)
-    FlipperNudgeSafe RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper,  LFEndAngle
-    FlipperNudgeSafe LeftFlipper,  LFEndAngle, LFEOSNudge, RightFlipper, RFEndAngle
-
-    If Err.Number <> 0 Then
-        Debug.Print "RightFlipper_Timer error: " & Err.Number & " - " & Err.Description
-        Err.Clear
-    End If
-
-    On Error GoTo 0
+Sub RightFlipper_timer()
+	FlipperTricks LeftFlipper, LFPress, LFCount, LFEndAngle, LFState
+	FlipperTricks RightFlipper, RFPress, RFCount, RFEndAngle, RFState
+	FlipperNudge RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper, LFEndAngle
+	FlipperNudge LeftFlipper, LFEndAngle, LFEOSNudge,  RightFlipper, RFEndAngle
 End Sub
 
-Sub FlipperNudgeSafe(ByRef Flipper1, ByVal EndAngle1, ByRef EOSNudge1, ByRef Flipper2, ByVal EndAngle2)
-    Dim b, balls, ub
+Dim LFEOSNudge, RFEOSNudge
 
-    ' Hard fail-safe: never allow this to abort a physics frame
-    On Error Resume Next
-
-    ' Validate EOS flag as numeric
-    If IsEmpty(EOSNudge1) Or (VarType(EOSNudge1) = vbString) Then EOSNudge1 = 0
-
-    ' Get balls safely
-    balls = GetBalls
-    If Err.Number <> 0 Then
-        Err.Clear
-        On Error GoTo 0
-        Exit Sub
-    End If
-
-    ' If no balls, nothing to do
-    ub = -1
-    ub = UBound(balls)
-    If Err.Number <> 0 Then
-        Err.Clear
-        On Error GoTo 0
-        Exit Sub
-    End If
-    If ub < 0 Then
-        On Error GoTo 0
-        Exit Sub
-    End If
-
-    ' Use a small tolerance because angles can be float-y
-    Const ANG_TOL = 0.01
-
-    ' Only run once per EOS (when Flipper1 reaches end angle)
-    If Abs(Flipper1.CurrentAngle - EndAngle1) < ANG_TOL And EOSNudge1 <> 1 Then
-        EOSNudge1 = 1
-
-        ' Only if the other flipper is also at end angle
-        If Abs(Flipper2.CurrentAngle - EndAngle2) < ANG_TOL Then
-
-            ' If any ball is sitting in Flipper1's trigger zone, bail (prevents weird pops)
-            For b = 0 To ub
-                If FlipperTrigger(balls(b).X, balls(b).Y, Flipper1) Then
-                    On Error GoTo 0
-                    Exit Sub
-                End If
-            Next
-
-            ' Apply the nudge to balls on Flipper2 only
-            For b = 0 To ub
-                If FlipperTrigger(balls(b).X, balls(b).Y, Flipper2) Then
-                    balls(b).VelX = balls(b).VelX / 1.3
-                    balls(b).VelY = balls(b).VelY - 0.5
-                End If
-            Next
-        End If
-
-    Else
-        ' Reset EOS flag only when the flipper has clearly moved away from EOS
-        If Abs(Flipper1.CurrentAngle - EndAngle1) > 30 Then EOSNudge1 = 0
-    End If
-
-    If Err.Number <> 0 Then
-        Debug.Print "FlipperNudgeSafe error: " & Err.Number & " - " & Err.Description
-        Err.Clear
-    End If
-
-    On Error GoTo 0
+Sub FlipperNudge(Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
+	Dim b
+	   Dim BOT
+	   BOT = GetBalls
+	
+	If Flipper1.currentangle = Endangle1 And EOSNudge1 <> 1 Then
+		EOSNudge1 = 1
+		'   debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
+		If Flipper2.currentangle = EndAngle2 Then
+			For b = 0 To UBound(BOT)
+				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper1) Then
+					'Debug.Print "ball in flip1. exit"
+					Exit Sub
+				End If
+			Next
+			For b = 0 To UBound(BOT)
+				If FlipperTrigger(gBOT(b).x, gBOT(b).y, Flipper2) Then
+					BOT(b).velx = BOT(b).velx / 1.3
+					BOT(b).vely = BOT(b).vely - 0.5
+				End If
+			Next
+		End If
+	Else
+		If Abs(Flipper1.currentangle) > Abs(EndAngle1) + 30 Then EOSNudge1 = 0
+	End If
 End Sub
-
 
 
 Dim FCCDamping: FCCDamping = 0.4
@@ -11703,11 +11618,11 @@ Sub RightFlipper_Collide(parm)
 End Sub
 
 Sub LeftFlipper002_Collide(parm)
-	RandomSoundRubberFlipper parm
+	LeftFlipperCollide parm
 End Sub
 
 Sub RightFlipper001_Collide(parm)
-	RandomSoundRubberFlipper parm
+	RightFlipperCollide parm
 End Sub
 
 '******************************************************
@@ -12219,10 +12134,6 @@ Sub Rampend2_hit()
 		WireRampOn True
 	End If
 End Sub
-
-sub StartRamphit001_hit
-        WireRampOn False
-End sub 
 
 Sub trigger027_hit()
 ShakeRsling
