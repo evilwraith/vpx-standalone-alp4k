@@ -55,7 +55,7 @@ Const bUsePlungerForSternKey 	= False	' Defaults to Right Magna Button but you c
 Const kBallSearchEnabled 		= True	'  Do ball search if ball gets lost 
 Const kBallSearchTimeout 		= 20000	'  Start ball search after 18 seconds of no activity
 Const FreePlay					= True	' Coins or not
-Const Music8Bit					= False  ' Use 8Bit version of Music (View README.txt in pup music dir to get original songs)
+Const Music8Bit					= True  ' Use 8Bit version of Music (View README.txt in pup music dir to get original songs)
 Const HasRealTiltBob			= 0 	' 0=No Tilt Bob, 1=Real TiltBob
 Const AttractSilent	= 0					' 0 = audio and DOF played during attract sequence, 1 = no audio and no DOF during attract sequence(after first play)
 Const kMaxSongs=15						' To Add Songs Drop Song in the Music dir, add a new image to "SongSelection" dir and then update the UpdateDMDSong function.
