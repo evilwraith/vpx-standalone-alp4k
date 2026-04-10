@@ -377,46 +377,6 @@ End Sub
  	N29=Controller.Lamp(29) 'High Score
  	N45=Controller.Lamp(45) 'Game Over
  	N61=Controller.Lamp(61) 'Tilt
-	If N13<>O13 Then 'Ball In Play
-		If N13 Then
-			EMReel5.SetValue 1
-		Else
-			EMReel5.SetValue 0
-		End If
-		O13=N13
-	End If
-	If N27<>O27 Then 'Match
-		If N27 Then
-			EMReel4.SetValue 1
-		Else
-			EMReel4.SetValue 0
-		End If
-		O27=N27
-	End If
-	If N29<>O29 Then 'High Score
-		If N29 Then
-			EMReel2.SetValue 1
-		Else
-			EMReel2.SetValue 0
-		End If
-		O29=N29
-	End If
-	If N45<>O45 Then 'Game Over
-		If N45 Then
-			EMReel1.SetValue 1
-		Else
-			EMReel1.SetValue 0
-		End If
-		O45=N45
-	End If
-	If N61<>O61 Then 'Tilt
-		If N61 Then
-			EMReel3.SetValue 1
-		Else
-			EMReel3.SetValue 0
-		End If
-		O61=N61
-	End If
  End Sub
  
  'Bally Fireball Classic
