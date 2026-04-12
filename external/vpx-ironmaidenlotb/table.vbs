@@ -58,7 +58,7 @@ Const FreePlay					= True	' Coins or not
 Const Music8Bit					= True  ' Use 8Bit version of Music (View README.txt in pup music dir to get original songs)
 Const HasRealTiltBob			= 0 	' 0=No Tilt Bob, 1=Real TiltBob
 Const AttractSilent	= 0					' 0 = audio and DOF played during attract sequence, 1 = no audio and no DOF during attract sequence(after first play)
-Const kMaxSongs=15						' To Add Songs Drop Song in the Music dir, add a new image to "SongSelection" dir and then update the UpdateDMDSong function.
+Const kMaxSongs=14						' To Add Songs Drop Song in the Music dir, add a new image to "SongSelection" dir and then update the UpdateDMDSong function.
 Const StagedFlipperMod 			= 0 	' 0 = not staged, 1 - staged (dual leaf switches)
 Const ColorizeModeInserts		= False	' Nice mod that colors the mode inserts 
 Const OutlaneDifficulty			= 1		' 0=Hard, 1=Medium, 2=Easy : Moves outlane pegs
@@ -71,7 +71,7 @@ Const     ScorbitAlternateUUID		= 0 	' Force Alternate UUID from Windows Machine
 Const bUseFlex=False					' Enable Flex DMD (Depricated - not tested)
 Const KeepLogs=False 					' Set True to save debug log file (Testers Only)
 '*************************** ----General Sound Options---- ******************************
-Const VolumeDial = 0.5				' Recommended values should be no greater than 1.
+Const VolumeDial = 0.8				' Recommended values should be no greater than 1.
 
 '*************************** ----VR Options---- ******************************
 Const VRRoomChoice				= 1		' 1 = BaSti Room, 2 = Minimal Room
@@ -113,13 +113,13 @@ Sub PuPStart(cPuPPack)
 End Sub
 
 Sub PuPEvent(EventNum)
-WriteToLog "Pup", "PupEvent: " & EventNum
+If KeepLogs Then WriteToLog "Pup", "PupEvent: " & EventNum
     if (usePUP=false or PUPStatus=false) then Exit Sub
     PuPlayer.B2SData "E"&EventNum,1  'send event to Pup-Pack
 End Sub
 
 Sub PuPEventD(EventNum)
-WriteToLog "Pup", "PupEvent: " & EventNum
+If KeepLogs Then WriteToLog "Pup", "PupEvent: " & EventNum
     if (usePUP=false or PUPStatus=false) then Exit Sub
     PuPlayer.B2SData "D"&EventNum,1  'send event to Pup-Pack
 End Sub
@@ -129,7 +129,7 @@ Randomize
 
 Const BallSize = 50       ' 50 is the normal size used in the core.vbs, VP kicker routines uses this value divided by 2
 Const BallMass = 1       ' standard mass (needed for nFozzy physics to work properly)
-Const SongVolume = 0.2   ' 1 is full volume.
+Const SongVolume = 0.3   ' 1 is full volume.
 
 
 '***********TABLE VOLUME LEVELS ********* 
@@ -650,8 +650,8 @@ Sub DMDSettingsInit()
 	DMDStd(kDMDStd_TiltDebounce)=1000		' 1 second debounce
 	DMDStd(kDMDStd_MatchPCT)=9				' 9%
 	DMDStd(kDMDStd_LeftStartReset)=True		' Allow Left + Start to Reset the Game (True, False, FreePlay)
-	DMDStd(kDMDStd_BallSave) = 3			' 3 second ball save 
-	DMDStd(kDMDStd_BallSaveExtend) = 1000	' Time to pause ball save when triggers are hit (Custom)
+	DMDStd(kDMDStd_BallSave) = 5			' 5 second ball save 
+	DMDStd(kDMDStd_BallSaveExtend) = 2000	' Time to pause ball save when triggers are hit (Custom)
 	DMDStd(kDMDStd_ReplayType)=1			' Extra Game, Extra Ball
 	DMDStd(kDMDStd_DynReplayStart)=125000000' Replay Value 
 	DMDStd(kDMDStd_ReplayPct) = 10  		' Replay Percent
@@ -1597,7 +1597,7 @@ Sub Table1_Init()
     End With
 
 	NewLog
-	WriteToLog "-------------", "TABLE INIT"
+	If KeepLogs Then WriteToLog "-------------", "TABLE INIT"
 
 '    Set cbRight = New cvpmCaptiveBall
 '    With cbRight
@@ -1781,7 +1781,7 @@ Sub tmrBallLock_Timer()
 'WriteToLog "     ", "LockCurPos:" & LockCurPos & " LockStopPos:" & LockStopPos & " inc:" & LockCurInc
 	LockCurPos=LockCurPos+LockCurInc
 	if (LockCurPos >= LockStopPos and LockCurInc>0) or (LockCurPos <= LockStopPos and LockCurInc<0) Then
-		WriteToLog "     ", "tmrBallLock_Timer Done " & GameTime
+		If KeepLogs Then WriteToLog "     ", "tmrBallLock_Timer Done " & GameTime
 		primBallLockTop3.Collidable=False 
 		primBallLockTop2.Collidable=False 
 		Select case LockStopPos
@@ -1888,7 +1888,7 @@ Sub RotateRamp(rampPos)		' 0=Underworld, 1=Flat, 2=Eject, 3=RampLoad
 End Sub 
 
 Sub RotateRamp2(rampPos, bMute)		' 0=Underworld, 1=Flat, 2=Eject, 3=RampLoad
-WriteToLog "     ", "RotateRamp RAMPPOS:" & rampPos & " " & BallsInRealLock
+If KeepLogs Then WriteToLog "     ", "RotateRamp RAMPPOS:" & rampPos & " " & BallsInRealLock
 	gRampPos=rampPos
 	Select case rampPos
 		Case 0:
@@ -1978,7 +1978,7 @@ Sub HandleMummyLock(bRealLock)
 End Sub 
 
 Sub trgBallLock3_Hit()			' Ball drops in from Ramp
-WriteToLog "     ", "trgBallLock3_Hit: "  & MummyTimes(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "trgBallLock3_Hit: "  & MummyTimes(CurrentPlayer)
 	BallsInRealLock=BallsInRealLock+1
 	if BallsInRealLock=1 then set LockBall1 = ActiveBall
 	if BallsInRealLock=2 then set LockBall2 = ActiveBall
@@ -1987,7 +1987,7 @@ WriteToLog "     ", "trgBallLock3_Hit: "  & MummyTimes(CurrentPlayer)
 End Sub 
 
 Sub trgBallLock2_Hit()		' Knocked ball out of back - Start Mummy MB
-WriteToLog "     ", "trgBallLock2_Hit: MummyActive:" & IsModeActive(kModeMummy) & " Times:" & MummyTimes(CurrentPlayer) & " " & BallsInRealLock & " " & BallsInLock(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "trgBallLock2_Hit: MummyActive:" & IsModeActive(kModeMummy) & " Times:" & MummyTimes(CurrentPlayer) & " " & BallsInRealLock & " " & BallsInLock(CurrentPlayer)
 
 	' If a real ball is locked then handle it otherwise it means multiplayer and we virtually handle the lock and create a new ball
 	if BallsInRealLock>0 then 
@@ -2011,11 +2011,11 @@ WriteToLog "     ", "trgBallLock2_Hit: MummyActive:" & IsModeActive(kModeMummy) 
 		AddHudInfo kModeMummy, "MUMMY", "MULTIBALL", "", "", True
 	End if
 
-WriteToLog "     ", "trgBallLock2_Hit Remove Lock:" & BallsInRealLock & " BallsInLock(CurrentPlayer):" & BallsInLock(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "trgBallLock2_Hit Remove Lock:" & BallsInRealLock & " BallsInLock(CurrentPlayer):" & BallsInLock(CurrentPlayer)
 End Sub 
 
 Sub trgBallLock0_Hit()		' Ball dropped in tunnel to Underworld 
-WriteToLog "     ", "trgBallLock0_Hit: "  & BallsInRealLock & " " & BallsInLock(CurrentPlayer) & " " & GameTime
+If KeepLogs Then WriteToLog "     ", "trgBallLock0_Hit: "  & BallsInRealLock & " " & BallsInLock(CurrentPlayer) & " " & GameTime
 
 	if BallsInRealLock>0 then 	' Have to check in case a ball incorrectly fell into the lock
 		BallsInRealLock=BallsInRealLock-1
@@ -2047,7 +2047,7 @@ End Sub
 
 Sub trgSarcGate_Hit()		' Backwall ramp to Sarcoghus Lock
 
-WriteToLog "     ", "trgSarcGate_Hit:" & tmrHeadOpen.Enabled & " " & bTombTreasureReady(CurrentPlayer) & " " & MummyLockReady(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "trgSarcGate_Hit:" & tmrHeadOpen.Enabled & " " & bTombTreasureReady(CurrentPlayer) & " " & MummyLockReady(CurrentPlayer)
 
 	if bTombTreasureReady(CurrentPlayer) Then
 		AwardTombTreasure
@@ -2076,7 +2076,7 @@ WriteToLog "     ", "trgSarcGate_Hit:" & tmrHeadOpen.Enabled & " " & bTombTreasu
 	End if 
 
 	if tmrHeadOpen.Enabled=False then 		' First one through
-WriteToLog "     ", "Open Head gRampPos:" & gRampPos
+If KeepLogs Then WriteToLog "     ", "Open Head gRampPos:" & gRampPos
 		if IsModeQual(kModeMummy)=False and gRampPos=3 then
 			ModeWaitPlayfieldQual(CurrentPlayer, kModeMummy)=True		' Wait for qual to unpause timer.
 			PauseTimersForce 50000		' Pause for a long time (50 Seconds)  
@@ -2110,7 +2110,7 @@ Sub tmrHeadOpen_Timer()
 				tmrHeadState=tmrHeadState+1
 				tmrHeadOpen.UserValue=0
 
-WriteToLog "     ", "tmrHeadOpen_Timer: 2nd ball:" & bSkipSecond & " " & gRampPos
+If KeepLogs Then WriteToLog "     ", "tmrHeadOpen_Timer: 2nd ball:" & bSkipSecond & " " & gRampPos
 
 				if bSkipSecond and gRampPos=2 then 				' Ramp will be block the 2nd ball so drop it and rotate it back
 					vpmtimer.addtimer 2000, "RotateRamp 1 '"	' Rotate down 
@@ -2125,7 +2125,7 @@ WriteToLog "     ", "tmrHeadOpen_Timer: 2nd ball:" & bSkipSecond & " " & gRampPo
 			PharaohHeadPrim.rotx=tmrHeadOpen.UserValue
 			PharaohHeadBracketPrim.rotX = tmrHeadOpen.UserValue
 			If tmrHeadOpen.UserValue <=-30 then 
-WriteToLog "     ", "tmrHeadOpen_Timer:" & BallsInRealLock & " " & gRampPos & " " & IsModeActive(kModeMummy) & " " & bSkipSecond & " " & MummyLockReady(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "tmrHeadOpen_Timer:" & BallsInRealLock & " " & gRampPos & " " & IsModeActive(kModeMummy) & " " & bSkipSecond & " " & MummyLockReady(CurrentPlayer)
 				tmrHeadState=tmrHeadState+1
 
 				If BallsInRealLock = 0 and gRampPos=3 then							' Lets it fall into lock (Tricky because other things can fall in if we leave it open too Long)
@@ -2135,7 +2135,7 @@ WriteToLog "     ", "tmrHeadOpen_Timer:" & BallsInRealLock & " " & gRampPos & " 
 				Wall057.Collidable=False
 
 				if bSkipSecond=False and IsModeActive(kModeMummy) and MummyLockReady(CurrentPlayer) then 			' Make sure the mode is active to lock a ball (instead of just TombTreasure)
-WriteToLog "     ", "Adding Locked Ball:"
+If KeepLogs Then WriteToLog "     ", "Adding Locked Ball:"
 					BallsInLock(CurrentPlayer)=BallsInLock(CurrentPlayer)+1		' Add Player Locked ball
 					if BallsInRealLock>0 then HandleMummyLock False 
 '					SSetLightColor kModeMISC, kLightRampLeft, red, 0
@@ -2159,7 +2159,7 @@ WriteToLog "     ", "Adding Locked Ball:"
 
 			' There are multiple balls behind the PharoahHead
 			if tmrHeadBallsRemain>0 then 
-WriteToLog "     ", "Handle 2nd ball:" & gRampPos
+If KeepLogs Then WriteToLog "     ", "Handle 2nd ball:" & gRampPos
 				bSkipSecond=True 							' Ignore this as a lock since it is erroneous
 				tmrHeadBallsRemain=tmrHeadBallsRemain-1
 				tmrHeadState=0
@@ -2171,7 +2171,7 @@ WriteToLog "     ", "Handle 2nd ball:" & gRampPos
 				' Ramp will be block the 2nd ball so drop it and rotate it back
 				PauseTimersForce 4000 
 			else 
-WriteToLog "     ", "Head done:"
+If KeepLogs Then WriteToLog "     ", "Head done:"
 				bSkipSecond=False
 				tmrHeadOpen.Enabled = False 
 			End if 
@@ -2180,7 +2180,7 @@ WriteToLog "     ", "Head done:"
 End Sub 
 
 Sub EnableMummy(bEnabled)
-WriteToLog "     ", "EnableMummy:" & bEnabled & " " & bMummyDisabled & " " & bGuardianOpen(CurrentPlayer) & " " & FlashGuardianState
+If KeepLogs Then WriteToLog "     ", "EnableMummy:" & bEnabled & " " & bMummyDisabled & " " & bGuardianOpen(CurrentPlayer) & " " & FlashGuardianState
 	if bMummyDisabled = bEnabled then 
 		if bEnabled=False then 
 			bMummyDisabled=True
@@ -2200,7 +2200,7 @@ Sub OpenRamp(bOpen)						' Open Guardian Left Ramp
 End Sub 
 
 Sub OpenRamp2(bOpen, bForce)						' Open Guardian Left Ramp
-WriteToLog "     ", "OpenRamp2:" & bOpen & " Force:" & bForce & " GuardLightState:" & FlashGuardianState
+If KeepLogs Then WriteToLog "     ", "OpenRamp2:" & bOpen & " Force:" & bForce & " GuardLightState:" & FlashGuardianState
 	tmrOpenGuardian.Interval = 50
 	if bOpen then 
 		if FlashGuardianState<>2 or bForce then ' Not already open 
@@ -2252,7 +2252,7 @@ Sub Table1_KeyDown(ByVal Keycode)
 '		End If
 	End if 
 
-WriteToLog "     ", "KEYDOWN: " & keycode
+If KeepLogs Then WriteToLog "     ", "KEYDOWN: " & keycode
 	if keycode = 19 then 	' r key (debugging )
 '		BallSaverTimerCancel
 '		ProcessHallowed kLightRampCenter
@@ -2553,7 +2553,7 @@ WriteToLog "     ", "KEYDOWN: " & keycode
 			else 
 				If keycode = LeftFlipperKey Then
 					pCurAttractPos=pCurAttractPos-2
-WriteToLog "     ", "LEFT pCurAttractPos=" & pCurAttractPos & " TimerStats_Enabled:" & TimerStats_Enabled
+If KeepLogs Then WriteToLog "     ", "LEFT pCurAttractPos=" & pCurAttractPos & " TimerStats_Enabled:" & TimerStats_Enabled
 					if pCurAttractPos=-1 then pCurAttractPos=pAttractEndOfLoop-1
 					if pCurAttractPos>pAttractEndOfLoop-1 then pCurAttractPos=pAttractEndOfLoop-2
 					if pCurAttractPos=pAttractLastScore-1 then 
@@ -2585,7 +2585,7 @@ WriteToLog "     ", "LEFT pCurAttractPos=" & pCurAttractPos & " TimerStats_Enabl
 End Sub
 
 Sub PupOverlayInGame
-WriteToLog "     ", "PupOverlayInGame"
+If KeepLogs Then WriteToLog "     ", "PupOverlayInGame"
 	UpdatePowerFeature
 	pPowerFeatures
 	PupOverlayHUD(False)	
@@ -2638,7 +2638,7 @@ Sub RemoveHudInfo(Mode)
 	Dim SaveTxt1
 	Dim SaveTxt2
 	Dim bRestoreMode:bRestoreMode=False 
-WriteToLog "     ", "RemoveHudInfo:" & Mode & " 1:" & tmrHUDAnimate_Mode & " 2:" & tmrHUDAnimate2_Mode
+If KeepLogs Then WriteToLog "     ", "RemoveHudInfo:" & Mode & " 1:" & tmrHUDAnimate_Mode & " 2:" & tmrHUDAnimate2_Mode
 
 	If tmrHUDAnimate2_Mode<>-1 and tmrHUDAnimate2_Mode<>Mode and tmrHUDAnimate_Mode=Mode then ' Bottom HUD will Close but top will still open, Move it down 
 		SaveMode=tmrHUDAnimate2_Mode
@@ -2667,16 +2667,16 @@ WriteToLog "     ", "RemoveHudInfo:" & Mode & " 1:" & tmrHUDAnimate_Mode & " 2:"
 
 	If bRestoreMode then AddHudInfo SaveMode, SaveTxt1, SaveTxt2, "", "", True 
 
-	WriteToLog "     ", "         End:" & Mode & " 1:" & tmrHUDAnimate_Mode & " 2:" & tmrHUDAnimate2_Mode
+	If KeepLogs Then WriteToLog "     ", "         End:" & Mode & " 1:" & tmrHUDAnimate_Mode & " 2:" & tmrHUDAnimate2_Mode
 
 End Sub
 
 Sub AddHudInfo(mode, txt1, txt2, txt3, txtTimer, bHalfHeight)
 	if tmrHUDAnimate_Mode<>-1 and bHalfHeight then		' Primary Mode is already full Use Secondary Mode
-WriteToLog "     ", "AddHudInfo2"
+If KeepLogs Then WriteToLog "     ", "AddHudInfo2"
 		AddHudInfo2 mode, txt1, txt2
 	Else 
-WriteToLog "     ", "AddHudInfo"
+If KeepLogs Then WriteToLog "     ", "AddHudInfo"
 		tmrHUDAnimate_Mode=mode
 		tmrHUDAnimate_InitialValue1=txt1
 		tmrHUDAnimate_InitialValue2=txt2
@@ -2764,7 +2764,7 @@ Sub tmrHUDAnimate_Timer
 End Sub 
 
 Sub PupOverlayHUD(bBaseOnly)
-	WriteToLog "     ", "PupOverlayHUD:" & bBaseOnly
+	If KeepLogs Then WriteToLog "     ", "PupOverlayHUD:" & bBaseOnly
 
 	if bShowMatch then 
 		PuPlayer.playlistplayex pDMdFull, "PuPOverlays" ,"HUD-BG2.png",  1, 1
@@ -2901,7 +2901,7 @@ End Sub
 Sub tmrHoldKey_Timer()		' Reset the game with Ball in lane
 	tmrHoldKey.Enabled = False
 
-WriteToLog "     ", "tmrHoldKey_Timer:"  & bBallInPlungerLane  & " " & BallsOnPlayfield-BallsInRealLock
+If KeepLogs Then WriteToLog "     ", "tmrHoldKey_Timer:"  & bBallInPlungerLane  & " " & BallsOnPlayfield-BallsInRealLock
 	If bBallInPlungerLane and BallsOnPlayfield-BallsInRealLock = 1 Then
 		PlaySoundVol "start", VolDef
 		bResetCurrentGame=True
@@ -2912,7 +2912,7 @@ WriteToLog "     ", "tmrHoldKey_Timer:"  & bBallInPlungerLane  & " " & BallsOnPl
 End Sub
 
 sub tmrHSHoldFlipper_Timer()
-WriteToLog "     ", "AAA " & RFPress & " " & LFPress
+If KeepLogs Then WriteToLog "     ", "AAA " & RFPress & " " & LFPress
 	tmrHSHoldFlipper.Interval = 100			' Speed it up
 	if RFPress then 
 		EnterHighScoreKey(RightFlipperKey)
@@ -3108,7 +3108,7 @@ End Sub
 
 Sub TiltDecreaseTimer_Timer
     ' DecreaseTilt
-WriteToLog "     ", "TiltDecreaseTimer_Timer: " & Tilt
+If KeepLogs Then WriteToLog "     ", "TiltDecreaseTimer_Timer: " & Tilt
     If Tilt>0 Then
         Tilt = Tilt - 1
     Else
@@ -3117,7 +3117,7 @@ WriteToLog "     ", "TiltDecreaseTimer_Timer: " & Tilt
 End Sub
 
 Sub SceneClearTilt()
-WriteToLog "     ", "SceneClearTilt"
+If KeepLogs Then WriteToLog "     ", "SceneClearTilt"
 
 	GIOn
 	TiltDangerWait=False
@@ -3126,7 +3126,7 @@ WriteToLog "     ", "SceneClearTilt"
 End Sub
 
 Sub DisableTable(Enabled)
-WriteToLog "     ", "DisableTable:" & Enabled
+If KeepLogs Then WriteToLog "     ", "DisableTable:" & Enabled
     If Enabled Then
         'turn off GI and turn off all the lights
         GiOff
@@ -3205,7 +3205,7 @@ Sub SelectSong(keycode)
     End If
 
 	if bAnimate then 
-		saveSong(CurrentPlayer)=Songnr
+		saveSong(CurrentPlayer)=Songnr						
 		puPlayer.LabelSet pDMdFull, "SongSelectC", "PupOverlays\\clear.png",1,"{'mt':2,'color':0,'width':28, 'height':48, 'xpos':19 ,'ypos':15}"
 		tmrSongSelectAni_Type=0
 		tmrSongSelectAni.UserValue = 0
@@ -3250,7 +3250,7 @@ Sub tmrSongSelectAni_Timer
 				puPlayer.LabelSet pTransp, "SongSelectRT", "SongSelection\\s" & SongR  &".png",1,"{'mt':2,'color':0,'width':" & 18+width & ", 'height':" & 35+height & ", 'xpos':" & 45 - xval2 & " ,'ypos':" & 25 - yval & "}"
 			End if 
 		else 
-	WriteToLog "     ", "tmrSongSelectAni_Timer:"&tmrSongSelectAni.UserValue
+	If KeepLogs Then WriteToLog "     ", "tmrSongSelectAni_Timer:"&tmrSongSelectAni.UserValue
 			puPlayer.LabelSet pTransp, "SongSelectLT", "PupOverlays\\clear.png",1,"{'mt':2,'color':0,'width':18, 'height':31, 'xpos':4 ,'ypos':25}"
 			puPlayer.LabelSet pTransp, "SongSelectCT", "PupOverlays\\clear.png",1,"{'mt':2,'color':0,'width':28, 'height':48, 'xpos':19 ,'ypos':15}"
 			puPlayer.LabelSet pTransp, "SongSelectRT", "PupOverlays\\clear.png",1,"{'mt':2,'color':0,'width':18, 'height':31, 'xpos':45 ,'ypos':25}"	
@@ -3280,7 +3280,7 @@ End Sub
 
 Sub SelectModeMusic(Mode)
 	dim bModeMusic:bModeMusic=True 
-WriteToLog "     ", "SelectModeMusic:" & Mode
+If KeepLogs Then WriteToLog "     ", "SelectModeMusic:" & Mode
 
 	Dim SongIdx:SongIdx=0
     Select Case Mode
@@ -3306,7 +3306,7 @@ End Sub
 
 Sub SelectMusic2(SongIndex, bModeMusic)
 	dim ModeStr:ModeStr=""
-WriteToLog "     ", "SelectMusic:" & SongIndex
+If KeepLogs Then WriteToLog "     ", "SelectMusic:" & SongIndex
 	if bModeMusic then ModeStr="_Mode"
 
     DMDFlush
@@ -3348,7 +3348,7 @@ Sub UpdateDMDSong() 'Updates the DMD with the chosen song
 End Sub
 
 Sub ShowSongSelect()
-WriteToLog "     ", "ShowSongSelect:" & PlayersPlayingGame
+If KeepLogs Then WriteToLog "     ", "ShowSongSelect:" & PlayersPlayingGame
 
 	SceneGeneralStart pDMDFull, True, False, "SongSelection", "SongSelect.mp4", "I:SongSelection\\UseFlippers.png^^^^^^^^^", "^^^^^^^^^"
 	bSongSelect=True
@@ -3371,7 +3371,6 @@ Sub ExitSongSelection()
 	SelectMusic(Songnr)
 	StopSongSelect
 End Sub
-
 Sub StopSongSelect()
 	bSongSelect=False
 
@@ -3531,10 +3530,10 @@ Sub GiOn
 	target006p.Opacity=0:			target006p_gioff.Visible = True 
 '	cab_gion.Opacity=0:				cab_gioff.Visible = True 
 
-	GIFadeOpacity = 0				  
-	tmrGIFade.UserValue=1		' Fade On 
-	tmrGIFade.Interval = 6
-	tmrGIFade.Enabled = True 
+	GIFadeOpacity = 0
+	tmrGIFade.UserValue=1		' Fade On
+	tmrGIFade.Interval = 16
+	tmrGIFade.Enabled = True
 
 	LBumper2.state=1
 	LBumper3.state=1
@@ -3550,79 +3549,80 @@ End Sub
 	primBallLock6.Visible = False
 
 
-Dim GIFadeOpacity  ' Module-level opacity tracker — eliminates 17 COM reads per tick
+' Module-level GI fade opacity tracker — eliminates 17 COM read-modify-write patterns per tick
+' (each `obj.Opacity = obj.Opacity - step` was reading then writing; now we track in VBS and only write)
+Dim GIFadeOpacity
 
 Sub tmrGIFade_Timer()
-'WriteToLog "     ", "GIFADE Opacity:" & GIFadeOpacity
+	Const GIFadeStep = 5  ' was 2 at 6ms; now 5 at 16ms for ~320ms fade (visually identical)
 	Dim op
 	if tmrGIFade.UserValue=0 then 			' Fade Off
-		GIFadeOpacity = GIFadeOpacity - 2
+		GIFadeOpacity = GIFadeOpacity - GIFadeStep
 		op = GIFadeOpacity
-		g01_gion.Opacity=op
-		FlasherPF.Opacity=100 - op
-		plastics_low_gion.Opacity=op
-		plastics_high_gion.Opacity=op
-		ramps_gion.Opacity=op
-		backwall_gion.Opacity=op
-		PrimLeftFlipper1.Opacity=op
-		PrimRightFlipper1.Opacity=op
-		PrimFlipperL.Opacity=op
-		PrimFlipperR.Opacity=op
-		bumpers_gion.Opacity=op
-		primNBall1.Opacity=op
-		primNBall2.Opacity=op
-		toys_gion.Opacity=op
-		target004p.Opacity=op
-		target005p.Opacity=op
-		target006p.Opacity=op
+		g01_gion.Opacity = op
+		FlasherPF.Opacity = 100 - op
+		plastics_low_gion.Opacity = op
+		plastics_high_gion.Opacity = op
+		ramps_gion.Opacity = op
+		backwall_gion.Opacity = op
+		PrimLeftFlipper1.Opacity = op
+		PrimRightFlipper1.Opacity = op
+		PrimFlipperL.Opacity = op
+		PrimFlipperR.Opacity = op
+		bumpers_gion.Opacity = op
+		primNBall1.Opacity = op
+		primNBall2.Opacity = op
+		toys_gion.Opacity = op
+		target004p.Opacity = op
+		target005p.Opacity = op
+		target006p.Opacity = op
 		if op <= 0 then
 			tmrGIFade.Enabled = False
 		End if
 	Else 		' Fade On
-		GIFadeOpacity = GIFadeOpacity + 2
+		GIFadeOpacity = GIFadeOpacity + GIFadeStep
 		op = GIFadeOpacity
-		g01_gion.Opacity=op
-		FlasherPF.Opacity=100 - op
-		plastics_low_gion.Opacity=op
-		plastics_high_gion.Opacity=op
-		ramps_gion.Opacity=op
-		backwall_gion.Opacity=op
-		PrimLeftFlipper1.Opacity=op
-		PrimRightFlipper1.Opacity=op
-		PrimFlipperL.Opacity=op
-		PrimFlipperR.Opacity=op
-		bumpers_gion.Opacity=op
-		primNBall1.Opacity=op
-		primNBall2.Opacity=op
-		toys_gion.Opacity=op
-		target004p.Opacity=op
-		target005p.Opacity=op
-		target006p.Opacity=op
-		if op >= 100 then 
+		g01_gion.Opacity = op
+		FlasherPF.Opacity = 100 - op
+		plastics_low_gion.Opacity = op
+		plastics_high_gion.Opacity = op
+		ramps_gion.Opacity = op
+		backwall_gion.Opacity = op
+		PrimLeftFlipper1.Opacity = op
+		PrimRightFlipper1.Opacity = op
+		PrimFlipperL.Opacity = op
+		PrimFlipperR.Opacity = op
+		bumpers_gion.Opacity = op
+		primNBall1.Opacity = op
+		primNBall2.Opacity = op
+		toys_gion.Opacity = op
+		target004p.Opacity = op
+		target005p.Opacity = op
+		target006p.Opacity = op
+		if op >= 100 then
 			g01_gioff.Visible = False
 			plastics_low_gioff.Visible = False
 			plastics_high_gioff.Visible = False
 			ramps_gioff.Visible=False
 			backwall_gioff.Visible=False
-			tmrGIFade.Enabled = False 
+			tmrGIFade.Enabled = False
 			PrimLeftFlipperoff.Visible=False
 			PrimRightFlipperoff.Visible=False
 			PrimFlipperLoff.Visible=False
 			PrimFlipperRoff.Visible=False
 			bumpers_gioff.Visible=False
-			toys_gioff.Visible=False 
-			primNBall1off.Visible=False 
-			primNBall2off.Visible=False 
-'			cab_gioff.Visible=False 
+			toys_gioff.Visible=False
+			primNBall1off.Visible=False
+			primNBall2off.Visible=False
 
-			target004p_gioff.Visible=False 
-			target005p_gioff.Visible=False 
-			target006p_gioff.Visible=False 
+			target004p_gioff.Visible=False
+			target005p_gioff.Visible=False
+			target006p_gioff.Visible=False
 
-		End if 
-	End if 
-	
-End Sub 
+		End if
+	End if
+
+End Sub
 
 
 Sub GiOff
@@ -3694,7 +3694,7 @@ Sub GiOff
 
 	GIFadeOpacity = 100
 	tmrGIFade.UserValue=0		' Fade Off
-	tmrGIFade.Interval = 6
+	tmrGIFade.Interval = 16
 	tmrGIFade.Enabled = True
 
 	LBumper2.state=0
@@ -3708,7 +3708,7 @@ Dim LightSeqGi_Active:LightSeqGi_Active=False
 Sub GiEffect(n)
 	if LightSeqGi_Active then exit sub
 	LightSeqGi_Active=True 
-WriteToLog "     ", "GiEffect"
+If KeepLogs Then WriteToLog "     ", "GiEffect"
     Dim ii
     Select Case n
         Case 0 'all off
@@ -3897,7 +3897,7 @@ Sub Flasher005_Timer
 End Sub
 
 Sub FlashEffect(n) 'adjusted for this table
-WriteToLog "     ", "FlashEffect:" & n
+If KeepLogs Then WriteToLog "     ", "FlashEffect:" & n
     Select Case n
         Case 1:    ' all blink
             SetFlash Flasher004, 4, 2000, 50
@@ -3980,6 +3980,10 @@ InitRolling
 Dim BallDropCount
 ReDim BallDropCount(tnob)
 
+' Pre-built sound name strings — eliminates per-frame string concatenation in RollingUpdate
+Dim BallRollStr(19), MetalRollStr(19)
+Dim brs_i : For brs_i = 0 To tnob : BallRollStr(brs_i) = "BallRoll_" & brs_i : MetalRollStr(brs_i) = "fx_metalrolling" & brs_i : Next
+
 Sub InitRolling
     Dim i
     For i = 0 to tnob
@@ -3987,60 +3991,61 @@ Sub InitRolling
     Next
 End Sub
 
-' Pre-built sound name strings — eliminates per-frame string concatenation in RollingUpdate
-Dim BallRollStr(19), MetalRollStr(19)
-Dim rsi : For rsi = 0 To 19 : BallRollStr(rsi) = "BallRoll_" & rsi : MetalRollStr(rsi) = "fx_metalrolling" & rsi : Next
-
 Sub RollingUpdate()
-    Dim BOT, b
+    Dim BOT, b, ballpitch, ballvol, speedfactorx, speedfactory
+    Dim bx, by, bz, bvel, bvz, bvol, bpitch, bpan, bfade, bvlx, bvly
+    Dim bp2, bp4, bp8, bf2, bf4, bf8
     BOT = GetBalls
 
 	' stop the sound of deleted balls
     For b = UBound(BOT) + 1 to tnob
 		if rolling(b) Then
 			rolling(b) = False
+			'StopSound("fx_ballrolling" & b)
 			StopSound BallRollStr(b)
 			StopSound MetalRollStr(b)
-								   
 		End if
         aBallShadow(b).Y = 3000
-		If aBallShadow(b).Visible Then aBallShadow(b).Visible = False
+		aBallShadow(b).Visible = False
     Next
 
     ' exit the sub if no balls on the table
-    If UBound(BOT) = lob - 1 Then Exit Sub
+    If UBound(BOT) = lob - 1 Then Exit Sub 'there no extra balls on this table
 
     ' play the rolling sound for each ball and draw the shadow
-    Dim bx, by, bz, bvlx, bvly, bvel, bvol, bpitch, bpan, bfade
-    Dim bp2, bp4, bp8
     For b = lob to UBound(BOT)
-		' Cache all COM properties into locals
+		' Cache all COM properties into locals — BOT(b).X etc. are COM reads across VBS/VPX boundary
 		bx = BOT(b).X : by = BOT(b).Y : bz = BOT(b).Z
         aBallShadow(b).X = bx
         aBallShadow(b).Y = by
         aBallShadow(b).Height = bz - 24
-		If Not aBallShadow(b).Visible Then aBallShadow(b).Visible = True
+		aBallShadow(b).Visible = True
 
-		' Cache BallVel once — eliminates 3 redundant BallVel calls
+		' Cache BallVel once — was called 3x per ball (BallVel, VolPlayfieldRoll, PitchPlayfieldRoll)
 		bvlx = BOT(b).VelX : bvly = BOT(b).VelY
 		bvel = INT(SQR(bvlx * bvlx + bvly * bvly))
 
-        If bvel > 1 Then				   
+        If bvel > 1 Then
             rolling(b) = True
-			' Inline sound params using cached bvel
+			' Pre-compute sound params using cached bvel — eliminates 3 redundant BallVel calls + ^2/^3
 			bvol = RollingSoundFactor * 0.0005 * Csng(bvel * bvel * bvel) * (cVolTable + 0.1) * VolumeDial
 			bpitch = bvel * bvel * 10
-			' Inline AudioPan using cached bx
+			' Inline AudioPan/AudioFade using cached bx/by — avoids 2 function calls + 2 COM reads
 			bpan = bx * 2 / tablewidth - 1
-			If bpan > 7000 Then bpan = 7000
-			If bpan < -7000 Then bpan = -7000
+			If bpan > 7000 Then
+				bpan = 7000
+			ElseIf bpan < -7000 Then
+				bpan = -7000
+			End If
+			' ^10 via multiply chain: x2*x8 = x10 (4 muls vs log+exp per ball per frame)
 			If bpan < 0 Then bpan = -bpan : bp2 = bpan*bpan : bp4 = bp2*bp2 : bp8 = bp4*bp4 : bpan = Csng(-(bp8*bp2)) Else bp2 = bpan*bpan : bp4 = bp2*bp2 : bp8 = bp4*bp4 : bpan = Csng(bp8*bp2)
-			' Inline AudioFade using cached by
 			bfade = by * 2 / tableheight - 1
-			If bfade > 7000 Then bfade = 7000
-			If bfade < -7000 Then bfade = -7000
-			If bfade < 0 Then bfade = -bfade : bp2 = bfade*bfade : bp4 = bp2*bp2 : bp8 = bp4*bp4 : bfade = Csng(-(bp8*bp2)) Else bp2 = bfade*bfade : bp4 = bp2*bp2 : bp8 = bp4*bp4 : bfade = Csng(bp8*bp2)
-
+			If bfade > 7000 Then
+				bfade = 7000
+			ElseIf bfade < -7000 Then
+				bfade = -7000
+			End If
+			If bfade < 0 Then bfade = -bfade : bf2 = bfade*bfade : bf4 = bf2*bf2 : bf8 = bf4*bf4 : bfade = Csng(-(bf8*bf2)) Else bf2 = bfade*bfade : bf4 = bf2*bf2 : bf8 = bf4*bf4 : bfade = Csng(bf8*bf2)
 			If bz < 30 Then
                 StopSound MetalRollStr(b)
 				PlaySound BallRollStr(b), -1, bvol, bpan, 0, bpitch, 1, 0, bfade
@@ -4050,21 +4055,28 @@ Sub RollingUpdate()
 			End if
 
         Else
-            If rolling(b) = True Then												
+            If rolling(b) = True Then
+                'StopSound("fx_ballrolling" & b)
 				StopSound BallRollStr(b)
                 rolling(b) = False
             End If
         End If
-		
+
+'        ' rothbauerw's Dropping Sounds
+'        If BOT(b).VelZ <-1 and BOT(b).z <55 and BOT(b).z> 27 Then 'height adjust for ball drop sounds
+'            PlaySound "fx_balldrop", 0, ABS(BOT(b).velz) / 17, AudioPan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b))
+'        End If
+
 		' Ball Drop Sounds
-		If BOT(b).VelZ < -1 and BOT(b).z < 55 and BOT(b).z > 27 Then 'height adjust for ball drop sounds
+		bvz = BOT(b).VelZ
+		If bvz < -1 and bz < 55 and bz > 27 Then 'height adjust for ball drop sounds
 			If BallDropCount(b) >= 5 Then
 				BallDropCount(b) = 0
-				If BOT(b).velz > -7 Then
+				If bvz > -7 Then
 					RandomSoundBallBouncePlayfieldSoft BOT(b)
 				Else
 					RandomSoundBallBouncePlayfieldHard BOT(b)
-				End If				
+				End If
 			End If
 		End If
 		If BallDropCount(b) < 5 Then
@@ -4107,12 +4119,10 @@ Sub ResetForNewGame()
     PlayersPlayingGame = 1
 	UpdatePlayers
     bOnTheFirstBall = True
-	Songnr = INT(RND * kMaxSongs)
     For i = 0 To MaxPlayers-1
 		ScoreSave(i)=0
 		LastScore(i)=0
         Score(i) = 0
-		saveSong(i)=Songnr
 		bReplayAwarded(i)=False
         BonusPoints(i) = 0
         BonusHeldPoints(i) = 0
@@ -4155,7 +4165,7 @@ End Sub
 
 Sub ResetForNewPlayerBall()
 	Dim i
-WriteToLog "     ", "ResetForNewPlayerBall"
+If KeepLogs Then WriteToLog "     ", "ResetForNewPlayerBall"
     ' make sure the correct display is upto date
     AddScore 0
 
@@ -4221,7 +4231,7 @@ End Sub
 
 
 Sub UpdateForMultiball(bEnabled)		' update the table for multiball mode 
-WriteToLog "     ", "UpdateForMultiball:" & bEnabled
+If KeepLogs Then WriteToLog "     ", "UpdateForMultiball:" & bEnabled
 	if bEnabled then 					' Do whatever needs to be done to disable/enable things when switching in/out of Multiball
 		TrooperDisable True			' Disable Trooper 
 		if IsModeQual(kModeMummy) then EnableMummy False
@@ -4261,12 +4271,12 @@ End Sub
 ' Use it as AddMultiball 4 to add 4 extra balls to the table
 CreateMultiballTimer.Interval = 2000
 Sub AddMultiball(nballs)
-WriteToLog "     ", "AddMultiball:" & nballs
+If KeepLogs Then WriteToLog "     ", "AddMultiball:" & nballs
     mBalls2Eject = mBalls2Eject + nballs
     CreateMultiballTimer.Enabled = True
 End Sub
 Sub AddMultiballFast(nballs)
-WriteToLog "     ", "AddMultiballFast"
+If KeepLogs Then WriteToLog "     ", "AddMultiballFast"
 	if CreateMultiballTimer.Enabled = False and ticksFromLastEject>200 then 
 		CreateMultiballTimer.Interval = 100		' shortcut the first time through 
 	End If 
@@ -4337,7 +4347,7 @@ Sub tmrBallSearch_Timer()	' We timed out
 			End if 
 		Next
 '		WriteToLog "     ", "--- listing balls ---"
-		WriteToLog "     ", "Ball Search - NO ACTIVITY " & BallSearchCnt & " " & NumBallsHere
+		If KeepLogs Then WriteToLog "     ", "Ball Search - NO ACTIVITY " & BallSearchCnt & " " & NumBallsHere
 
 		PauseTimersForce 8000
 		if BallSearchCnt >= 3 Then
@@ -4409,7 +4419,7 @@ End Sub
 ' The Player has lost his ball (there are no more balls on the playfield).
 ' Handle any bonus points awarded
 Sub EndOfBall()
-WriteToLog "     ", "EndOfBall:" & Now
+If KeepLogs Then WriteToLog "     ", "EndOfBall:" & Now
 	pClearEverything2
 	SceneClearLabels
 	DOF 178, DOFpulse 'Drain Effect
@@ -4464,7 +4474,7 @@ Sub ShowTotalBonusLine(BonusName, Title, Cnt)	' Total Line shows 1X,2X..etc with
 End Sub 
 
 Sub BonusScore()
-WriteToLog "     ", "BONUS SCORE:"
+If KeepLogs Then WriteToLog "     ", "BONUS SCORE:"
 	QueueSetDefault 0, "", ""				' Disable for this scene
 	pClearEverything2
 	PupOverlayBonusSc
@@ -4521,7 +4531,7 @@ Sub tmrBonusTotal_Timer
 End Sub 
 
 Sub StartBonusCountdown
-WriteToLog "     ", "StartBonusCountdown:" & BonusScoreTotal & " Score:" & Score(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "StartBonusCountdown:" & BonusScoreTotal & " Score:" & Score(CurrentPlayer)
 	PlaySoundVol "fx_planedive2", VolSfx
 	tmrBonusCountdown_done=False
 	tmrBonusCountdown_steps=BonusScoreTotal\60
@@ -4534,13 +4544,13 @@ End Sub
 Dim tmrBonusCountdown_done
 Dim tmrBonusCountdown_steps
 Sub tmrBonusCountdown_Timer 
-WriteToLog "     ", "tmrBonusCountdown_Timer:" & tmrBonusCountdown.UserValue
+If KeepLogs Then WriteToLog "     ", "tmrBonusCountdown_Timer:" & tmrBonusCountdown.UserValue
 	Dim Value
 	tmrBonusCountdown.UserValue=tmrBonusCountdown.UserValue-tmrBonusCountdown_steps
 	if tmrBonusCountdown.UserValue < (-20*tmrBonusCountdown_steps) then
 		tmrBonusCountdown.Enabled = False
 		tmrBonusTotal.Enabled = False
-WriteToLog "     ", "StartBonusCountdown END Score:" & Score(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "StartBonusCountdown END Score:" & Score(CurrentPlayer)
 		SceneClearLabels
 		pClearBonusTxt
 		VPMTimer.Addtimer 100, "EndOfBall2 '"		' Allows pup time to process pClearBonusTxt
@@ -4601,7 +4611,7 @@ Sub PlayYouMatchedStart(MatchValue)
 End Sub 
 
 Sub DoMatchAward()
-WriteToLog "     ", "Match Award:"
+If KeepLogs Then WriteToLog "     ", "Match Award:"
 	KnockerSolenoid : DOF 122, DOFPulse
 	DOF 121, DOFPulse
 '	Credits=Credits+1
@@ -4687,7 +4697,7 @@ Sub EndOfBallComplete()
     Dim NextPlayer
 	Dim Match
 
-	WriteToLog "     ", "EndOfBallComplete:" & BallsRemaining(CurrentPlayer) & " " & BallsRemaining(NextPlayer) 
+	If KeepLogs Then WriteToLog "     ", "EndOfBallComplete:" & BallsRemaining(CurrentPlayer) & " " & BallsRemaining(NextPlayer) 
 
     ' are there multiple players playing this game ?
     If(PlayersPlayingGame > 1)Then
@@ -4758,7 +4768,7 @@ End Sub
 ' Drop targets, AND eject any 'held' balls, start any attract sequences etc..
 
 Sub EndOfGame()
-    WriteToLog "     ", "End Of Game"
+    If KeepLogs Then WriteToLog "     ", "End Of Game"
 
 	CycleMummyInserts False
 	bShowMatch = False
@@ -4834,7 +4844,7 @@ End Sub
 ' a new one
 '
 Sub DrainDummy_Hit()	' Call this to short cycle outlane drains 
-WriteToLog "     ", "DrainDummy_Hit"
+If KeepLogs Then WriteToLog "     ", "DrainDummy_Hit"
 	BallsOutlaneDrainCnt=BallsOutlaneDrainCnt+1
 	BallsOutlaneDrainIgnoreCnt=BallsOutlaneDrainIgnoreCnt+1
 	Drain_Hit()
@@ -4887,7 +4897,7 @@ Sub Drain_Hit()
         If bBallSaverActive = True or tmpBallSaver or mBalls2Eject<>0 or bPlayfieldValidated=False Then
 
 			if bSkillshotReady and bMultiBallMode=False and IsModeQual(kModeNOTB)=False and IsModeActive(kMode2M2M)=False and LastSwitchHit<>"swPlungerRest" then 
-WriteToLog "     ", "ENDING Ballsaver;" & bMultiBallMode 
+If KeepLogs Then WriteToLog "     ", "ENDING Ballsaver;" & bMultiBallMode 
 				BallSaverTimerExpired.UserValue = 0 			' End BallSaver
 			End if 
 
@@ -4948,7 +4958,7 @@ WriteToLog "     ", "ENDING Ballsaver;" & bMultiBallMode
                 StopEndOfBallMode
 				StopEndOfBallModeEntendTime = getQueueTime(0)	' See if we need to let animations finish playing
 				if StopEndOfBallModeEntendTime = 0 then StopEndOfBallModeEntendTime = 500
-WriteToLog "     ", "Queue EndOfBall:" & StopEndOfBallModeEntendTime
+If KeepLogs Then WriteToLog "     ", "Queue EndOfBall:" & StopEndOfBallModeEntendTime
                 vpmtimer.addtimer StopEndOfBallModeEntendTime, "EndOfBall '" 'the delay is depending of the animation of the end of ball, if there is no animation then move to the end of ball
             End If
         End If
@@ -4968,16 +4978,16 @@ End Sub
 ' Check to see if a ball saver mechanism is needed and if so fire it up.
 
 Sub swPlungerRest_Hit() ' This means the trigger is down because ball is resting on it - ANDREW
-WriteToLog "     ", "ball in plunger lane: " & bAutoPlunger & " " & bCreatedBall & " " & LastSwitchHit
+If KeepLogs Then WriteToLog "     ", "ball in plunger lane: " & bAutoPlunger & " " & bCreatedBall & " " & LastSwitchHit
     bBallInPlungerLane = True
 	MotorCheck=True 'Used for Sarcophogus Gear Motor Checking
 	If bMultiBallMode=false and bAutoPlunger = false Then DOF 170, DOFOn End If 'MX ball waiting
 	if bAutoPlunger=False and bCreatedBall = False and LastSwitchHit = "swPlungerRest" then	' If we didnt create a ball this must have gone up and back so reset skillshot 
-WriteToLog "     ", "AUTOSET!!!!"
+If KeepLogs Then WriteToLog "     ", "AUTOSET!!!!"
 		bSkillShotReady=True
 		ResetSkillShotTimer.Enabled=0
 	Elseif bAutoPlunger=False and bCreatedBall = False and LastSwitchHit <> "swPlungerRest"  then 
-WriteToLog "     ", "Ball fell into shooter - Autoplunging  " & bAutoPlunger & " " & bCreatedBall & " " & LastSwitchHit
+If KeepLogs Then WriteToLog "     ", "Ball fell into shooter - Autoplunging  " & bAutoPlunger & " " & bCreatedBall & " " & LastSwitchHit
 		bAutoPlunger=True 
 	End if 
 	bCreatedBall=False
@@ -5019,7 +5029,7 @@ Sub swPlungerRest_UnHit()' This means the trigger is up because ball has been fi
     swPlungerRest.TimerEnabled = 0 'stop the launch ball timer if active
     If bSkillShotReady Then
 		
-		ExitSongSelection
+		StopSongSelect
 		ResetSkillShotTimer.UserValue=0
         ResetSkillShotTimer.Enabled = 1
 		ScorbitClaimQR(False)
@@ -5058,7 +5068,7 @@ End Sub
 
 Sub EnableBallSaverGrace(seconds, bGracePeriod, bExtend)
 	Dim currentVal:currentVal=0
-WriteToLog "     ", "Ballsaver started " & seconds
+If KeepLogs Then WriteToLog "     ", "Ballsaver started " & seconds
     ' set our game flag
 	bBallSaverGrace = bGracePeriod
     bBallSaverActive = True
@@ -5094,7 +5104,7 @@ Sub IncreaseBallSaver(seconds)
 
 	BallSaverTimerExpired.UserValue = BallSaverTimerExpired.UserValue + (1000 * (seconds))
 
-	WriteToLog "     ", "IncreaseBallSaver: " & BallSaverTimerExpired.UserValue
+	If KeepLogs Then WriteToLog "     ", "IncreaseBallSaver: " & BallSaverTimerExpired.UserValue
 End Sub 
 
 Sub BallSaverTimerExpired_Timer()
@@ -5103,7 +5113,7 @@ Sub BallSaverTimerExpired_Timer()
 	BallSaverTimerExpired.UserValue = BallSaverTimerExpired.UserValue - BallSaverTimerExpired.Interval 	' Drop 500 msec 
 'WriteToLog "     ", "BallSaveCountDown " & BallSaverTimerExpired.UserValue & " " & Now
 	if BallSaverTimerExpired.UserValue <= 0 or (bBallSaverGrace=False and BallSaverTimerExpired.UserValue < 2000) then				' Stop BallSaver  
-WriteToLog "     ", "Ballsaver ended"
+If KeepLogs Then WriteToLog "     ", "Ballsaver ended"
 		BallSaverTimerExpired.Enabled = False
 		BallSaverTimerExpired.UserValue=0
 		bBallSaverActive = False
@@ -5132,7 +5142,7 @@ End Sub
 
 
 Sub BallSaverTimerCancel()
-WriteToLog "     ", "Ballsaver Cancel"
+If KeepLogs Then WriteToLog "     ", "Ballsaver Cancel"
 	BallSaverTimerExpired.Enabled = False
 	bBallSaverActive = False
 	bBallSaverGrace = True 
@@ -5236,7 +5246,7 @@ End Sub
 ' Playfield Multiplier
 '*********************
 Sub CheckPFx(index) 'check target hits to activate the playfield multiplier
-WriteToLog "     ", "CheckPFx " & index 
+If KeepLogs Then WriteToLog "     ", "CheckPFx " & index 
 	Dim bHit:bHit=False
 
 	if IsModeQual(kModeCyborg) then Exit Sub 	' Not active during Cyborg 
@@ -5279,7 +5289,7 @@ WriteToLog "     ", "CheckPFx " & index
 	End Select 
 
 	if bHit then 
-WriteToLog "     ", "bHit: " & pfxtimer.Enabled
+If KeepLogs Then WriteToLog "     ", "bHit: " & pfxtimer.Enabled
 		PFXAddTime
 
 		If pfxtimer.Enabled=False then	' Only Reset when starting
@@ -5294,7 +5304,7 @@ End Sub
 
 Sub PFXAddTime()				' Add time to PFX if we are running 
 	If pfxtimer.Enabled then 
-WriteToLog "     ", "PFX Add Time"
+If KeepLogs Then WriteToLog "     ", "PFX Add Time"
 		' Add 5 seconds to timer 
 		PFxSeconds = PFxSeconds+5
 		light012.blinkinterval = 250
@@ -5303,7 +5313,7 @@ WriteToLog "     ", "PFX Add Time"
 End Sub 
 
 Sub ResetPFxTargetLights
-WriteToLog "     ", "ResetPFxTargetLights"
+If KeepLogs Then WriteToLog "     ", "ResetPFxTargetLights"
     PFxCount = 0
     lTargetX1.State = 2
     lTargetX2.State = 2
@@ -5330,7 +5340,7 @@ Sub UpdateBonusXLights
 End Sub
 
 Sub QualPFM(n)
-	WriteToLog "     ", "QualPFM:" & PlayfieldMultiplierQual(CurrentPlayer)
+	If KeepLogs Then WriteToLog "     ", "QualPFM:" & PlayfieldMultiplierQual(CurrentPlayer)
 	If pfxtimer.Enabled then 	
 		' Timer is already running we just add the 5 seconds 
 	else 
@@ -5344,7 +5354,7 @@ Sub QualPFM(n)
 End Sub 
 
 Sub StartPFMCheck(index)
-WriteToLog "     ", "StartPFM: L1:" & light001.State & "L2:" & light002.State & " " & index
+If KeepLogs Then WriteToLog "     ", "StartPFM: L1:" & light001.State & "L2:" & light002.State & " " & index
 	if (light001.State=1 and index=1) or (light002.State=1 and index=2) then
 		StartPFM
 	End If
@@ -5353,7 +5363,7 @@ End Sub
 Sub StartPFM()
 Dim PFMClip
 Dim PFMcallout
-WriteToLog "     ", "StartPFM"
+If KeepLogs Then WriteToLog "     ", "StartPFM"
 	PlayfieldMultiplier(CurrentPlayer)=PlayfieldMultiplierQual(CurrentPlayer)
 	PlayfieldMultiplierQual(CurrentPlayer)=1
 	PFxActivated = 1
@@ -5488,7 +5498,7 @@ Sub AddScore(points)		' Add points to the score AND update the score board * Pla
 			AwardExtraBall
 		End if 
 	End if 
-WriteToLog "     ", "AddScore: " & points
+If KeepLogs Then WriteToLog "     ", "AddScore: " & points
     ' add the points to the current players score variable
     If PFxActivated Then
         Score(CurrentPlayer) = Score(CurrentPlayer) + points * PlayfieldMultiplier(CurrentPlayer)
@@ -5692,7 +5702,7 @@ End Sub
 
 ' Skillshot: https://youtu.be/KFrRH1r8iV4?list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&t=2218
 Sub AwardSkillshot()
-WriteToLog "     ", "Skillshot"
+If KeepLogs Then WriteToLog "     ", "Skillshot"
 	ResetSkillShot
     PlaySoundVol "vo_skillshot", VolDef
     DMD CL(0, FormatScore(SkillshotValue(CurrentPlayer))), CL(1, ("SKILLSHOT")), "", eBlinkFast, eNone, eNone, 1500, True, ""
@@ -5718,7 +5728,7 @@ End Sub
 
 
 Sub AwardSuperSkillshot()
-WriteToLog "     ", "Super Skillshot"
+If KeepLogs Then WriteToLog "     ", "Super Skillshot"
     ResetSkillShot
 	PlaySoundVol "vo_superskillshot", VolDef
     DMD CL(0, FormatScore(SuperSkillshotValue(CurrentPlayer))), CL(1, ("SUPER SKILLSHOT")), "", eBlinkFast, eNone, eNone, 1500, True, ""
@@ -5747,7 +5757,7 @@ WriteToLog "     ", "Super Skillshot"
 End Sub
 
 Sub AwardSuperSecretSkillshot(points)
-WriteToLog "     ", "Secret Skillshot"
+If KeepLogs Then WriteToLog "     ", "Secret Skillshot"
 
     ResetSkillShot
 	PlaySoundVol "vo_supersecretskillshot", VolDef
@@ -5978,7 +5988,7 @@ Dim bAchScoreOnly		' No HighScore just Champ for Xandar, Cherry or Immolation
 ' Notes: Font and layout is incorrect 
 ' https://www.youtube.com/watch?v=besY8TS0Ges&list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&index=7
 Sub CheckHighscore()
-WriteToLog "     ", "CheckHighscore"
+If KeepLogs Then WriteToLog "     ", "CheckHighscore"
 
 'Score(CurrentPlayer)=250000001
 'ModePoints(CurrentPlayer, kModeIcarus)=200000000
@@ -6114,7 +6124,7 @@ WriteToLog "     ", "CheckHighscore"
 End Sub
 
 Sub HighScoreEntryInit()
-WriteToLog "     ", "HighScoreEntryInit:"
+If KeepLogs Then WriteToLog "     ", "HighScoreEntryInit:"
 	Dim i
 
 	SceneGeneralStart pDMDFull, True, False, "Backglass", "HighScoreBG.mp4", "^^^^^^^^^", "^^^^^^^^^"
@@ -6952,7 +6962,7 @@ End Sub
 '********************
 'used for all the real time updates
 
-' Pre-cache constant flipper start angles — read once at init, not per frame
+' Pre-cached flipper StartAngle constants (never change at runtime)
 Dim FlipRStartAngle, FlipLStartAngle, Flip1RStartAngle, Flip1LStartAngle
 FlipRStartAngle = RightFlipper.StartAngle
 FlipLStartAngle = LeftFlipper.StartAngle
@@ -6962,9 +6972,9 @@ Flip1LStartAngle = LeftFlipper1.StartAngle
 Sub Realtime_Timer
     RollingUpdate					'update rolling sounds
 	DoDTAnim 						'handle drop target animations
-	
+'    ramp007.heightbottom = UnderworldFlipper.currentangle
 	primRamp007.rotx=90+UnderworldFlipper.currentangle
-	
+
 	' Cache currentangle into locals — each COM read used by 2 prims
 	Dim rfCA : rfCA = RightFlipper.currentangle
 	Dim lfCA : lfCA = LeftFlipper.currentangle
@@ -6981,10 +6991,10 @@ Sub Realtime_Timer
 	PrimRightFlipperOff.RotY=-Flip1RStartAngle+rf1CA
 	PrimLeftFlipperOff.RotY=-Flip1LStartAngle+lf1CA
 
-	Dim sp1CA : sp1CA = Spinner001.currentangle
-	Dim sp2CA : sp2CA = Spinner002.currentangle
-	PrimSpinner001.RotX = -sp1CA
-	PrimSpinner002.RotX = -sp2CA
+	PrimSpinner001.RotX=-Spinner001.currentangle
+	PrimSpinner002.RotX=-Spinner002.currentangle
+
+' add any other real time update subs, like gates or diverters, flippers
 End Sub
 
 
@@ -7004,7 +7014,6 @@ FlasherOffBrightness = 0.5		' *** brightness of the flasher dome when switched o
 
 Dim objSpeed(20), ObjLevel(20), objbase(20), objlit(20), objflasher(20), objlight(20)
 Dim FlasherMatStr(20)
-Dim fmsi : For fmsi = 0 To 20 : FlasherMatStr(fmsi) = "Flashermaterial" & fmsi : Next
 Dim tablewidth, tableheight : tablewidth = TableRef.width : tableheight = TableRef.height
 'initialise the flasher color, you can only choose from "green", "red", "purple", "blue", "white" and "yellow"
 Dim bFlasher1Enabled:bFlasher1Enabled=False
@@ -7030,7 +7039,7 @@ RotateFlasher 4, 0
 Dim bFlasher5Enabled:bFlasher5Enabled=False
 InitFlasher 5, "red"
 RotateFlasher 5, 90
-
+Dim fmIdx : For fmIdx = 1 To 5 : FlasherMatStr(fmIdx) = "Flashermaterial" & fmIdx : Next
 
 ' rotate the flasher with the command below (first argument = flasher nr, second argument = angle in degrees)
 'RotateFlasher 4,17 : RotateFlasher 5,0 : RotateFlasher 6,90
@@ -7169,46 +7178,23 @@ Dim MaterialYellowArray: MaterialYellowArray = Array("BulbYellowOff", "BulbYello
 Dim NullFader : set NullFader = new NullFadingObject
 Dim Lampz : Set Lampz = New LampFader
 InitLampsNF              ' Setup lamp assignments
-
-' Pre-build array of light indices — skip non-light slots in per-tick loop
-Dim LampzLightIndices(), LampzLightIsArr(), LampzLightCount
-LampzLightCount = 0
-Dim lli
-For lli = 0 To UBound(Lampz.Obj)
-	If Lampz.IsLight(lli) Then LampzLightCount = LampzLightCount + 1
-Next
-ReDim LampzLightIndices(LampzLightCount - 1)
-ReDim LampzLightIsArr(LampzLightCount - 1)
-Dim llj : llj = 0
-For lli = 0 To UBound(Lampz.Obj)
-	If Lampz.IsLight(lli) Then
-		LampzLightIndices(llj) = lli
-		LampzLightIsArr(llj) = Lampz.IsArr(lli)
-		llj = llj + 1
-	End If
-Next
-
 LampTimer.Interval = 16
 LampTimer.Enabled = 1
 
 Sub LampTimer1_Timer()
 
 	' Stutter Check
-	If gametime-lastgametime > 50 Then WriteToLog "     ", "DROPPING FRAMES!!!!:" & gametime-lastgametime
-	lastgametime=gametime
+	If gametime-lastgametime > 50 Then If KeepLogs Then WriteToLog "     ", "DROPPING FRAMES!!!!:" & gametime-lastgametime
+	lastgametime=gametime 
 
-	Dim i, idx, tmp
-	For i = 0 To UBound(LampzLightIndices)
-		idx = LampzLightIndices(i)
-		If LampzLightIsArr(i) Then
-			tmp = Lampz.obj(idx)
-			Lampz.state(idx) = tmp(0).GetInPlayStateBool
-		Else
-	   
-														
-			Lampz.state(idx) = Lampz.obj(idx).GetInPlayStateBool
-		End If
-		
+	dim idx : for idx = 0 to uBound(Lampz.Obj)
+		if Lampz.IsLight(idx) then
+			if Lampz.IsArr(idx) then
+				Lampz.state(idx) = Lampz.ObjFirst(idx).GetInPlayStateBool
+			Else
+				Lampz.state(idx) = Lampz.obj(idx).GetInPlayStateBool
+			end if
+		end if
 	Next
 	Lampz.Update1	'update (fading logic only)
 End Sub
@@ -7774,7 +7760,6 @@ Class NullFadingObject : Public Property Let IntensityScale(input) : : End Prope
 
 Class LampFader
 	Public IsLight(140)					'apophis
-	Public IsArr(140)					'pre-cached IsArray result for hot-loop optimization
 	Public FadeSpeedDown(140), FadeSpeedUp(140)
 	Private Lock(140), Loaded(140), OnOff(140)
 	Public UseFunction
@@ -7784,6 +7769,8 @@ Class LampFader
 	Private Mult(140)
 	Public FrameTime
 	Private InitFrame
+	Public IsArr(140)			' pre-cached IsArray flag per index (optimization: avoids per-tick IsArray calls)
+	Public ObjFirst(140)		' pre-cached reference to first element for array entries (avoids array copy + index)
 	Public Name
 
 	Sub Class_Initialize()
@@ -7797,7 +7784,8 @@ Class LampFader
 			Lock(x) = True : Loaded(x) = False
 			Mult(x) = 1
 			IsLight(x) = False   		'apophis
-			IsArr(x) = False			'pre-cached IsArray flag
+			IsArr(x) = False
+			Set ObjFirst(x) = Nothing
 		Next
 		Name = "LampFaderNF" 'NEEDS TO BE CHANGED IF THERE'S MULTIPLE OF THESE OBJECTS, OTHERWISE CALLBACKS WILL INTERFERE WITH EACH OTHER!!
 		for x = 0 to uBound(OnOff) 		'clear out empty obj
@@ -7823,11 +7811,11 @@ Class LampFader
 			If Not tmp(x)="" then str = str & tmp(x) & " aLVL:"
 		Next
 		'msgbox "Sub " & name & idx & "(aLvl):" & str & "End Sub"
-		Dim procName : procName = name & idx
-		dim out : out = "Sub " & procName & "(aLvl):" & str & "End Sub"
+		dim out : out = "Sub " & name & idx & "(aLvl):" & str & "End Sub"
 		'if idx = 132 then msgbox out	'debug
 		ExecuteGlobal Out
-		Set cCallbackRef(idx) = GetRef(procName)
+		' Pre-resolve function pointer — eliminates per-frame GetRef(name & idx) string concat + lookup
+		Set cCallbackRef(idx) = GetRef(name & idx)
 
 	End Property
 
@@ -7846,6 +7834,7 @@ Class LampFader
 			if IsArray(aInput) then
 				obj(aIdx) = aInput
 				IsArr(aIdx) = True
+				Set ObjFirst(aIdx) = aInput(0)
 			Else
 				Set obj(aIdx) = aInput
 				if typename(aInput) = "Light" then IsLight(aIdx) = True   'apophis - If first object in array is a light, this will be set true
@@ -7853,6 +7842,8 @@ Class LampFader
 		Else
 			Obj(aIdx) = AppendArray(obj(aIdx), aInput)
 			IsArr(aIdx) = True
+			Dim maTemp : maTemp = Obj(aIdx)
+			Set ObjFirst(aIdx) = maTemp(0)
 		end if
 	end Property
 
@@ -7869,7 +7860,7 @@ Class LampFader
 	Public Sub TurnOnStates()	'If obj contains any light objects, set their states to 1 (Fading is our job!)
 		dim debugstr
 		dim idx : for idx = 0 to uBound(obj)
-			if IsArr(idx) then
+			if IsArray(obj(idx)) then
 				'debugstr = debugstr & "array found at " & idx & "..."
 				dim x, tmp : tmp = obj(idx) 'set tmp to array in order to access it
 				for x = 0 to uBound(tmp)
@@ -7923,28 +7914,27 @@ Class LampFader
 	End Sub
 
 	Public Sub Update()	'Handle object updates. Update on a -1 Timer! If done fading, loaded(x) = True
-		dim x, xx, modLvl, filtLvl, tmpCB
-		for x = 0 to uBound(OnOff)
+		dim x, xx, cbRef, tmpArr, tmpLvl : for x = 0 to uBound(OnOff)
 			if not Loaded(x) then
-				modLvl = Lvl(x) * Mult(x)
-				if IsArr(x) Then	'if array (pre-cached flag)
+				if IsArr(x) Then	'if array (pre-cached flag, avoids per-tick IsArray call)
+					tmpArr = obj(x)  ' cache array into local — avoids repeated Variant array copy on each obj(x) access
+					tmpLvl = Lvl(x)*Mult(x)
 					If UseFunction then
-						filtLvl = cFilter(modLvl)
-						for each xx in obj(x) : xx.IntensityScale = filtLvl : Next
+						tmpLvl = cFilter(tmpLvl)
+						for each xx in tmpArr : xx.IntensityScale = tmpLvl : Next
 					Else
-						for each xx in obj(x) : xx.IntensityScale = modLvl : Next
+						for each xx in tmpArr : xx.IntensityScale = tmpLvl : Next
 					End If
 				else						'if single lamp or flasher
 					If UseFunction then
-						obj(x).Intensityscale = cFilter(modLvl)
+						obj(x).Intensityscale = cFilter(Lvl(x)*Mult(x))
 					Else
-						obj(x).Intensityscale = modLvl
+						obj(x).Intensityscale = Lvl(x)
 					End If
 				end if
-				If UseCallBack(x) Then
-					Set tmpCB = cCallbackRef(x)
-					tmpCB modLvl
-				End If
+				'if TypeName(lvl(x)) <> "Double" and typename(lvl(x)) <> "Integer" then msgbox "uhh " & 2 & " = " & lvl(x)  ' REMOVED: debug assertion calling TypeName() 2x per lamp per frame
+				'If UseCallBack(x) then execute cCallback(x) & " " & (Lvl(x))	'Callback
+				If UseCallBack(x) then Set cbRef = cCallbackRef(x) : cbRef Lvl(x)*mult(x)  'Pre-resolved (was: Proc → GetRef per call)
 				If Lock(x) Then
 					if Lvl(x) = 1 or Lvl(x) = 0 then Loaded(x) = True	'finished fading
 				end if
@@ -7955,13 +7945,20 @@ End Class
 
 
 'Lamp Filter — pre-computed lookup table for ^1.6 curve (101 entries for 0.00-1.00)
+' Eliminates fractional exponentiation per-lamp per-frame in LampFader.Update
 Dim LampFilterLUT(100)
-Dim lfli : For lfli = 0 To 100 : LampFilterLUT(lfli) = (lfli / 100) ^ 1.6 : Next
+Dim lfl_i : For lfl_i = 0 To 100
+	LampFilterLUT(lfl_i) = (lfl_i / 100) ^ 1.6
+Next
 
 Function LampFilter(aLvl)
-	If aLvl <= 0 Then LampFilter = 0 : Exit Function
-	If aLvl >= 1 Then LampFilter = 1 : Exit Function
-	LampFilter = LampFilterLUT(Int(aLvl * 100))
+	If aLvl <= 0 Then
+		LampFilter = 0
+	ElseIf aLvl >= 1 Then
+		LampFilter = 1
+	Else
+		LampFilter = LampFilterLUT(Int(aLvl * 100))
+	End If
 End Function
 
 
@@ -8236,7 +8233,7 @@ Function DTAnimate(primary, secondary, prim, switch,  animate)
 
 	switchid = switch
 
-	rangle = prim.rotz * PI / 180
+	rangle = prim.rotz * PIover180
 
 	DTAnimate = animate
 
@@ -8469,7 +8466,7 @@ Sub SetFlash(MyLamp, nr, TotalPeriod, BlinkPeriod) 'similar to FlashForms, works
     MyLamp.TimerEnabled = 0
     MyLamp.TimerEnabled = 1
 'WriteToLog "     ", "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
-    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp 100*(" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue)), " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
+    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue))*100, " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
 End Sub
 
 Sub SetLamp(nr, value) ' 0 is off, 1 is on
@@ -8702,19 +8699,29 @@ noColor = -1
 
 Sub SetLightColor(n, col, stat)		' States: 0=Off, 1=On, 2=Flash, 3=Flash On, 4=Flash Off
 	SetLightColorTimed n, col, stat, 500
-End Sub 
+End Sub
 
+Sub SetLightColorByIdx(lIndex, col, stat)
+	SetLightColorTimedByIdx lIndex, col, stat, 500
+End Sub
 
 'updated by apophis to work with Lampz and 3D insert primitives
 Sub SetLightColorTimed(n, col, stat, msec) ' n = light, col = color, ' States: 0=Off, 1=On, 2=Flash, 3=Flash On, 4=Flash Off
-	if TypeName(n)="LightDummy" then exit sub 	' Fake Light, cant set the color 
-WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
+	if TypeName(n)="LightDummy" then exit sub 	' Fake Light, cant set the color
+	If KeepLogs Then WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
 	dim vL, pL
-	Set vL = eval("v" & n.name)
-	Set pL = eval("p" & n.name)
+	Execute "set vL=v" & n.name
+	Execute "set pL=p" & n.name
+	SetLightColorCore n, vL, pL, col, stat, msec
+End Sub
 
-	'UpdateMaterial(string, float wrapLighting, float roughness, float glossyImageLerp, float thickness, float edge, float edgeAlpha, float opacity, OLE_COLOR base, OLE_COLOR glossy, OLE_COLOR clearcoat, VARIANT_BOOL isMetal, VARIANT_BOOL opacityActive, float elasticity, float elasticityFalloff, float friction, float scatterAngle)
+Sub SetLightColorTimedByIdx(lIndex, col, stat, msec)
+	If LightMapIsDummy(lIndex) Then Exit Sub
+	If KeepLogs Then WriteToLog "     ", "SetLightColorTimedByIdx:" & lIndex & " " & col
+	SetLightColorCore LightMap(lIndex), vLightMap(lIndex), pLightMap(lIndex), col, stat, msec
+End Sub
 
+Sub SetLightColorCore(n, vL, pL, col, stat, msec) ' Core color-setting logic
     Select Case col
         Case 0
             vL.color = RGB(18, 0, 0)
@@ -8783,9 +8790,9 @@ WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
 			SetFastPulse n
 			n.State = 2
 			vpmTimer.addTimer msec, n.name & ".state =0:SetDefPulse " & n.name & " '"
-		Else 
+		Else
 			n.State = stat
-		End if 
+		End if
     End If
 End Sub
 
@@ -8794,14 +8801,17 @@ Sub SetLightColorRGB(n, cRed, cGreen, cBlue, fRed, fGreen, fBlue) ' n = light, c
 	Execute "set vL=v" & n.name
 	Execute "set pL=p" & n.name
 
-	If IsEmpty(vL) OR IsEmpty(pL) Then
-		'debug.print "SetLightColorRGB: v" & n.name & " = " & TypeName(vL) & " p" & n.name & " = " & TypeName(pL)
-		exit sub
-	End If								   
 	vL.color = RGB(cRed, cGreen, cBlue)
 	vL.colorfull = RGB(fRed, fGreen, fBlue)
 	UpdateMaterial pL.material,0,0,0,0,0,0,1,RGB(fRed, fGreen, fBlue),0,0,False,True,0,0,0,0
-End Sub 
+End Sub
+
+Sub SetLightColorRGBByIdx(lIndex, cRed, cGreen, cBlue, fRed, fGreen, fBlue) ' Index-based: uses pre-resolved vLightMap/pLightMap, no Execute
+	If LightMapIsDummy(lIndex) Then Exit Sub
+	vLightMap(lIndex).color = RGB(cRed, cGreen, cBlue)
+	vLightMap(lIndex).colorfull = RGB(fRed, fGreen, fBlue)
+	UpdateMaterial pLightMap(lIndex).material,0,0,0,0,0,0,1,RGB(fRed, fGreen, fBlue),0,0,False,True,0,0,0,0
+End Sub
 
 
 Sub SetGILightColor(n, col, stat)		' States: 0=Off, 1=On, 2=Flash, 3=Flash On, 4=Flash Off
@@ -8958,16 +8968,15 @@ Sub RainbowTimer_Timer 'rainbow led light color changing
 			obj.color = RGB(rRed \ 10, rGreen \ 10, rBlue \ 10)
 			obj.colorfull = RGB(rRed, rGreen, rBlue)
 		Next
-	else 
-		For each obj in RainbowLights.keys
-			SetLightColorRGB obj, rRed \ 10, rGreen \ 10, rBlue \ 10, rRed, rGreen, rBlue
-		Next
-	End if 
+	else
+		' Use pre-resolved index path — eliminates 2 Execute calls per 10ms tick during RainbowMode
+		SetLightColorRGBByIdx MyRainboxIdx, rRed \ 10, rGreen \ 10, rBlue \ 10, rRed, rGreen, rBlue
+	End if
 End Sub
 
 
 Sub StartAttractMode(bReset)
-WriteToLog "     ", "StartAttractMode"
+If KeepLogs Then WriteToLog "     ", "StartAttractMode"
 	TurnOffDofUndercab
 	DOF 200, DOFon 
 	pClearEverything
@@ -9418,6 +9427,9 @@ const kLightLoopRight2		=34			' Full Loop
 
 const kMaxLights		= 35			' Indexes are 0 based so max is +1
 
+Dim vLightMap()
+Dim pLightMap()
+Dim LightMapIsDummy()
 dim LightMap()						' Mapping of real lights to indexes
 Sub SetupLightMap()
 	Redim LightMap(kMaxLights)
@@ -9455,8 +9467,21 @@ Sub SetupLightMap()
 	set LightMap(kLightLoopLeft2)=lLightLoopLeft2			' No Real Light for this 
 	set LightMap(kLightLoopRight2)=lLightLoopRight2			' No Real Light for this 
 	set LightMap(kLightSlingLeft)=lLightSlingLeft			' No Real Light for this 
-	set LightMap(kLightSlingRight)=lLightSlingRight			' No Real Light for this 
-End Sub 
+	set LightMap(kLightSlingRight)=lLightSlingRight			' No Real Light for this
+	ReDim vLightMap(kMaxLights)
+	ReDim pLightMap(kMaxLights)
+	ReDim LightMapIsDummy(kMaxLights)
+	Dim tmpIdx
+	For tmpIdx = 0 To kMaxLights - 1
+		If TypeName(LightMap(tmpIdx)) = "LightDummy" Then
+			LightMapIsDummy(tmpIdx) = True
+		Else
+			LightMapIsDummy(tmpIdx) = False
+			Execute "Set vLightMap(" & tmpIdx & ")=v" & LightMap(tmpIdx).name
+			Execute "Set pLightMap(" & tmpIdx & ")=p" & LightMap(tmpIdx).name
+		End If
+	Next
+End Sub
 SetupLightMap
 
 ' Define a variable for all the modes in order of presidence (Higher modes take presidence over lower) 
@@ -9519,13 +9544,13 @@ Sub SetLightColorRestore(lIndex)
 	Next
 	if LightStackCount<=1 then StackedLightsIdx(lIndex)=-1	' Disable stacked 
 
-WriteToLog "     ", "SetLightColorRestore " & lIndex & " state:" & finalState & " color:" & finalColor
+If KeepLogs Then WriteToLog "     ", "SetLightColorRestore " & lIndex & " state:" & finalState & " color:" & finalColor
 'WriteToLog "     ", "SetLightColor:" & LightMap(lIndex).name & " Idx:" & lIndex &","&finalState
-	SetLightColor LightMap(lIndex), finalColor, finalState
-End Sub 
+	SetLightColorByIdx lIndex, finalColor, finalState
+End Sub
 
 Sub SSetLightColor(modeIdx, lIndex, color, state)
-WriteToLog "     ", "SSetLightColor:" & modeIdx & " " & lIndex & " " & color & " " & state
+If KeepLogs Then WriteToLog "     ", "SSetLightColor:" & modeIdx & " " & lIndex & " " & color & " " & state
 
 	ModeLightState(CurrentPlayer, modeIdx, lIndex)=state
 	ModeLightColor(CurrentPlayer, modeIdx, lIndex)=color
@@ -9549,7 +9574,7 @@ Sub CycleStackedLights()	' This will cycle colors on all the stacked lights
 					if StackedLightsIdx(j)>=kMAX_MODES then StackedLightsIdx(j)=0
 					if StackedLights(CurrentPlayer, StackedLightsIdx(j), j)<>-1 then 
 'WriteToLog "     ", "Changing Stacked Idx:" & StackedLights(CurrentPlayer, i, j)
-						SetLightColor LightMap(j), ModeLightColor(CurrentPlayer, StackedLightsIdx(j), j), -1
+						SetLightColorByIdx j, ModeLightColor(CurrentPlayer, StackedLightsIdx(j), j), -1
 						Exit For
 					End if 
 				Next 
@@ -10121,7 +10146,7 @@ End Sub
 
 
 sub StartInstantInfo(keycode)
-WriteToLog "     ", "Start Instant " & keycode & " " & bInstantInfo
+If KeepLogs Then WriteToLog "     ", "Start Instant " & keycode & " " & bInstantInfo
 	if bInstantInfo = False Then ' I am already in instantinfo
 		InstantInfoTimer.Interval = 6000
 		InstantInfoTimer.Enabled = True
@@ -10139,7 +10164,7 @@ End Sub
 'End Sub
 
 Sub InstantInfoTimer_Timer
-WriteToLog "     ", "Instant Info timer"
+If KeepLogs Then WriteToLog "     ", "Instant Info timer"
 
 	if bBallInPlungerLane then 
 		PuPlayer.LabelShowPage pTransp,2,0,""	' Hide Song Selection
@@ -10158,7 +10183,7 @@ WriteToLog "     ", "Instant Info timer"
 End Sub
 
 Sub StopInstantInfo()
-WriteToLog "     ", "StopInstantInfo"
+If KeepLogs Then WriteToLog "     ", "StopInstantInfo"
 	If DMDFet(kDMDFet_InactivityPause) then PauseTimersForce 500
 	InstantInfoTimer.Enabled = False
 
@@ -10386,7 +10411,7 @@ End Sub
 
 Dim StopEndOfBallModeEntendTime
 Sub StopEndOfBallMode() 'this sub is called after your ball in play is drained, reset skillshot, modes, timers
-WriteToLog "     ", "StopEndOfBallMode: " & GetActiveMode()
+If KeepLogs Then WriteToLog "     ", "StopEndOfBallMode: " & GetActiveMode()
     Dim tmp
 	QueueFlush 0											' EmptyQueue
 	RandomVOSoundEndOfBall2									' End of Ball Sound 
@@ -10452,7 +10477,7 @@ Sub ResetNewBallVariables() 'reset variables for a new ball or player
 End Sub
 
 Sub ResetNewBallLights() 'turn on or off the needed lights before a new ball is released
-WriteToLog "     ", "ResetNewBallLights"
+If KeepLogs Then WriteToLog "     ", "ResetNewBallLights"
     StopRainbow          ' Set Arrow lights to white and turn them off
     UpdatePFXLights      'ensure the multiplier is displayed right
     UpdateEDDIELetter
@@ -10490,13 +10515,13 @@ Sub UpdateSkillShot() 'Setup and updates the skillshot lights
 			bSuperSkillshotReady=False
 			bSuperSSkillshotsReady(3)=False
 			lJackpot.State = 0
-WriteToLog "     ", "Stopping JP"
+If KeepLogs Then WriteToLog "     ", "Stopping JP"
 		End if 
 	End if 
 End Sub
 
 Sub ResetSkillShotTimer_Timer 'timer to reset the skillshot lights & variables
-WriteToLog "     ", "Skillshot Timer Expired"
+If KeepLogs Then WriteToLog "     ", "Skillshot Timer Expired"
     ResetSkillShotTimer.UserValue=ResetSkillShotTimer.UserValue+1
 	if ResetSkillShotTimer.UserValue=3 and bSkillShotReady then 		' Standard Skillshot timeout 
 		ResetStandardSkillshot
@@ -11070,9 +11095,12 @@ End Sub
 '***************
 Dim bDebounce_Target001:bDebounce_Target001=False
 Sub Target001_hit 'skillshot, X
-WriteToLog "     ", "Target001_hit"
+If KeepLogs Then WriteToLog "     ", "Target001_hit"
 
-	if bDebounce_Target001 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_Target001 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target001=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target001=False '"
 
@@ -11138,7 +11166,10 @@ End Sub
 
 Dim bDebounce_Target003:bDebounce_Target003=False
 Sub Target003_hit 'bumpers, X target
-	if bDebounce_Target003 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_Target003 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target003=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target003=False '"
 
@@ -11160,8 +11191,11 @@ End Sub
 
 Dim bDebounce_Target004:bDebounce_Target004=False
 Sub Target004_Hit 'drop top
-WriteToLog "     ", "Target004_Hit"
-	if bDebounce_Target004 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+If KeepLogs Then WriteToLog "     ", "Target004_Hit"
+	if bDebounce_Target004 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target004=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target004=False '"
 
@@ -11171,7 +11205,7 @@ WriteToLog "     ", "Target004_Hit"
 	ShadowDT(0).visible=False
 
 	if target004.uservalue <>0 and target005.uservalue<>0 and target006.uservalue<>0 then 
-		WriteToLog "     ", "SWEEP TARGETS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		If KeepLogs Then WriteToLog "     ", "SWEEP TARGETS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 		bDropSweep=True 
 	End if 
 
@@ -11196,8 +11230,11 @@ End Sub
 
 Dim bDebounce_Target005:bDebounce_Target005=False
 Sub Target005_Hit()  'drop center
-WriteToLog "     ", "Target005_Hit"
-	if bDebounce_Target005 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+If KeepLogs Then WriteToLog "     ", "Target005_Hit"
+	if bDebounce_Target005 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target005=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target005=False '"
 	
@@ -11227,8 +11264,11 @@ End Sub
 
 Dim bDebounce_Target006:bDebounce_Target006=False
 Sub Target006_Hit()  'drop bottom
-WriteToLog "     ", "Target006_Hit"
-	if bDebounce_Target006 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+If KeepLogs Then WriteToLog "     ", "Target006_Hit"
+	if bDebounce_Target006 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target006=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target006=False '"
 
@@ -11259,7 +11299,10 @@ End Sub
 Dim bDebounce_Target007:bDebounce_Target007=False
 Sub Target007_hit 'mini loop target, X
 
-	if bDebounce_Target007 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_Target007 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target007=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target007=False '"
 
@@ -11282,7 +11325,10 @@ Dim bDebounce_Target008:bDebounce_Target008=False
 Sub Target008_hit 'Super Jackpot (Dead End), X, Mushroomcloud
 
 'WriteToLog "     ", "Target008_hit" & bDebounce_Target008 
-	if bDebounce_Target008 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_Target008 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_Target008=True 
 	vpmtimer.AddTimer 200, "bDebounce_Target008=False '"
 
@@ -11315,9 +11361,12 @@ End Sub
 
 Dim bDebounce_CapWall2:bDebounce_CapWall2=False
 Sub CapWall2_Hit()			' Mummy Newton
-WriteToLog "     ", "CapWall2_Hit:" & BallsInLock(CurrentPlayer) & " " & BallsInRealLock & " " & RampLock2.Collidable
+If KeepLogs Then WriteToLog "     ", "CapWall2_Hit:" & BallsInLock(CurrentPlayer) & " " & BallsInRealLock & " " & RampLock2.Collidable
 
-	if bDebounce_CapWall2 then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_CapWall2 then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_CapWall2=True 
 	vpmtimer.AddTimer 200, "bDebounce_CapWall2=False '"
 
@@ -11413,10 +11462,13 @@ Dim CapWall_bHit:CapWall_bHit=False
 Dim bDebounce_CapWall:bDebounce_CapWall=False
 
 Sub CapWall1_Hit 'Maiden ball - assigned to aSwitches 
-WriteToLog "     ", "CapWall1_Hit:" & LastSwitchHit & " " & bSkillShotReady
+If KeepLogs Then WriteToLog "     ", "CapWall1_Hit:" & LastSwitchHit & " " & bSkillShotReady
     If Tilted Then Exit Sub
 
-	if bDebounce_CapWall then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce  
+	if bDebounce_CapWall then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce  
+	end if
 	bDebounce_CapWall=True 
 	vpmtimer.AddTimer 200, "bDebounce_CapWall=False '"
 
@@ -11437,7 +11489,7 @@ WriteToLog "     ", "CapWall1_Hit:" & LastSwitchHit & " " & bSkillShotReady
     CheckDeathblow 2
 	CheckMadnessFreeze
 
-:WriteToLog "     ", "DISABLE SSS4 Orb:" & LastSwitchHit
+:If KeepLogs Then WriteToLog "     ", "DISABLE SSS4 Orb:" & LastSwitchHit
 
 	If LastSwitchHit="Trigger005" and bSuperSSkillshotsReady(3) Then ' ANDREW - Need to add something like IF LeftFlipper.RotateToEnd = True OR LeftFlipper.State = RotateToEnd (not sure how to check this property?)
 		CapWall_bHit=True
@@ -11572,9 +11624,12 @@ Sub CheckPharohTargets			' Triggered when you hit any of the bullseye areas at t
 	DOF 160, DOFpulse	
 	DOF 159, DOFpulse
 
-WriteToLog "     ", "CheckPharohTargets:" & BullseyeMultiplier
+If KeepLogs Then WriteToLog "     ", "CheckPharohTargets:" & BullseyeMultiplier
 
-	if bDebounce_CheckPharohTargets then WriteToLog "     ", "Debounce Skip":exit sub						' Debounce in case 2 targets get hit 
+	if bDebounce_CheckPharohTargets then
+		If KeepLogs Then WriteToLog "     ", "Debounce Skip"
+		exit sub						' Debounce in case 2 targets get hit 
+	end if
 	bDebounce_CheckPharohTargets=True 
 	vpmtimer.AddTimer 200, "bDebounce_CheckPharohTargets=False '"
 
@@ -11635,7 +11690,7 @@ End Sub
 '*****************
 
 Sub Underworld_Hit
-WriteToLog "     ", "Underworld_Hit BallsFromSarcophagus:" & BallsFromSarcophagus & " lBattle.State:" & lBattle.State & " Madness:" & IsModeActive(kModeMadness)
+If KeepLogs Then WriteToLog "     ", "Underworld_Hit BallsFromSarcophagus:" & BallsFromSarcophagus & " lBattle.State:" & lBattle.State & " Madness:" & IsModeActive(kModeMadness)
 
 	if BallsFromSarcophagus>0 then 
 		BallsFromSarcophagus=BallsFromSarcophagus-1
@@ -11657,7 +11712,7 @@ WriteToLog "     ", "Underworld_Hit BallsFromSarcophagus:" & BallsFromSarcophagu
 		RampDown					' Close it
 		Addscore 330
 
-	WriteToLog "     ", "Underworld_Hit: " & lBattle.State
+	If KeepLogs Then WriteToLog "     ", "Underworld_Hit: " & lBattle.State
 		If IsModeActive(kModeCyborg) and IsModeQual(kModeCyborg)=False and GetActiveModeAll() = -1 Then
 			StartCyborg False 
 		elseIf lBattle.State and IsModeActive(kModeCyborg)=False Then	' Make sure cyborg isnt running 
@@ -11666,7 +11721,7 @@ WriteToLog "     ", "Underworld_Hit BallsFromSarcophagus:" & BallsFromSarcophagu
 			' Rime is the only mode that will eject the ball (Handle the Edge just in case something else locks a ball here)
 			if IsModeActive(kModeRime)=False then 
 				vpmtimer.addtimer 1000, "Exit_Underworld False '"
-				WriteToLog "     ", "ERROR - Releasing ball when it shouldnt of got here"
+				If KeepLogs Then WriteToLog "     ", "ERROR - Releasing ball when it shouldnt of got here"
 			Else 
 				ProcessModes(kLightPharaohTarget)
 				ProcessModes(kLightRampCenter)
@@ -11677,7 +11732,7 @@ End Sub
 
 
 Sub Exit_Underworld(bLeaveRampUp)
-WriteToLog "     ", "Exit_Underworld: " & bLeaveRampUp
+If KeepLogs Then WriteToLog "     ", "Exit_Underworld: " & bLeaveRampUp
     RampUp 'ensure the ramps is up
     SoundSaucerKick 1, Underworld
 	Underworld.Kick 180,65,1.5
@@ -11775,7 +11830,7 @@ Sub SetupEddieInserts 'called each time to light new white arrows
 	Dim i
 	Dim ModesStarted 
 
-WriteToLog "     ", "SetupEddieInserts:" &  IsModeActive(kModeEddie) & " qual:" &  IsModeQual(kModeEddie)
+If KeepLogs Then WriteToLog "     ", "SetupEddieInserts:" &  IsModeActive(kModeEddie) & " qual:" &  IsModeQual(kModeEddie)
 	If IsModeActive(kModeNOTB) then 
 		SSetLightColor kModeNOTB,kLightRampLeft  , White, 0
 		SSetLightColor kModeNOTB,kLightLoopLeft  , White, 0
@@ -11871,7 +11926,7 @@ WriteToLog "     ", "SetupEddieInserts:" &  IsModeActive(kModeEddie) & " qual:" 
 
 		End if
 
-		WriteToLog "     ", "SetupEddieInserts: ModesStarted:" & ModesStarted & " " & rndIdx & " " & rndIdx2 & " " & rndIdx3
+		If KeepLogs Then WriteToLog "     ", "SetupEddieInserts: ModesStarted:" & ModesStarted & " " & rndIdx & " " & rndIdx2 & " " & rndIdx3
 
 '		if ModesStarted>=1 then 
 '			if ModesStarted>=3 then 
@@ -11909,7 +11964,7 @@ End Sub
 Sub AddEDDIELetter(n)
     ' if not at the maximum letters
     if(EDDIELetter(CurrentPlayer) < 5)then
-WriteToLog "     ", "AddEDDIELetter"
+If KeepLogs Then WriteToLog "     ", "AddEDDIELetter"
 
 		If EDDIELetterStart then
 			if INT(RND*2)=0 then 
@@ -11934,7 +11989,7 @@ End Sub
 
 Sub UpdateEDDIELetter
 	dim mode
-WriteToLog "     ", "UpdateEDDIELetter: " & EDDIELetter(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "UpdateEDDIELetter: " & EDDIELetter(CurrentPlayer)
     ' Update the EDDIE lights = it checks the number of letters you have and uses that number as the case.
     If EDDIELetter(CurrentPlayer)=5 then 
 		if IsModeActive(kModeEddie) then 
@@ -11958,7 +12013,7 @@ WriteToLog "     ", "UpdateEDDIELetter: " & EDDIELetter(CurrentPlayer)
 End Sub
 
 Sub ResetEDDIELetter				' Enable Eddie Mode
-WriteToLog "     ", "ResetEDDIELetter"
+If KeepLogs Then WriteToLog "     ", "ResetEDDIELetter"
 	Dim ModesStarted
 	Dim i
 
@@ -11985,7 +12040,7 @@ Sub RotateMode	' Rotate Modes (not random)
 	dim i 
 	Dim idx:idx=-1
 
-WriteToLog "     ", "RotateMode: EDDIELetter=" & EDDIELetter(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "RotateMode: EDDIELetter=" & EDDIELetter(CurrentPlayer)
 	if EDDIELetter(CurrentPlayer) = 5 then exit sub 		' Cant rotate once Eddie is spelled
 
 	idx=GetCurrentMode()
@@ -12012,7 +12067,7 @@ Sub SelectNextMode(idx)
 End Sub 
 
 Sub UpdateModeLights
-WriteToLog "     ", "UpdateModeLights: " & Mode(CurrentPlayer, kModeFear)
+If KeepLogs Then WriteToLog "     ", "UpdateModeLights: " & Mode(CurrentPlayer, kModeFear)
 
 'Mode Lights 
 	lMode2M2M.State 	= Mode(CurrentPlayer, kMode2M2M)  	'2MTM			' PSM not sure what this is supposed to do 
@@ -12041,11 +12096,11 @@ Sub StartSongBattleMode		' Start a Mode
 	Dim bMummyActive
 
 	SetModeQual kModeEddie, False
-WriteToLog "     ", "StartSongBattleMode:" & GetCurrentMode 
+If KeepLogs Then WriteToLog "     ", "StartSongBattleMode:" & GetCurrentMode 
 	Mode=GetCurrentMode
 
 	if bMultiBallMode then		' We should never get here but if we do we have to kick out the ball
-WriteToLog "     ", "ERROR... You should never get here!!!!!!!!!!!!!!!"
+If KeepLogs Then WriteToLog "     ", "ERROR... You should never get here!!!!!!!!!!!!!!!"
 'MsgBox "Error You shouldnt get here! Make a note"
 		PlaySoundVol "alarm", VolSfx
 		vpmtimer.addtimer 1000, "Exit_Underworld False '"			'  Must kick the ball out
@@ -12294,7 +12349,7 @@ Sub TwoMinToMidnightTimer_Timer 'ANDREW changed all this two match Stern (1secon
 	TwoMinToMidnightTimer.Interval = 500
 	if tmrPauseTimers.Enabled then Exit sub
 
-WriteToLog "     ", "TwoMinToMidnightTimer_Timer: " & TwoMinToMidnightTimerCount
+If KeepLogs Then WriteToLog "     ", "TwoMinToMidnightTimer_Timer: " & TwoMinToMidnightTimerCount
 	'pupevent 832
     'UpdateClock TwoMinToMidnightTimerCount	
 	TwoMinToMidnightTimerCount = TwoMinToMidnightTimerCount + 1
@@ -12381,7 +12436,7 @@ Sub StartFlightOfIcarus
 End Sub
 
 Sub StopFlightOfIcarus 'Stops timer on drain or if time runs out - Chris	
-WriteToLog "     ", "STOP ICARUS "
+If KeepLogs Then WriteToLog "     ", "STOP ICARUS "
 
 	TurnOffDofUndercab
 	DOF 201, DOfon
@@ -12521,7 +12576,7 @@ Sub StartHallowed
 End Sub
 
 Sub StopHallowed
-WriteToLog "     ", "STOP HALLOWED "
+If KeepLogs Then WriteToLog "     ", "STOP HALLOWED "
 	TurnOffDofUndercab
 	DOF 201, DOfon
 
@@ -12670,7 +12725,7 @@ Sub CancelMarinerMBHurryUp()
 End Sub 
 
 Sub StopMariner(bMBall) 
-WriteToLog "     ", "StopMariner: " & bMBall
+If KeepLogs Then WriteToLog "     ", "StopMariner: " & bMBall
 	TurnOffDofUndercab
 	DOF 201, DOfon
 	SSetLightColor kModeRime, kLightSpinnerLeft, blue, 0
@@ -12723,7 +12778,7 @@ End Sub
 
 
 Sub CheckMariner
-WriteToLog "     ", "CheckMariner:" & MarinerCount
+If KeepLogs Then WriteToLog "     ", "CheckMariner:" & MarinerCount
 	dim i 
 	Dim MarinerJP
     Select Case MarinerCount
@@ -12926,7 +12981,7 @@ End Sub
 
 Dim SceneFODWait_Spinners
 Sub SceneFODWait()
-WriteToLog "     ", "SceneFODWait"
+If KeepLogs Then WriteToLog "     ", "SceneFODWait"
 	Dim idx 
 	idx = INT(RND * 3)+1
 	if SceneFODWait_Spinners then 
@@ -13038,7 +13093,7 @@ Sub FearOfTheDarkTimer_Timer '40 seconds
 End Sub
 
 Sub StopFearOfTheDark
-WriteToLog "     ", "StopFearOfTheDark"
+If KeepLogs Then WriteToLog "     ", "StopFearOfTheDark"
 	TurnOffDofUndercab
 	DOF 201, DOfon
 
@@ -13147,7 +13202,7 @@ Sub AcesHighTimer_Timer 'a kind of "follow the lights" changes the lit arrow aft
 	Dim tmrValue
 	if tmrPauseTimers.Enabled then Exit sub
 
-WriteToLog "     ", "ACES Timer SWITCH SHOT: " & AcesHighTimer.UserValue
+If KeepLogs Then WriteToLog "     ", "ACES Timer SWITCH SHOT: " & AcesHighTimer.UserValue
 
 	if AcesHighCount=9 then 
 		AcesHighTimer.UserValue=AcesHighTimer.UserValue+1
@@ -13198,7 +13253,7 @@ WriteToLog "     ", "ACES Timer SWITCH SHOT: " & AcesHighTimer.UserValue
 End Sub
 
 Sub StopAcesHigh(bMBall)       'called at the end of the multiball or when completed
-WriteToLog "     ", "STOP ACES "
+If KeepLogs Then WriteToLog "     ", "STOP ACES "
 	TurnOffDofUndercab
 	DOF 201, DOfon
 
@@ -13236,7 +13291,7 @@ End Sub
 Sub ModeEnd(mode)		' StopMode, EndMode
 	bBallAddedThisMode=False
 	SelectMusic(Songnr)	' Go back to default music
-	WriteToLog "     ", "ModeEnd:" & mode & " " & GetActiveMode()
+	If KeepLogs Then WriteToLog "     ", "ModeEnd:" & mode & " " & GetActiveMode()
 
 	' Wizard modes dont cycle the PrimaryMode
 	if Mode <> kModeMummy and Mode<> kModeTrooper and Mode<>kModeCyborg and _
@@ -13369,7 +13424,7 @@ End Sub
 
 Dim CycleMummyInsertsStates(5)
 Sub CycleMummyInsertsState(bEnable)			' Enable/Disasble the strobing of the mummy inserts (Save states and restore when done)
-WriteToLog "     ", "CycleMummyInsertsState:" & bEnable
+If KeepLogs Then WriteToLog "     ", "CycleMummyInsertsState:" & bEnable
 	if bEnable then 
 '		lMummyM.State=0:lMummyU.State=0:lMummyM2.State=0:lMummyM3.State=0:lMummyY.State=0
 
@@ -13420,7 +13475,7 @@ Sub AddMummyletter
     MummyCount(CurrentPlayer) = MummyCount(CurrentPlayer) + 1
 '	if MummyCount(CurrentPlayer)>5 then MummyCount(CurrentPlayer)=5		' Make sure we dont overflow this somehow
 
-WriteToLog "     ", "AddMummyletter:" & MummyCount(CurrentPlayer) & " " & bMummyLetterJP
+If KeepLogs Then WriteToLog "     ", "AddMummyletter:" & MummyCount(CurrentPlayer) & " " & bMummyLetterJP
 
 	If IsModeActive(kModeMummy) then 
 		Select Case MummyCount(CurrentPlayer)
@@ -13498,9 +13553,9 @@ WriteToLog "     ", "AddMummyletter:" & MummyCount(CurrentPlayer) & " " & bMummy
 
 	' 
 	if BallsInLock(CurrentPlayer) <> 0 then 
-		SetLightColorTimed lCaptiveBall, red, 2, 1000
-	else 
-		SetLightColorTimed lCaptiveBall, red, 4, 1000
+		SetLightColorTimedByIdx kLightCaptiveBall, red, 2, 1000
+	else
+		SetLightColorTimedByIdx kLightCaptiveBall, red, 4, 1000
 	End if
 
 	if bMummyLetterJP then ' Mummy Jackpot Collected (Hit Sarcophagus after hitting switch count)
@@ -13537,7 +13592,7 @@ WriteToLog "     ", "AddMummyletter:" & MummyCount(CurrentPlayer) & " " & bMummy
 			QueueScene2 0, "RotateRamp(3) ", 0, 1, True ' Open Lock and Rotate Ramp Up
 			QueueScene "SceneGeneralStartDef False, False, ""MummyMultiball"", ""MStart.mp4"", ""^^^^^^^^^"" ", 6000, 1
 		elseif IsModeActive(kModeMummy) then  
-WriteToLog "     ", "AddMummyletter: UNLOAD"
+If KeepLogs Then WriteToLog "     ", "AddMummyletter: UNLOAD"
 
 			' Check if Other MBs are ready if so disable them
 			CancelMarinerMBHurryUp
@@ -13594,7 +13649,7 @@ End Sub
 
 
 Sub MummySarcLock()
-WriteToLog "     ", "MummySarcLock"
+If KeepLogs Then WriteToLog "     ", "MummySarcLock"
 	RotateRamp(2)						' Go to Unload Position
 	RemoveHudInfo kModeMummy
 	AddHudInfo kModeMummy, "SARCOPHAGUS", "LOCK", "", ":15", False 
@@ -13617,7 +13672,7 @@ Sub CheckMummyMBSave(Mode)	' Saves state if Ramp is in MummyMB Eject mode and we
 End Sub
 
 Sub StartMummyMB
-WriteToLog "     ", "StartMummyMB"
+If KeepLogs Then WriteToLog "     ", "StartMummyMB"
 	QueueScene "SceneGeneralStartDef False, False, ""MummyMultiball"", ""MummyMB.mp4"", ""I:MummyMultiball\\txtMummyMB.png^^^^^^^^^"" ", 1067, 1
 	QueueScene "SceneClearLabels", 0, 1
 	tmrMummyMBHurryup.Enabled = False
@@ -13697,7 +13752,7 @@ WriteToLog "     ", "StartMummyMB"
 End Sub
 
 Sub StopMummyMB
-WriteToLog "     ", "STOP MummyMB :" & MummyTimes(CurrentPlayer) & " HurryUp:" & tmrMummyMBHurryup.Enabled & " " & BallsOnPlayfield & " " & BallsInRealLock
+If KeepLogs Then WriteToLog "     ", "STOP MummyMB :" & MummyTimes(CurrentPlayer) & " HurryUp:" & tmrMummyMBHurryup.Enabled & " " & BallsOnPlayfield & " " & BallsInRealLock
 
 	if MummyTimes(CurrentPlayer)=0 then exit sub				' Not really started 
 
@@ -13806,7 +13861,7 @@ Function isRampUp()
 End Function
 
 Sub RampUp	
-WriteToLog "     ", "RampUp"
+If KeepLogs Then WriteToLog "     ", "RampUp"
 	DOF 173, DOFon 'Ramp up indicator	
 	If RampState="Down" Then	
 		DOF 179, DOFpulse 'Gear Motor for when ramp opens/closes	
@@ -13824,7 +13879,7 @@ WriteToLog "     ", "RampUp"
 End Sub
 
 Sub RampDown
-WriteToLog "     ", "RampDown"
+If KeepLogs Then WriteToLog "     ", "RampDown"
 	DOF 173, DOFoff 'Ramp up indicator off	
 	If RampState="Up" Then	
 		DOF 179, DOFpulse 'Gear Motor for when ramp opens/closes	
@@ -13855,7 +13910,7 @@ End Sub
 'End Sub 
 
 Sub TrooperDisable(bDisable)
-	WriteToLog "     ", "TrooperDisable:" & bDisable
+	If KeepLogs Then WriteToLog "     ", "TrooperDisable:" & bDisable
 	If IsModeActive(kModeTrooper) and IsModeQual(kModeTrooper)=False and bDisable then	' LockProgressing but not started
 		SSetLightColor kModeTrooper, kLightOrbitLeft, green, 0
 		SSetLightColor kModeTrooper, kLightOrbitRight, green, 0
@@ -13966,7 +14021,7 @@ End Sub
 
 Sub StopTrooperMB
 	if IsModeQual(kModeTrooper)=False then Exit Sub ' Not really started
-WriteToLog "     ", "STOP TrooperMB "
+If KeepLogs Then WriteToLog "     ", "STOP TrooperMB "
 
 	StopRainbow
 	lUnderworld.State = 0
@@ -14029,13 +14084,17 @@ Sub CheckDrops(tgtIndex)
 
 	if IsModeActive(kModeRime) and (MarinerCount=7 or MarinerCount=8) then exit sub 	' Skip drop processing here
 
+	Dim curLightIdx
 	Select case tgtIndex
 		case 2:	' Top
 			set curLight=lLightLock
+			curLightIdx = kLightLock
 		case 1:	' Middle
 			set curLight=lLightOrb
+			curLightIdx = kLightOrb
 		case 0:	' Bottom
 			set curLight=lBonusX
+			curLightIdx = kLightBonusX
 	End Select
 
 	PlaySoundVol "sfx_target" & INT(RND*3)+1, VolSfx
@@ -14043,9 +14102,9 @@ Sub CheckDrops(tgtIndex)
 'WriteToLog "     ", "CheckDrops:" & DropCount & " idx:" & tgtIndex & " curLight.state:" & curLight.state
 	if DropCount<3 then 
 		if curLight.state=0 then 
-			SetLightColorTimed curLight, noColor, 4, 600 
+			SetLightColorTimedByIdx curLightIdx, noColor, 4, 600
 		elseif curLight.state=1 then
-			SetLightColorTimed curLight, noColor, 3, 600
+			SetLightColorTimedByIdx curLightIdx, noColor, 3, 600
 		else 
 			'SetFastPulse(curLight)
 			FlashForMs curLight, 500, 50, 2
@@ -14053,7 +14112,7 @@ Sub CheckDrops(tgtIndex)
 			'FlashForMs curLight, 500, 50, 2
 		End if 
 	Else
-WriteToLog "     ", "CheckDrops:" & lBonusX.state & " " & lLightOrb.state & " " & lLightLock.state & " DropPos:" & DropPos(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "CheckDrops:" & lBonusX.state & " " & lLightOrb.state & " " & lLightLock.state & " DropPos:" & DropPos(CurrentPlayer)
 
 		TrooperMB_CheckCannon						' See if Cannon was hit
 		PharaohBullseyePharoahAward True			' PharaohAward every time your knock all 3 down 
@@ -14461,7 +14520,7 @@ Sub Spinner001_Spin
 	DOF 166, DOFPulse
 	if Spinner001.TimerEnabled=False Then
 '		SetFlash flasher001, 1, 100, 50
-WriteToLog "     ", "FlashFlasher3"
+If KeepLogs Then WriteToLog "     ", "FlashFlasher3"
 		FlashFlasher1(3)
 	End if 
 
@@ -14552,7 +14611,7 @@ Const DoAnimatePF_incSize = 1.1			' How fast we grow
 Const DoAnimatePF_incSizeFnt = 1.09		' How fast font grows
 
 Sub DoAnimatePF(idx)		' Animate PowerFeatures
-WriteToLog "     ", "DoAnimatePF:" & idx & " " & tmrPowerStart(idx).Enabled
+If KeepLogs Then WriteToLog "     ", "DoAnimatePF:" & idx & " " & tmrPowerStart(idx).Enabled
 	Select case idx
 		case 0:		' Spinners
 			AnimatePF(idx).y_start=3.8
@@ -14897,7 +14956,7 @@ Sub UpdatePowerFeature
 		Light045.State = 0
 	End If
 
-WriteToLog "     ", "UpdatePowerFeature: " & PFComplete
+If KeepLogs Then WriteToLog "     ", "UpdatePowerFeature: " & PFComplete
 	if PFComplete=3 and bPowerFeatureEBCollected(CurrentPlayer)=False then
 		bPowerFeatureEBCollected(CurrentPlayer)=True
 		LightExtraBall()
@@ -14906,7 +14965,7 @@ WriteToLog "     ", "UpdatePowerFeature: " & PFComplete
 End Sub
 
 Sub StopPowerFeature 'called at the end of the ball or after the SPJ award
-WriteToLog "     ", "StopPowerFeature"
+If KeepLogs Then WriteToLog "     ", "StopPowerFeature"
     PowerJackpotMultiplier = 1
     PowerFeatureValue = 0
     bSPJActivated = 0
@@ -14960,7 +15019,7 @@ End Sub
 
 Sub AwardPJackpot ' Power Jackpot
 	Dim JPtxt
-WriteToLog "     ", "AwardPJackpot"
+If KeepLogs Then WriteToLog "     ", "AwardPJackpot"
 '	AddBonusMultiplier 1
 	Dim tmp
 	tmp = PowerFeatureValue * PowerJackpotMultiplier * PlayfieldMultiplier(CurrentPlayer)
@@ -15022,7 +15081,7 @@ End Sub
 
 Sub EnableCyborg
 	Dim JPtxt
-WriteToLog "     ", "EnableCyborg"
+If KeepLogs Then WriteToLog "     ", "EnableCyborg"
 
 	AddEddieCard kModeCyborg, False				' Get an eddie card just for qualifying 
 
@@ -15052,7 +15111,7 @@ WriteToLog "     ", "EnableCyborg"
 End Sub
 
 Sub StartCyborg(bSkipUnderworldExit)
-WriteToLog "     ", "StartCyborg"
+If KeepLogs Then WriteToLog "     ", "StartCyborg"
 
 	if IsModeQual(kModeCyborg) then exit sub 		' Just in case we aready started
 
@@ -15201,7 +15260,7 @@ Sub AwardCyborgSJP
 End Sub
 
 Sub StopCyborg
-WriteToLog "     ", "STOP Cyborg "
+If KeepLogs Then WriteToLog "     ", "STOP Cyborg "
 	if IsModeQual (kModeCyborg)=False then		' We didnt really start  
 '		SetModeActive kModeCyborg, False 
 		SetLightColor lRampCenter, red, 0
@@ -15530,7 +15589,7 @@ Function GetLoopJPMax()
 End Function
 
 Sub UpdateLoopLights
-WriteToLog "     ", "UpdateLoopLights:" & LoopCount
+If KeepLogs Then WriteToLog "     ", "UpdateLoopLights:" & LoopCount
 	dim current:set current=nothing
     Select case LoopCount
         Case 0:light040.State = 1:light041.State = 0:light042.State = 0:light043.State = 0:light020.State = 0
@@ -15686,7 +15745,7 @@ End Sub
 	
 Sub CheckDeathblow(n)
 	Dim DBScore
-WriteToLog "     ", "CheckDeathblow:" & bComboActivated & " " & tmrDeathBlow.Enabled & " Idx:" & n & " ComboCount:" & ComboCount
+If KeepLogs Then WriteToLog "     ", "CheckDeathblow:" & bComboActivated & " " & tmrDeathBlow.Enabled & " Idx:" & n & " ComboCount:" & ComboCount
     If bComboActivated and tmrDeathBlow.Enabled Then	' Combo is active and we are withing the 4 seconds from last shot 
 
 		if n=4 and BullseyeMultiplier<>3 then Exit Sub		' Must be bullseye
@@ -15781,11 +15840,11 @@ End Sub
 
 Sub CheckTombTreasure()		' Start tombtreasure back up if we are not in a mode or MB
 	Dim i
-WriteToLog "     ", "CheckTombTreasure:" & bMultiBallMode & " " & GetActiveModeAll()
+If KeepLogs Then WriteToLog "     ", "CheckTombTreasure:" & bMultiBallMode & " " & GetActiveModeAll()
 	if bMultiBallMode=False and GetActiveModeAll()=-1 then							' No Mode or Multiball - Start the tomb treasure
 		For i = 0 to 10
 			if TombTreasureObj(CurrentPlayer, i)=1 then 
-WriteToLog "     ", "Setting up Tomb Treasure"
+If KeepLogs Then WriteToLog "     ", "Setting up Tomb Treasure"
 				bTombTreasureReady(CurrentPlayer) = True
 				PlaySoundVol "vo_CollectPharaoh", VolDef
 				OpenRamp True 
@@ -15798,7 +15857,7 @@ End Sub
 
 Sub DisableTombTreasure()
 '	if IsModeQual(kModeMummy) then exit Sub 		' Mummy is enabled so we leave this alone ???
-WriteToLog "     ", "DisableTombTreasure:" & bTombTreasureReady(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "DisableTombTreasure:" & bTombTreasureReady(CurrentPlayer)
 
 	Dim btmpTombTreasureReady
 	Dim i
@@ -15974,7 +16033,7 @@ Sub StartMadness
 End Sub
 
 Sub StopMadness
-WriteToLog "     ", "Stop Madness"
+If KeepLogs Then WriteToLog "     ", "Stop Madness"
 	tmrMadnessLock.Enabled=False
 
 '	QueueSetDefault 0, "", ""				' Disable for this scene 
@@ -16070,7 +16129,7 @@ Sub StartRunToTheHills
 End Sub
 
 Sub StopRTTH()
-WriteToLog "     ", "Stop RTTH"
+If KeepLogs Then WriteToLog "     ", "Stop RTTH"
 
 '	QueueSetDefault 0, "", ""				' Disable for this scene 
 	SetModeActive kModeRTTH, False
@@ -16268,7 +16327,7 @@ Dim bNOTB_Finished
 Dim bEndNOTB_Started
 Dim bNOTB_Drained
 Sub EndNOTB(bComplete)
-WriteToLog "     ", "EndNOTB :" & bComplete & " bEndNOTB_Started:" & bEndNOTB_Started
+If KeepLogs Then WriteToLog "     ", "EndNOTB :" & bComplete & " bEndNOTB_Started:" & bEndNOTB_Started
 	if bEndNOTB_Started=False then
 		bEndNOTB_Started=True
 		bNOTB_Finished=bComplete
@@ -16297,7 +16356,7 @@ WriteToLog "     ", "EndNOTB :" & bComplete & " bEndNOTB_Started:" & bEndNOTB_St
 End Sub
 
 Sub EndNOTB2()
-WriteToLog "     ", "EndNOTB2"
+If KeepLogs Then WriteToLog "     ", "EndNOTB2"
 	playclear pDMDFull
 	DisableTable False
 	tmrNOTB2.Enabled = False 
@@ -16341,7 +16400,7 @@ End Sub
 
 
 Sub NOTBAwards()
-WriteToLog "     ", "NOTBAwards"
+If KeepLogs Then WriteToLog "     ", "NOTBAwards"
 	QueueFlush 0
 	playclear pDMDFull
 	SceneGeneralStart pDMDFull, True, False, "NOTB", "Finish2.mp4", "^^^^^^^^^", "^^^^^^^^^"
@@ -16579,7 +16638,7 @@ end Sub
 
 
 Sub pDMDSetPage(pagenum)    
-WriteToLog "     ", "pDMDSetPage:" & pagenum
+If KeepLogs Then WriteToLog "     ", "pDMDSetPage:" & pagenum
     PuPlayer.LabelShowPage pDMDFull, pagenum,0,""   'set page to blank 0 page if want off
     PDMDCurPage=pagenum
 end Sub
@@ -17296,7 +17355,7 @@ end Sub 'page Layouts
 '     **********    MODIFY THIS SECTION!!!  ***************
 '*****************************************************************
 Sub pClearEverything ' ANDREW - This Clears Down Almost Everything except SCORE
-WriteToLog "     ", "pClearEverything"
+If KeepLogs Then WriteToLog "     ", "pClearEverything"
 	pStopTimersAndModeTxt
 	pClearRandomTxt
 	pClearPowerFeatures
@@ -17307,7 +17366,7 @@ WriteToLog "     ", "pClearEverything"
 End Sub
 
 Sub pClearEverything2 ' DAP - This Clears Almost Everything except SCORE, jackpots, and loops
-WriteToLog "     ", "pClearEverything2"
+If KeepLogs Then WriteToLog "     ", "pClearEverything2"
 	pStopTimersAndModeTxt
 	pClearRandomTxt
 	pClearPowerFeatures
@@ -17351,7 +17410,7 @@ Sub pClearShardPoints 'ANDREW
 End Sub
 
 Sub pClearJackpotCounts 'ANDREW
-WriteToLog "     ", "pClearJackpotCounts:"
+If KeepLogs Then WriteToLog "     ", "pClearJackpotCounts:"
 	Puplayer.LabelSet pDMDFull,"Power"," ",1,""  
 	Puplayer.LabelSet pDMDFull,"Jackpot"," ",1,""  
 	Puplayer.LabelSet pDMDFull,"PowerJackpotMultiplier"," ",1,""  
@@ -17451,13 +17510,13 @@ end Sub
 'end Sub
 '
 Sub pAttractStart(bReset)
-WriteToLog "     ", "pAttractStart"
+If KeepLogs Then WriteToLog "     ", "pAttractStart"
 	PuPlayer.LabelShowPage pDMDFull, 4,0,""
 	PriorityReset=1
 	if (pInAttract = False) then 
-		WriteToLog "     ", "STARTING ATTRACT"
+		If KeepLogs Then WriteToLog "     ", "STARTING ATTRACT"
 		if bReset then pCurAttractPos=0
-WriteToLog "     ", "ATTRACT Next:" & pCurAttractPos
+If KeepLogs Then WriteToLog "     ", "ATTRACT Next:" & pCurAttractPos
 		pAttractReset=-1
 		pDMDCurPriority=-1
 		PriorityReset=1
@@ -17513,7 +17572,7 @@ Dim cnt
 dim yPos
 
 pCurAttractPos=pCurAttractPos+1
-WriteToLog "     ", "ATTRACT Next:" & pCurAttractPos & " LFPress:" & LFPress & " RFPress:" & LFPress
+If KeepLogs Then WriteToLog "     ", "ATTRACT Next:" & pCurAttractPos & " LFPress:" & LFPress & " RFPress:" & LFPress
 
 PriorityReset=4000
 
@@ -17986,7 +18045,7 @@ Sub tmrStats_Timer()
 '			if tmrStats_idx=6 then tmrStats.Interval=6600
 '			if tmrStats_idx=8 then tmrStats.Interval=6000
 
-WriteToLog "     ", "tmrStats_idx:" & tmrStats_idx & " tmrStats2_idx:" & tmrStats2_idx
+If KeepLogs Then WriteToLog "     ", "tmrStats_idx:" & tmrStats_idx & " tmrStats2_idx:" & tmrStats2_idx
 		End if 
 
 	End if 
@@ -18007,83 +18066,68 @@ End Function
 '************************ called during gameplay to update Scores ***************************
 '************************ called during gameplay to update Scores ***************************
 Dim pUpdateScoreIndex:pUpdateScoreIndex=0
-' Pre-built JSON strings for pUpdateScores — eliminates per-tick RGB() calls and string concatenation
-Dim pScoreOrangeJson(4), pScoreWhiteJson, pScoreRedJson
-Dim pOrangeColor : pOrangeColor = RGB(255,157,6)
-Dim pWhiteColor : pWhiteColor = RGB(255,255,255)
-pScoreOrangeJson(0) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':38}"
-pScoreOrangeJson(1) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':62}"
-pScoreOrangeJson(2) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':25}"
-pScoreOrangeJson(3) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':50}"
-pScoreOrangeJson(4) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':75}"
-pScoreWhiteJson = "{'mt':2, 'color':" & pWhiteColor & "}"
-pScoreRedJson = "{'mt':2, 'color':" & pupColorRed & "}"
-' Per-player-count xpos arrays for 4-player positions
-Dim pScore4Json(4)
-pScore4Json(0) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':13}"
-pScore4Json(1) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':38}"
-pScore4Json(2) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':63}"
-pScore4Json(3) = "{'mt':2, 'color':" & pOrangeColor & ", 'xpos':87}"
-' Pre-built ScorePos label names
-Dim pScorePosLabel(4)
-pScorePosLabel(0) = "ScorePos1" : pScorePosLabel(1) = "ScorePos2"
-pScorePosLabel(2) = "ScorePos3" : pScorePosLabel(3) = "ScorePos4"
-
 Sub pUpdateScores
 	Dim PlayerName
 	if pDMDCurPage <> pScores then Exit Sub
-	
-Dim NextPlayer:NextPlayer = CurrentPlayer + 1
-	If bShowMatch=False then													  
-	End if
 
-	' Set the score and color of the other players score
+'New code has been added to display mutliplayer display on pupdmd - Chris
+Dim NextPlayer:NextPlayer = CurrentPlayer + 1
+	If bShowMatch=False then 
+'		if bFreePlay then 
+'			puPlayer.LabelSet pDMDFull,"Credits","FREE PLAY " ,1,""	
+'		Else 
+'			puPlayer.LabelSet pDMDFull,"Credits","CREDITS " & ""& Credits ,1,""
+'		End if 
+
+'		puPlayer.LabelSet pDMDFull,"Ball","BALL " & ""& balls ,1,""
+	End if 
+
+	' Set the score and color of the other players score 
 	Select case PlayersPlayingGame
 		case 1:
 		case 2:
-			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,pScoreOrangeJson(0)
-			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,pScoreOrangeJson(1)
+			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':38}"
+			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':62}"
 		case 3:
-			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,pScoreOrangeJson(2)
-			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,pScoreOrangeJson(3)
-			If Currentplayer<>2 and ScoreSave(2)<>Score(2) then PuPlayer.LabelSet pDMDFull,"ScorePos3",FormatScore(Score(2)),1,pScoreOrangeJson(4)
+			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':25}"
+			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':50}"
+			If Currentplayer<>2 and ScoreSave(2)<>Score(2) then PuPlayer.LabelSet pDMDFull,"ScorePos3",FormatScore(Score(2)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':75}"
 		case 4:
-			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,pScore4Json(0)
-			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,pScore4Json(1)
-			If Currentplayer<>2 and ScoreSave(2)<>Score(2) then PuPlayer.LabelSet pDMDFull,"ScorePos3",FormatScore(Score(2)),1,pScore4Json(2)
-			If Currentplayer<>3 and ScoreSave(3)<>Score(3) then PuPlayer.LabelSet pDMDFull,"ScorePos4",FormatScore(Score(3)),1,pScore4Json(3)
+			If Currentplayer<>0 and ScoreSave(0)<>Score(0) then PuPlayer.LabelSet pDMDFull,"ScorePos1",FormatScore(Score(0)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':13}"
+			If Currentplayer<>1 and ScoreSave(1)<>Score(1) then PuPlayer.LabelSet pDMDFull,"ScorePos2",FormatScore(Score(1)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':38}"
+			If Currentplayer<>2 and ScoreSave(2)<>Score(2) then PuPlayer.LabelSet pDMDFull,"ScorePos3",FormatScore(Score(2)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':63}"
+			If Currentplayer<>3 and ScoreSave(3)<>Score(3) then PuPlayer.LabelSet pDMDFull,"ScorePos4",FormatScore(Score(3)),1,"{'mt':2, 'color':" & RGB(255,157,6) &", 'xpos':87}"
 	End Select
 
 	if PlayersPlayingGame=1 then
-		if ScoreSave(0)<>Score(0) then
-			puPlayer.LabelSet pDMDFull,"CurrentPlayerScore", FormatScore(Score(CurrentPlayer)),1,""
-			PuPlayer.LabelSet pDMDFull,"ScorePos1", "", 1,pScoreWhiteJson
-		End if
-	Else
+		if ScoreSave(0)<>Score(0) then 
+			puPlayer.LabelSet pDMDFull,"CurrentPlayerScore", FormatScore(Score(CurrentPlayer))	 ,1,""
+			PuPlayer.LabelSet pDMDFull,"ScorePos1", "", 1,"{'mt':2, 'color':" & RGB(255,255,255) &"}"
+		End if 
+	Else 
 
-		if ScorbitActive then
+		if ScorbitActive then 
 			if Scorbit.bSessionActive then
 				PlayerName=Scorbit.GetName(CurrentPlayer+1)
-				if PlayerName="" then PlayerName= "Player " & CurrentPlayer+1
-			End if
-		End if
+				if PlayerName="" then PlayerName= "Player " & CurrentPlayer+1 
+			End if 
+		End if 
 
 		pUpdateScoreIndex=pUpdateScoreIndex+1
-		puPlayer.LabelSet pDMDFull,"CurrentPlayerScore", FormatScore(Score(CurrentPlayer)),1,"{'mt':2, 'yalign':0, 'ypos':81}"
+		puPlayer.LabelSet pDMDFull,"CurrentPlayerScore", FormatScore(Score(CurrentPlayer))	,1,"{'mt':2, 'yalign':0, 'ypos':81}"
 
-		Dim cpLabel : cpLabel = pScorePosLabel(CurrentPlayer)
 		' Make it Flicker "Up The Irons!"
 		if pUpdateScoreIndex>308 then
 			pUpdateScoreIndex=0
-			PuPlayer.LabelSet pDMDFull, cpLabel, PlayerName, 1, pScoreWhiteJson
+			PuPlayer.LabelSet pDMDFull,"ScorePos" & CurrentPlayer+1, PlayerName, 1,"{'mt':2, 'color':" & RGB(255,255,255) &"}"
 		elseif pUpdateScoreIndex>300 then
-			PuPlayer.LabelSet pDMDFull, cpLabel, "Up The Irons!", 1, pScoreRedJson
-		elseif pUpdateScoreIndex>292 then
-			PuPlayer.LabelSet pDMDFull, cpLabel, PlayerName, 1, pScoreRedJson
-		Else
-			PuPlayer.LabelSet pDMDFull, cpLabel, PlayerName, 1, pScoreWhiteJson
-		End if
-	End if
+			PuPlayer.LabelSet pDMDFull,"ScorePos" & CurrentPlayer+1, "Up The Irons!", 1,"{'mt':2, 'color':" & pupColorRed &"}"
+		elseif pUpdateScoreIndex>292 then 
+			PuPlayer.LabelSet pDMDFull,"ScorePos" & CurrentPlayer+1, PlayerName, 1,"{'mt':2, 'color':" & pupColorRed &"}"
+		Else 
+			PuPlayer.LabelSet pDMDFull,"ScorePos" & CurrentPlayer+1, PlayerName, 1,"{'mt':2, 'color':" & RGB(255,255,255) &"}"
+		End if 
+	End if 
 
 	ScoreSave(0)=Score(0)
 	ScoreSave(1)=Score(1)
@@ -18304,7 +18348,7 @@ Sub CheckPowerPops()
 	if isModeActive(kModeNOTB) then exit sub
 
 	' active on all modes but Cyborg
-WriteToLog "     ", "CheckPowerPops " & bPowerPops2(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "CheckPowerPops " & bPowerPops2(CurrentPlayer)
 
 	if IsModeQual(kModeCyborg) then 
 		if GetLightState(kModeMISC, kLightPowerPops)<>1 then FlashLightning		' First time
@@ -18315,10 +18359,10 @@ WriteToLog "     ", "CheckPowerPops " & bPowerPops2(CurrentPlayer)
 		PowerPopsCount(CurrentPlayer) = PowerPopsCount(CurrentPlayer) + 1
 		if GetLightState(kModeMISC, kLightPowerPops)=0 then FlashForMS lPowerPops, 1000, 50, 0 
 
-WriteToLog "     ", "Pops " & PowerPopsCount(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "Pops " & PowerPopsCount(CurrentPlayer)
 
 		If PowerPopsCount(CurrentPlayer) = 20 * CyborgDifficulty(CurrentPlayer) Then
-WriteToLog "     ", "Pops Done"
+If KeepLogs Then WriteToLog "     ", "Pops Done"
 			bPowerPops2(CurrentPlayer) = 1 'Phase1 Done
 			UpdatePowerFeature
 			'pupevent 620
@@ -18403,7 +18447,7 @@ End Sub
 Sub CheckPowerTargets()
 	if isModeActive(kModeNOTB) then exit sub
 
-WriteToLog "     ", "CheckPowerTargets: " & PowerTargetsCount(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "CheckPowerTargets: " & PowerTargetsCount(CurrentPlayer)
 	' active on all modes but Cyborg
 	if IsModeQual(kModeCyborg) then 
 		if GetLightState(kModeMISC, kLightPowerTargets)<>1 then FlashLightning		' First time
@@ -18527,7 +18571,7 @@ End Sub
 Sub ProcessRTTH(lIndex)
 	Dim JPtxt
 	if isModeActive(kModeRTTH)=False then exit sub
-	WriteToLog "     ", "ProcessRTTH:" & lIndex 
+	If KeepLogs Then WriteToLog "     ", "ProcessRTTH:" & lIndex 
 	
 	if lIndex = kLightSpinnerLeft or lIndex = kLightSpinnerRight then 					' Spinners 
 		If lPowerSpinnerArrow1.State = 2 or lPowerSpinnerArrow2.State = 2 then 
@@ -18684,7 +18728,7 @@ Sub ProcessNOTB(lIndex)
 	if IsModeQual(kModeTrooper) then Exit Sub							' Cant stack with Trooper
 
 	if isModeActive(kModeNOTB)=False then exit sub
-WriteToLog "     ", "ProcessNOTB: " & lIndex 
+If KeepLogs Then WriteToLog "     ", "ProcessNOTB: " & lIndex 
 
 	If IsModeActive(kModeNOTB) and IsModeQual(kModeNOTB)=False then 
 		if lIndex=kLightOrbitLeft2 or lIndex=kLightOrbitRight2 then 
@@ -18784,7 +18828,7 @@ Sub CheckMadnessFreeze()		' Freeze and start the timer
 	
 	For i = 0 to 7 
 		if MadnessShots(i)=2 then 
-WriteToLog "     ", "Locking"
+If KeepLogs Then WriteToLog "     ", "Locking"
 			MadnessShots(i)=1
 			SetMadnessLight i, MadnessShots(i)
 		End if 
@@ -18814,7 +18858,7 @@ End Sub
 
 Sub SetMadnessLight(index, state)
 	Dim NewState:NewState=state
-WriteToLog "     ", "SetMadnessLight:" & index & " " & state 
+If KeepLogs Then WriteToLog "     ", "SetMadnessLight:" & index & " " & state 
 	dim color
 	if MadnessShots(index)=-1 or MadnessShots(index)=0 then			' Off
 		NewState=0
@@ -18881,7 +18925,7 @@ Sub ProcessMadness(lIndex)
 	Dim RotatedArray(8)
 	if isModeActive(kModeCyborg) then Exit Sub 							' Cant stack with Cyborg
 	if isModeActive(kModeMadness)=False then exit sub
-WriteToLog "     ", "ProcessMadness: " & lIndex & " "
+If KeepLogs Then WriteToLog "     ", "ProcessMadness: " & lIndex & " "
 
 	If lIndex=kLightSpinnerLeft and Spinner001.TimerEnabled then exit sub   ' Wait until it stop spinning before we count this again 
 
@@ -18897,7 +18941,7 @@ WriteToLog "     ", "ProcessMadness: " & lIndex & " "
 				exit For 
 			End if
 		Next
-WriteToLog "     ", "SavePos:" & SavePos & " " & SaveCnt
+If KeepLogs Then WriteToLog "     ", "SavePos:" & SavePos & " " & SaveCnt
 
 		if SavePos<>-1 and SaveCnt>0 then		' If there is at least one empty shot and one red shot then shift 
 			curIdx=SavePos
@@ -18905,7 +18949,7 @@ WriteToLog "     ", "SavePos:" & SavePos & " " & SaveCnt
 				curIdx=curIdx+RotateDir
 				if curIdx=8 then curIdx=0 
 				if curIdx<0 then curIdx=7 
-WriteToLog "     ", "CurIdx:" & curIdx & " SavePos:" & SavePos & " MadnessShots(curIdx):" & MadnessShots(curIdx) & " " & MadnessShots(SavePos)
+If KeepLogs Then WriteToLog "     ", "CurIdx:" & curIdx & " SavePos:" & SavePos & " MadnessShots(curIdx):" & MadnessShots(curIdx) & " " & MadnessShots(SavePos)
 
 				if MadnessShots(curIdx)=2 then		' Flashing red 
 					MadnessShots(SavePos)=MadnessShots(curIdx)
@@ -18923,7 +18967,7 @@ WriteToLog "     ", "CurIdx:" & curIdx & " SavePos:" & SavePos & " MadnessShots(
 		vpmtimer.addtimer 4000, "Exit_Underworld True '"
 
 	Else 
-WriteToLog "     ", "ProcessMadness: " & lIndex & " " & GetLightState(kModeMadness , lIndex) & " " & GetLightColor(kModeMadness, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessMadness: " & lIndex & " " & GetLightState(kModeMadness , lIndex) & " " & GetLightColor(kModeMadness, lIndex)
 
 		if lIndex=kLightUnderworld then bUnderworld=True:lIndex=kLightRampCenter		' Handle Underworld Lock
 		if GetLightState(kModeMadness , lIndex)<>0 then
@@ -18945,7 +18989,7 @@ WriteToLog "     ", "ProcessMadness: " & lIndex & " " & GetLightState(kModeMadne
 				vpmTimer.AddTimer 1000, "ProcessMadness_FlashStop " & lIndex & " '"		' Turn it off after 1 seconds 
 				MadnessShotCnt=MadnessShotCnt-1
 
-WriteToLog "     ", "bUnderworld:" & bUnderworld & " " & MadnessShotCnt
+If KeepLogs Then WriteToLog "     ", "bUnderworld:" & bUnderworld & " " & MadnessShotCnt
 				if bUnderworld then 	' Handle Underworld Lock
 					if MadnessShotCnt<>0 then 			' This is the last shot we dont lock a ball
 						RampDown						' Close it
@@ -19090,11 +19134,11 @@ Sub ProcessTrooper(lIndex)
 	if IsModeActive(kMode2M2M) then Exit Sub							' Cant stack with 2M2M
 	if isModeActive(kModeTrooper)=False then exit sub		' Trooper not active 
 
-WriteToLog "     ", "ProcessTrooper:" & lIndex
+If KeepLogs Then WriteToLog "     ", "ProcessTrooper:" & lIndex
 
 	if isModeQual(kModeTrooper)=False then 								' Trooper Not Qualified yet
 		if lIndex=kLightOrbitLeft2 or lIndex=kLightOrbitRight2 then 
-WriteToLog "     ", "ProcessTrooper: Qual" & GetLightState(kModeTrooper, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessTrooper: Qual" & GetLightState(kModeTrooper, lIndex)
 			if lIndex=kLightOrbitLeft2 then lIndex=kLightOrbitLeft
 			if lIndex=kLightOrbitRight2 then lIndex=kLightOrbitRight
 
@@ -19317,7 +19361,7 @@ Sub ProcessMummy(lIndex)
 	if IsModeActive(kModeAces) then Exit Sub							' Cant stack with Aces High 
 	if IsModeActive(kMode2M2M) then Exit Sub							' Cant stack with 2M2M
 
-WriteToLog "     ", "ProcessMummy:" & lIndex & " " & MummyCount(CurrentPlayer) & " " & bMummyLetterJP & " BallsInLock(CurrentPlayer):" & BallsInLock(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "ProcessMummy:" & lIndex & " " & MummyCount(CurrentPlayer) & " " & bMummyLetterJP & " BallsInLock(CurrentPlayer):" & BallsInLock(CurrentPlayer)
 
 	if ModeWaitPlayfieldQual(CurrentPlayer, kModeMummy) then			' We Paused Timers until table is qualified
 		ModeWaitPlayfieldQual(CurrentPlayer, kModeMummy)=False
@@ -19337,7 +19381,7 @@ WriteToLog "     ", "ProcessMummy:" & lIndex & " " & MummyCount(CurrentPlayer) &
 			Elseif BallsInLock(CurrentPlayer)>0 then 								' Step 2: Spell Mummy again and knock it out to Start MummyMB
 
 				if MummyCount(CurrentPlayer)>6 then 					' ERROR TRAP!!!
-WriteToLog "     ", "ERROR DETECTED - MAKE A NOTE!!"
+If KeepLogs Then WriteToLog "     ", "ERROR DETECTED - MAKE A NOTE!!"
 					PlaySoundVol "alarm", VolSfx
 					BallsInLock(CurrentPlayer)=0
 					MummyCount(CurrentPlayer)=3
@@ -19349,9 +19393,9 @@ WriteToLog "     ", "ERROR DETECTED - MAKE A NOTE!!"
 		End if 
 	elseif lIndex=kLightCaptiveBall then								' Step 4: Open Ramp to Lock ball again
 		if bMummyLetterJP=True then 
-WriteToLog "     ", "bMummySJPCnt:" & bMummySJPCnt(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "bMummySJPCnt:" & bMummySJPCnt(CurrentPlayer)
 			if bMummySJPCnt(CurrentPlayer)>=1 then 
-WriteToLog "     ", "CycleMummyInsertsStates:" & tmrMummyCycleState.UserValue-1 & " " & CycleMummyInsertsStates(tmrMummyCycleState.UserValue-1)
+If KeepLogs Then WriteToLog "     ", "CycleMummyInsertsStates:" & tmrMummyCycleState.UserValue-1 & " " & CycleMummyInsertsStates(tmrMummyCycleState.UserValue-1)
 				if CycleMummyInsertsStates(tmrMummyCycleState.UserValue-1)=0 then 		' Doesnt count if it is already lit
 					AddScoreMode kModeMummy, 10000
 					AddMummyletter
@@ -19447,7 +19491,7 @@ WriteToLog "     ", "CycleMummyInsertsStates:" & tmrMummyCycleState.UserValue-1 
 
 		' Lit Shots progress - Add-A-Ball
 		if GetLightState(kModeMummy, lIndex)<>0 and lIndex<=kLightOrbitRight then ' Process ramps Only
-WriteToLog "     ", "ProcessMummy lIndex:" & lIndex
+If KeepLogs Then WriteToLog "     ", "ProcessMummy lIndex:" & lIndex
 
 			if bMummySJP and lIndex=kLightRampCenter then 					' SUPER JACKPOT !!!
 				bMummySJPCnt(CurrentPlayer)=bMummySJPCnt(CurrentPlayer)+1
@@ -19577,7 +19621,7 @@ Sub ProcessRevive(lIndex)
 
 		if REVIVELActive(CurrentPlayer)=False or REVIVERActive(CurrentPlayer)=False then  
 
-WriteToLog "     ", "ProcessRevive:" & REVIVECountDown(CurrentPlayer) & " " & REVIVEProgress(CurrentPlayer)
+If KeepLogs Then WriteToLog "     ", "ProcessRevive:" & REVIVECountDown(CurrentPlayer) & " " & REVIVEProgress(CurrentPlayer)
 			REVIVECountDown(CurrentPlayer)=REVIVECountDown(CurrentPlayer)-1
 
 			if REVIVECountDown(CurrentPlayer)=0 then 
@@ -19638,7 +19682,7 @@ Sub ProcessLoops(lIndex)
 	Dim bLoop3x:bLoop3x=False
 	dim bAddLoop:bAddLoop=False 
 	Dim ClipIdx:ClipIdx=1
-WriteToLog "     ", "ProcessLoops:" & lIndex & " " & LoopCount
+If KeepLogs Then WriteToLog "     ", "ProcessLoops:" & lIndex & " " & LoopCount
 
 	if LoopJackpotMulti(CurrentPlayer) < GetLoopJPMax() then
 		if lIndex=kLightLoopLeft2 or (lIndex=kLightLoopLeft and LoopJackpotMulti(CurrentPlayer) = GetLoopJPMax()-1) then	' Count full loops except the last one
@@ -19675,7 +19719,7 @@ WriteToLog "     ", "ProcessLoops:" & lIndex & " " & LoopCount
 			pJackpotCounts False ' Update Jackpot and counter values HUD on the right
 
 			if LoopJackpotMulti(CurrentPlayer) = GetLoopJPMax() then ' Light SJP
-WriteToLog "     ", "LOOP-SJP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+If KeepLogs Then WriteToLog "     ", "LOOP-SJP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 				LoopJPTotal=0
 				LoopJPCount=0
 				LoopCount=6
@@ -19763,7 +19807,7 @@ Sub ProcessEddie(lIndex)
 	if IsModeActive(kModeEddie) then 							  ' If a light for Eddie is lit we add progress
 		if lIndex=kLightOrbitLeft then Exit Sub 				  ' Partial Left Orbit adds progress (Fake It)
 		if lIndex=kLightOrbitLeft2 then SaveIdx=kLightOrbitLeft
-WriteToLog "     ", "ProcessEddie:" & SaveIdx
+If KeepLogs Then WriteToLog "     ", "ProcessEddie:" & SaveIdx
 		if GetLightState(kModeEddie, SaveIdx)<>0 then 
 
 			if EddieRndIdx(CurrentPlayer, 0)<>-1 then 		' We are on phase 3 they go out and light another 
@@ -19805,9 +19849,9 @@ End Sub
 ' https://youtu.be/zaCEffQkj4o?list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&t=1452	
 Sub ProcessFear(lIndex)
 	if IsModeActive(kModeFear) then
-WriteToLog "     ", "ProcessFear:" & lIndex & " " & FearOfTheDarkCount
+If KeepLogs Then WriteToLog "     ", "ProcessFear:" & lIndex & " " & FearOfTheDarkCount
 		if lIndex=kLightSpinnerStop then 							' Spinner Stopped 
-WriteToLog "     ", "kLightSpinnerStop:" & FearOfTheDarkSpinActive
+If KeepLogs Then WriteToLog "     ", "kLightSpinnerStop:" & FearOfTheDarkSpinActive
 			if FearOfTheDarkSpinActive then 
 				FearOfTheDarkCount=FearOfTheDarkCount+1
 				FearOfTheDarkSpinActive=False
@@ -19849,7 +19893,7 @@ WriteToLog "     ", "kLightSpinnerStop:" & FearOfTheDarkSpinActive
 		else 
 			if GetLightState(kModeFear, lIndex)<>0 then
 				if lIndex=kLightRampCenter and FearOfTheDarkCount=3 then 
-WriteToLog "     ", "Collect Soul Shard"
+If KeepLogs Then WriteToLog "     ", "Collect Soul Shard"
 					' Collect Soul Shard 
 					' https://youtu.be/456THtyKy7s?list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&t=7922		- OLD Code ???
 					FearOfTheDarkTimer.Enabled = False
@@ -19903,7 +19947,7 @@ Sub ProcessAces(lIndex)
 	Dim multStr
 
 	if IsModeActive(kModeAces) then
-WriteToLog "     ", "ProcessAces:" & lIndex & " cnt:" & AcesHighCount & " state:" & GetLightState(kModeAces, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessAces:" & lIndex & " cnt:" & AcesHighCount & " state:" & GetLightState(kModeAces, lIndex)
 
 		if AcesHighCount < 4 then 
 			if GetLightState(kModeAces, lIndex)<>0 then
@@ -19990,7 +20034,7 @@ WriteToLog "     ", "ProcessAces:" & lIndex & " cnt:" & AcesHighCount & " state:
 					End if 
 
 					if AcesHighCount=8 then 	' Start DEFEAT THE ACE 
-WriteToLog "     ", "Starting Roving Timer"
+If KeepLogs Then WriteToLog "     ", "Starting Roving Timer"
 						SSetLightColor kModeAces, kLightRampLeft, 	DarkBlue, 1
 						SSetLightColor kModeAces, kLightRampRight, 	DarkBlue, 0
 						SSetLightColor kModeAces, kLightRampCenter, DarkBlue, 0
@@ -20077,7 +20121,7 @@ End Sub
 Sub ProcessRime(lIndex)
 	dim bAddScore:bAddScore=True
 	if IsModeActive(kModeRime) then
-WriteToLog "     ", "ProcessRime:" & lIndex & " cnt:" & MarinerCount & " state:" & GetLightState(kModeRime, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessRime:" & lIndex & " cnt:" & MarinerCount & " state:" & GetLightState(kModeRime, lIndex)
 
 		if lIndex=kLightPharaohTarget and MarinerCount = 0 Then 'Andrew moved this - was Case 8 under Sub pharaoh_target_Hit - the underworld hit is the first challenge in LE version
 			PharaohBullseyeFlasherEnabled False
@@ -20117,15 +20161,15 @@ WriteToLog "     ", "ProcessRime:" & lIndex & " cnt:" & MarinerCount & " state:"
 				'SSetLightColor kModeRime, lIndex, blue, 0
 
 				If MarinerCount>=7 and MarinerCount <= 8 then			' Catch the drops 
-WriteToLog "     ", "Check Drops"
+If KeepLogs Then WriteToLog "     ", "Check Drops"
 					if lIndex=kLightLock or lIndex=kLightOrb or lIndex=kLightBonusX then 
-WriteToLog "     ", "Got Drops"
+If KeepLogs Then WriteToLog "     ", "Got Drops"
 						if DTIsDropped(0) and DTIsDropped(1) and DTIsDropped(3) then 
 							DTRaise 1
 							DTRaise 2
 							DTRaise 3
 						else 
-WriteToLog "     ", "Skipping Drop"
+If KeepLogs Then WriteToLog "     ", "Skipping Drop"
 							bAddScore=False 
 							MarinerCount=MarinerCount-1
 						End if 
@@ -20133,10 +20177,10 @@ WriteToLog "     ", "Skipping Drop"
 				End if 
 
 				MarinerCount=MarinerCount+1
-WriteToLog "     ", "Check:" & MarinerCount & " " & 6-MarinerDifficulty
+If KeepLogs Then WriteToLog "     ", "Check:" & MarinerCount & " " & 6-MarinerDifficulty
 				if MarinerCount>=6-MarinerDifficulty and MarinerCount<=6 then 					' See if we hit SJP
 					If lIndex=kLightRampCenter then  	' Add progress 
-WriteToLog "     ", "Jackpot Phase 1"
+If KeepLogs Then WriteToLog "     ", "Jackpot Phase 1"
 						AddScoreMode kModeRime, (MarinerJPValueStart*MarinerJPMult)
 						MarinerCount=6
 						CheckMariner
@@ -20148,7 +20192,7 @@ WriteToLog "     ", "Jackpot Phase 1"
 					End if 
 				elseif MarinerCount=10 then 				' See if we hit SJP
 					If lIndex=kLightRampCenter then  	' Add progress 
-WriteToLog "     ", "Jackpot Phase 2"
+If KeepLogs Then WriteToLog "     ", "Jackpot Phase 2"
 						AddScoreMode kModeRime, (MarinerJPValueStart*MarinerJPMult)
 						CheckMariner
 						MarinerJPMult=MarinerJPMult+10
@@ -20194,7 +20238,7 @@ WriteToLog "     ", "Jackpot Phase 2"
 					MarinerJPValue=MarinerJPValue+500000
 				End if 
 			elseif lIndex=kLightPharaohTarget and GetLightState(kModeRime, kLightRampCenter)=0 then 						' Ball must of got knocked back in while ramp was up waiting to eject, kick it out again 
-				WriteToLog "     ", "Mariner: Clearing Extra Underworld Lock"
+				If KeepLogs Then WriteToLog "     ", "Mariner: Clearing Extra Underworld Lock"
 				vpmtimer.addtimer 1000, "Exit_Underworld False '"
 			End if 
 		End If
@@ -20215,7 +20259,7 @@ Dim ProcessHallowedLastIdx1
 Dim ProcessHallowedLastIdx2
 Sub ProcessHallowed(lIndex)
 	if IsModeActive(kModeHallowed) then
-WriteToLog "     ", "ProcessHallowed:" & lIndex & " cnt:" & HallowedCount & " state:" & GetLightState(kModeHallowed, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessHallowed:" & lIndex & " cnt:" & HallowedCount & " state:" & GetLightState(kModeHallowed, lIndex)
 
 		if lIndex=kLightOrbitLeft2 then lIndex=kLightOrbitLeft ' Partial Orbit counts as the shot
 
@@ -20270,7 +20314,7 @@ WriteToLog "     ", "ProcessHallowed:" & lIndex & " cnt:" & HallowedCount & " st
 '				Target005.IsDropped = 0 
 '				Target006.IsDropped = 0 
 			elseif HallowedCount=4 then 
-WriteToLog "     ", "Hallowed 4:" & DTIsDropped(1) & " " & DTIsDropped(2) & " " & DTIsDropped(3)
+If KeepLogs Then WriteToLog "     ", "Hallowed 4:" & DTIsDropped(1) & " " & DTIsDropped(2) & " " & DTIsDropped(3)
 				if DTIsDropped(1) and DTIsDropped(2) and DTIsDropped(3) then 
 					QueueScene "SceneGeneralStart pDMDFull, False, False, ""HallowedBeThyName"", ""HallowedP4.mp4"", ""^^^^^^Escape Awarded!^^" & FormatScore(10000000) & "^"", ""^^^^^^^^2000:" & pupColorRed & "^"" ", 2000, 1
 					AddScoreMode kModeHallowed, 10000000
@@ -20325,7 +20369,7 @@ Sub ProcessIcarus(lIndex)
 	dim videoStr
 	Dim thisScore
 	if IsModeActive(kModeIcarus) then
-WriteToLog "     ", "ProcessIcarus:" & lIndex & " cnt:" & IcarusMultiplier & " state:" & GetLightState(kModeIcarus, lIndex)
+If KeepLogs Then WriteToLog "     ", "ProcessIcarus:" & lIndex & " cnt:" & IcarusMultiplier & " state:" & GetLightState(kModeIcarus, lIndex)
 		if GetLightState(kModeIcarus, lIndex)<>0 then
 			SSetLightColor kModeIcarus, lIndex, orange, 0
 
@@ -20397,7 +20441,7 @@ Sub Process2M2M(lIndex)
 			TwoMinToMidnightTimer.Enabled = True
 		End if 
 
-WriteToLog "     ", "Process2M2M:" & lIndex & " cnt:" & TwoMinutesToMidnightHitCount & " " & GetLightState(kMode2M2M, lIndex)
+If KeepLogs Then WriteToLog "     ", "Process2M2M:" & lIndex & " cnt:" & TwoMinutesToMidnightHitCount & " " & GetLightState(kMode2M2M, lIndex)
 
 		if lIndex = kLightOrbitLeft2 then 
 			SaveIdx=kLightOrbitLeft2
@@ -20530,7 +20574,7 @@ End Sub
 Sub StartShardHurryUp(Mode)
 	dim SaveTxt1:SaveTxt1=tmrHUDAnimate_InitialValue1
 	Dim SaveTxt2:SaveTxt2=tmrHUDAnimate_InitialValue2
-WriteToLog "     ", "StartShardHurryUp:" & ModePoints(CurrentPlayer, Mode)*.2
+If KeepLogs Then WriteToLog "     ", "StartShardHurryUp:" & ModePoints(CurrentPlayer, Mode)*.2
 
 	QueueSetDefault 0, "SceneShard True, " & Mode, "SceneClearLabels"
 
@@ -20566,7 +20610,7 @@ Dim tmrShardHurryupDecrement
 Dim tmrShardHurryupCnt
 Sub tmrShardHurryup_Timer
 	Dim TimerVal
-WriteToLog "     ", "tmrShardHurryup_Timer:"& tmrShardHurryup.UserValue
+If KeepLogs Then WriteToLog "     ", "tmrShardHurryup_Timer:"& tmrShardHurryup.UserValue
 
 	tmrShardHurryup.Interval=200
 	tmrShardHurryupCnt=tmrShardHurryupCnt+1
@@ -20599,7 +20643,7 @@ Sub pClearScore
 End Sub
 
 Sub pClearPowerFeatures()
-WriteToLog "     ", "pClearPowerFeatures"
+If KeepLogs Then WriteToLog "     ", "pClearPowerFeatures"
 '	PuPlayer.LabelSet pDMDFull,"BonusSpinners","",1,"" 
 '	PuPlayer.LabelSet pDMDFull,"BonusRamps","",1,"" 
 '	PuPlayer.LabelSet pDMDFull,"BonusPops","",1,"" '
@@ -20612,13 +20656,13 @@ WriteToLog "     ", "pClearPowerFeatures"
 	PuPlayer.LabelSet pDMDFull,"RemainingOrbits"," ",1,""
 	puPlayer.LabelSet pDMDFull,"pSpinnersChk","PuPOverlays\\clear.png",1,""
 	puPlayer.LabelSet pDMDFull,"pPopsChk","PuPOverlays\\clear.png",1,""
-	puPlayer.LabelSet pDMDFull,"pOrbitsChk","PuPOverlays\\clear.png",1,""
+	puPlayer.LabelSet pDMDFull,"pOrbitsChk","PuPOverlays\\clear .png",1,""
 	puPlayer.LabelSet pDMDFull,"pRampsChk","PuPOverlays\\clear.png",1,""
 	puPlayer.LabelSet pDMDFull,"pTargetsChk","PuPOverlays\\clear.png",1,""
 
 	puPlayer.LabelSet pDMDFull,"pSpinners","PuPOverlays\\clear.png",1,""
 	puPlayer.LabelSet pDMDFull,"pRamps","PuPOverlays\\clear.png",1,""
-	puPlayer.LabelSet pDMDFull,"pOrbits","PuPOverlays\\clear.png",1,""
+	puPlayer.LabelSet pDMDFull,"pOrbits","PuPOverlays\\clear .png",1,""
 	puPlayer.LabelSet pDMDFull,"pTargets","PuPOverlays\\clear.png",1,""
 	puPlayer.LabelSet pDMDFull,"pPops","PuPOverlays\\clear.png",1,""
 	
@@ -20684,7 +20728,7 @@ Sub pTriggerScript_Timer()
 		if pReset(fx)>0 Then	
 			pReset(fx)=pReset(fx)-pTriggerCounter 
 			if pReset(fx)<=0 Then
-WriteToLog "     ", "Running :" & fx & " " & pStatement(fx)
+If KeepLogs Then WriteToLog "     ", "Running :" & fx & " " & pStatement(fx)
 				pReset(fx)=0
 				execute(pStatement(fx))
 			else 
@@ -20708,7 +20752,7 @@ Sub TriggerScript(pTimeMS, pScript) ' This is used to Trigger script after the p
 			Exit Sub
 		End If 
 	next
-	WriteToLog "     ", "ERROR: No TriggerScripts Left!!!!!!!!!!!!!!!!!!!!"
+	If KeepLogs Then WriteToLog "     ", "ERROR: No TriggerScripts Left!!!!!!!!!!!!!!!!!!!!"
 end Sub
 
 
@@ -20717,7 +20761,7 @@ end Sub
 '************************************************************************
 
 Sub SceneClearLabels()
-WriteToLog "     ", "SceneClearLabels"
+If KeepLogs Then WriteToLog "     ", "SceneClearLabels"
 	' Clear Labels and flash (Just in case it is flashing)
 	PuPlayer.LabelSet pDMDFull,"MsgFull","PupOverlays\\clear.png",1,""
 ' PUP BUG? - Clearing the flashing text with mt:1 this sometimes causes the next video to not play
@@ -20777,7 +20821,7 @@ Sub SceneGeneralStart(Screen, bLoop, bMute, VideoPath, VideoName, Messages, MsgC
 	Dim tmpEsc
 	Dim ImageText:ImageText=""
 
-WriteToLog "     ", "SceneGeneralStart: VideoPath:" & VideoPath & " MSG:" & Messages
+If KeepLogs Then WriteToLog "     ", "SceneGeneralStart: VideoPath:" & VideoPath & " MSG:" & Messages
 'WriteToLog "     ", "Colors:" & MsgColors
 
 	if MsgColors<> "" then 
@@ -20855,7 +20899,7 @@ WriteToLog "     ", "SceneGeneralStart: VideoPath:" & VideoPath & " MSG:" & Mess
 		if ImageText<>"" then 
 			PuPlayer.LabelSet pDMDFull,"MsgFull" ,ImageText, 1,"{'mt':2,'height':100,'width':100}"
 		else 
-			WriteToLog "     ", "SKIP Message"
+			If KeepLogs Then WriteToLog "     ", "SKIP Message"
 			PuPlayer.LabelSet pDMDFull,"MsgFull","PupOverlays\\clear.png",1,""
 		End if 
 
@@ -20908,30 +20952,26 @@ PupQueueDefault(3)=""
 
 
 Sub QueueSetDefault(queueIdx, Command, CommandClear)
-WriteToLog "     ", "QueueSetDefault:" & Command
+If KeepLogs Then WriteToLog "     ", "QueueSetDefault:" & Command
 
 	PupQueueDefault(queueIdx)=""
 	PupQueueDefaultClear(queueIdx)=""
-	if Command<>"" then
-		PupQueueDefault(queueIdx)=Command & " '"
-	End If
-	if CommandClear<>"" then
-		PupQueueDefaultClear(queueIdx)=CommandClear & " '"
-	End If
-	if QueueActive(queueIdx) = False and Command<>"" then
-		Execute PupQueueDefault(queueIdx)
-	End if
-End Sub
+	if Command<>"" then PupQueueDefault(queueIdx)=Command & " '"
+	if CommandClear<>"" then PupQueueDefaultClear(queueIdx)=CommandClear & " '"
+	if QueueActive(queueIdx) = False then 
+		Execute Command
+	End if 
+End Sub 
 
 Sub QueueStartDefault()
 	Dim queueIdx:queueIdx=0
 
 	if PupQueueDefault(queueIdx)<>"" and PupQueueDefaultClear(queueIdx)	<>"" then	' clear the default if there is one 
-WriteToLog "     ", "Execute Clear:" & PupQueueDefaultClear(queueIdx)
+If KeepLogs Then WriteToLog "     ", "Execute Clear:" & PupQueueDefaultClear(queueIdx)
 		Execute PupQueueDefaultClear(queueIdx)
 	End if 
 
-WriteToLog "     ", "Queue Empty Deactivated: " & PupQueueDefault(queueIdx)
+If KeepLogs Then WriteToLog "     ", "Queue Empty Deactivated: " & PupQueueDefault(queueIdx)
 	if PupQueueDefault(queueIdx)<>"" then 		' Run the default item
 		Execute PupQueueDefault(queueIdx)
 	End if 
@@ -20945,7 +20985,7 @@ Sub QueueFlushForce(queueIdx, bForce)
 	Dim time
 	dim xx
 	dim nextFree
-WriteToLog "     ", "QueueFlush: " & queueIdx & " " & bForce
+If KeepLogs Then WriteToLog "     ", "QueueFlush: " & queueIdx & " " & bForce
 	
 	nextFree=-1
 	for xx = 0 to PupQueueEndPos(queueIdx)
@@ -20963,18 +21003,18 @@ WriteToLog "     ", "QueueFlush: " & queueIdx & " " & bForce
 	Next 
 	PupQueueEndPos(queueIdx)=nextFree
 
-WriteToLog "     ", "--Q-Dump Flush---"
+If KeepLogs Then WriteToLog "     ", "--Q-Dump Flush---"
 	for xx = 0 to PupQueueEndPos(queueIdx)
-		WriteToLog "     ", xx & " " & PupQueue(queueIdx, xx, 0) & " " & PupQueue(queueIdx, xx, 1) & " " & PupQueue(queueIdx, xx, 2) & " " & PupQueue(queueIdx, xx, 3) 
+		If KeepLogs Then WriteToLog "     ", xx & " " & PupQueue(queueIdx, xx, 0) & " " & PupQueue(queueIdx, xx, 1) & " " & PupQueue(queueIdx, xx, 2) & " " & PupQueue(queueIdx, xx, 3) 
 	Next 
-WriteToLog "     ", "--Q-Dump Flush---"
+If KeepLogs Then WriteToLog "     ", "--Q-Dump Flush---"
 
 	' See if one is actively running
 	time=0
 	if QueueActive(queueIdx) and QueueCurrentTime(queueIdx) <> 0 then time = (DateDiff("s", now, QueueCurrentTime(queueIdx)) * 1000)
 
 	if (nextFree= -1 and time=0) or bForce then
-WriteToLog "     ", "QueueFlush Empty Deacivated"
+If KeepLogs Then WriteToLog "     ", "QueueFlush Empty Deacivated"
 		QueueActive(queueIdx)=False
 		tmrQueues(queueIdx).Enabled = False
 	End if 
@@ -20983,18 +21023,18 @@ End Sub
 Function getQueueTime(queueIdx)		' Returns how much time left on queue
 	Dim time,i 
 	time = 0
-WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
-WriteToLog "     ", "GetQueueTime:" & QueueCurrentTime(queueIdx) & " " & QueueActive(queueIdx)
+If KeepLogs Then WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
+If KeepLogs Then WriteToLog "     ", "GetQueueTime:" & QueueCurrentTime(queueIdx) & " " & QueueActive(queueIdx)
 	if QueueActive(queueIdx) and QueueCurrentTime(queueIdx) <> 0 then time = (DateDiff("s", now, QueueCurrentTime(queueIdx)) * 1000)
-WriteToLog "     ", "GetQueueTime Active:" & time
+If KeepLogs Then WriteToLog "     ", "GetQueueTime Active:" & time
 
 	for i = 0 to PupQueueEndPos(queueIdx)
-WriteToLog "     ", i & "    " & PupQueue(queueIdx, i, 0) & " " & PupQueue(queueIdx, i, 1) & " " & PupQueue(queueIdx, i, 2) & " " & PupQueue(queueIdx, i, 3) 
+If KeepLogs Then WriteToLog "     ", i & "    " & PupQueue(queueIdx, i, 0) & " " & PupQueue(queueIdx, i, 1) & " " & PupQueue(queueIdx, i, 2) & " " & PupQueue(queueIdx, i, 3) 
 		time = time + PupQueue(queueIdx, i, 2) 
 	Next
 	if time <> 0 then  time=time+1000 ' Add a second because fidelity is 1 second but queue runs on milliseconds
 	getQueueTime = time
-WriteToLog "     ", "GetQueueTime ret:" & time
+If KeepLogs Then WriteToLog "     ", "GetQueueTime ret:" & time
 End Function
 
 
@@ -21022,18 +21062,17 @@ Sub QueueScene(Command, msecLen, priority)
 	QueueScene2 0, Command, msecLen, priority, False 
 End Sub
 
-Sub QueueScene2(queueIdx, Command, msecLen, priority, bMustRun)
-WriteToLog "     ", "Queue Scene " & Command & " Len: " & msecLen
-	if PupQueueEndPos(queueIdx) < UBound(PupQueue, 2) then
+Sub QueueScene2(queueIdx, Command, msecLen, priority, bMustRun) 
+If KeepLogs Then WriteToLog "     ", "Queue Scene " & Command & " Len: " & msecLen
+	if PupQueueEndPos(queueIdx) < UBound(PupQueue, 2) then 
 		PupQueueEndPos(queueIdx)=PupQueueEndPos(queueIdx)+1
-	End if
-	Dim pos : pos = PupQueueEndPos(queueIdx)
+	End if 
 	' NOTE: If it is full we overwrite the lowest priority (Optionally we could make the queue bigger)
-	PupQueue(queueIdx, pos, 0) = Command & " '"
-	PupQueue(queueIdx, pos, 1) = priority
-	PupQueue(queueIdx, pos, 2) = msecLen
-	PupQueue(queueIdx, pos, 3) = bMustRun
-
+	PupQueue(queueIdx, PupQueueEndPos(queueIdx),0 )=Command & " '"
+	PupQueue(queueIdx, PupQueueEndPos(queueIdx),1 )=priority
+	PupQueue(queueIdx, PupQueueEndPos(queueIdx),2 )=msecLen
+	PupQueue(queueIdx, PupQueueEndPos(queueIdx),3 )=bMustRun
+	
 	SortPupQueue queueIdx
 	
 'WriteToLog "     ", "--Q-Dump---"
@@ -21077,17 +21116,17 @@ End Sub
 
 Sub RunQueue(queueIdx, bNewItem)
 	dim qCmd, qTime
-WriteToLog "     ", "Run Queue " &  queueIdx & " " & QueueActive(queueIdx) & " " & bNewItem & " " & Now
+If KeepLogs Then WriteToLog "     ", "Run Queue " &  queueIdx & " " & QueueActive(queueIdx) & " " & bNewItem & " " & Now
 	if QueueActive(queueIdx) = False or bNewItem=False then 	' Nothing is running Or we just finished running something 
 		if PupQueueEndPos(queueIdx) <> -1 then
 			if PupQueueDefault(queueIdx)<>"" and QueueActive(queueIdx)=False and PupQueueDefaultClear(queueIdx)	<>"" then	' clear the default if there is one 
-WriteToLog "     ", "Execute Clear:" & PupQueueDefaultClear(queueIdx)
+If KeepLogs Then WriteToLog "     ", "Execute Clear:" & PupQueueDefaultClear(queueIdx)
 				Execute PupQueueDefaultClear(queueIdx)
 			End if
 			QueueActive(queueIdx) = True
 			qCmd=PupQueue(queueIdx, 0, 0)
 			qTime=PupQueue(queueIdx, 0, 2)
-WriteToLog "     ", "Exec " & qCmd
+If KeepLogs Then WriteToLog "     ", "Exec " & qCmd
 '			on error resume next 
 			PupQueue(queueIdx, 0, 3)=True		' Set MustRun to True so it cant get deleted while running 
 			Execute qCmd
@@ -21107,7 +21146,7 @@ WriteToLog "     ", "Exec " & qCmd
 				RunQueue queueIdx, False
 			End If
 		Else 
-WriteToLog "     ", "Queue Empty Deactivated: " & PupQueueDefault(queueIdx)
+If KeepLogs Then WriteToLog "     ", "Queue Empty Deactivated: " & PupQueueDefault(queueIdx)
 			QueueActive(queueIdx) = False
 			if PupQueueDefault(queueIdx)<>"" then 		' Run the default item
 				Execute PupQueueDefault(queueIdx)
@@ -21157,7 +21196,7 @@ Sub HandleDebugDown(keycode)
 	dim bFound:bFound=False
 	If KeyCode = LeftMagnaSave then bDebugLeftMagnaDown = True
 	If KeyCode = RightMagnaSave then bDebugRightMagnaDown = True
-WriteToLog "     ", "DEBUG L:" & bDebugLeftMagnaDown & " R:" & bDebugRightMagnaDown  & " cnt" & debugEnableCount
+If KeepLogs Then WriteToLog "     ", "DEBUG L:" & bDebugLeftMagnaDown & " R:" & bDebugRightMagnaDown  & " cnt" & debugEnableCount
 	if (bDebugMode = False) Then	' Turn on debug when you pres magnas together three times 
 		if (bDebugLeftMagnaDown and bDebugRightMagnaDown) then
 			debugEnableCount=debugEnableCount+1
@@ -21582,7 +21621,7 @@ End Sub
 ' Used for flipper correction, rubber dampeners, and drop targets
 Function BallSpeed(ball) 'Calculates the ball speed
 	Dim vx, vy, vz : vx = ball.VelX : vy = ball.VelY : vz = ball.VelZ
-	BallSpeed = SQR(vx*vx + vy*vy + vz*vz)
+	BallSpeed = SQR(vx * vx + vy * vy + vz * vz)
 End Function
 
 ' Used for flipper correction and rubber dampeners
@@ -21628,44 +21667,41 @@ End Function
 '  FLIPPER TRICKS 
 '******************************************************
 
-RightFlipper.timerinterval=10
+RightFlipper.timerinterval=1
 Rightflipper.timerenabled=True
 
 sub RightFlipper_timer()
 	FlipperTricks LeftFlipper, LFPress, LFCount, LFEndAngle, LFState
 	FlipperTricks RightFlipper, RFPress, RFCount, RFEndAngle, RFState
-	Dim ftBOT : ftBOT = GetBalls
-	FlipperNudge ftBOT, RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper, LFEndAngle
-	FlipperNudge ftBOT, LeftFlipper, LFEndAngle, LFEOSNudge,  RightFlipper, RFEndAngle
+	' Single GetBalls shared between both FlipperNudge calls (was 2x GetBalls at 1000Hz = 2000 COM calls/sec)
+	Dim fnBOT : fnBOT = GetBalls
+	FlipperNudge fnBOT, RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper, LFEndAngle
+	FlipperNudge fnBOT, LeftFlipper, LFEndAngle, LFEOSNudge,  RightFlipper, RFEndAngle
 end sub
 
 Dim LFEOSNudge, RFEOSNudge
 
 Sub FlipperNudge(BOT, Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
 	Dim b
-	Dim f1ca : f1ca = Flipper1.currentangle
+	Dim ca1 : ca1 = Flipper1.currentangle  ' cache COM read — used multiple times
 
-	If f1ca = Endangle1 and EOSNudge1 <> 1 Then
+	If ca1 = Endangle1 and EOSNudge1 <> 1 Then
 		EOSNudge1 = 1
-																											 
 		If Flipper2.currentangle = EndAngle2 Then
-			Dim bx, by
 			For b = 0 to Ubound(BOT)
-				bx = BOT(b).x : by = BOT(b).y
-				If FlipperTrigger(bx, by, Flipper1) Then
+				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper1) Then
 					exit Sub
 				end If
 			Next
 			For b = 0 to Ubound(BOT)
-				bx = BOT(b).x : by = BOT(b).y
-				If FlipperTrigger(bx, by, Flipper2) Then
+				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper2) Then
 					BOT(b).velx = BOT(b).velx / 1.3
 					BOT(b).vely = BOT(b).vely - 0.5
 				end If
 			Next
 		End If
 	Else
-		If Abs(f1ca) > Abs(EndAngle1) + 30 then EOSNudge1 = 0
+		If Abs(ca1) > Abs(EndAngle1) + 30 then EOSNudge1 = 0
 	End If
 End Sub
 
@@ -21674,13 +21710,15 @@ End Sub
 ' Maths
 '*****************
 Dim PI: PI = 4*Atn(1)
+Dim PIover180 : PIover180 = PI / 180  ' pre-computed constant for degrees→radians
+Dim d180overPI : d180overPI = 180 / PI  ' pre-computed constant for radians→degrees
 
 Function dSin(degrees)
-	dsin = sin(degrees * Pi/180)
+	dsin = sin(degrees * PIover180)
 End Function
 
 Function dCos(degrees)
-	dcos = cos(degrees * Pi/180)
+	dcos = cos(degrees * PIover180)
 End Function
 
 Function Atn2(dy, dx)
@@ -21707,7 +21745,7 @@ End Function
 
 Function Distance(ax,ay,bx,by)
 	Dim dx, dy : dx = ax - bx : dy = ay - by
-	Distance = SQR(dx*dx + dy*dy)
+	Distance = SQR(dx * dx + dy * dy)
 End Function
 
 Function DistancePL(px,py,ax,ay,bx,by) ' Distance between a point and a line where point is px,py
@@ -21715,27 +21753,43 @@ Function DistancePL(px,py,ax,ay,bx,by) ' Distance between a point and a line whe
 End Function
 
 Function Radians(Degrees)
-	Radians = Degrees * PI /180
+	Radians = Degrees * PIover180
 End Function
 
 Function AnglePP(ax,ay,bx,by)
-	AnglePP = Atn2((by - ay),(bx - ax))*180/PI
+	AnglePP = Atn2((by - ay),(bx - ax)) * d180overPI
 End Function
 
 Function DistanceFromFlipper(ballx, bally, Flipper)
-	DistanceFromFlipper = DistancePL(ballx, bally, Flipper.x, Flipper.y, Cos(Radians(Flipper.currentangle+90))+Flipper.x, Sin(Radians(Flipper.currentangle+90))+Flipper.y)
+	' Cache Flipper COM properties — called from FlipperTrigger at 1000Hz
+	Dim fx, fy, rad
+	fx = Flipper.x : fy = Flipper.y
+	rad = (Flipper.currentangle + 90) * PIover180
+	DistanceFromFlipper = DistancePL(ballx, bally, fx, fy, Cos(rad) + fx, Sin(rad) + fy)
 End Function
 
 Function FlipperTrigger(ballx, bally, Flipper)
+	' Cache Flipper COM properties once — each was read 3-5x across sub-calls
+	Dim fx, fy, fca, flen
+	fx = Flipper.x : fy = Flipper.y : fca = Flipper.currentangle : flen = Flipper.Length
+
 	Dim DiffAngle
-	DiffAngle  = ABS(Flipper.currentangle - AnglePP(Flipper.x, Flipper.y, ballx, bally) - 90)
+	DiffAngle = ABS(fca - Atn2((fy - bally),(fx - ballx)) * d180overPI - 90)
 	If DiffAngle > 180 Then DiffAngle = DiffAngle - 360
 
-	If DistanceFromFlipper(ballx,bally,Flipper) < 48 and DiffAngle <= 90 and Distance(ballx,bally,Flipper.x,Flipper.y) < Flipper.Length Then
-		FlipperTrigger = True
-	Else
-		FlipperTrigger = False
-	End If        
+	' Inline DistanceFromFlipper to reuse cached fx/fy/fca
+	Dim rad, lx, ly
+	rad = (fca + 90) * PIover180
+	lx = Cos(rad) + fx : ly = Sin(rad) + fy
+
+	If ABS((ly - fy)*ballx - (lx - fx)*bally + lx*fy - ly*fx) / Distance(fx,fy,lx,ly) < 48 Then
+		Dim ddx, ddy : ddx = ballx - fx : ddy = bally - fy
+		If DiffAngle <= 90 and SQR(ddx * ddx + ddy * ddy) < flen Then
+			FlipperTrigger = True
+			Exit Function
+		End If
+	End If
+	FlipperTrigger = False
 End Function
 
 
@@ -21813,11 +21867,12 @@ Sub FlipperDeactivate(Flipper, FlipperPress)
 End Sub
 
 Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState)
-	Dim fsa : fsa = Flipper.startangle
-	Dim fca : fca = Flipper.currentangle
-	Dim Dir : Dir = fsa/Abs(fsa)        '-1 for Right Flipper
+	' Cache COM property reads — this runs at 1000Hz (1ms timer), 2 calls per tick
+	Dim sa : sa = Flipper.startangle      ' constant, but not worth module-level cache for generic Flipper param
+	Dim ca : ca = Abs(Flipper.currentangle)
+	Dim Dir : Dir = sa / Abs(sa)           '-1 for Right Flipper
 
-	If Abs(fca) > Abs(fsa) - 0.05 Then
+	If ca > Abs(sa) - 0.05 Then
 		If FState <> 1 Then
 			Flipper.rampup = SOSRampup
 			Flipper.endangle = FEndAngle - 3*Dir
@@ -21825,7 +21880,7 @@ Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState)
 			FCount = 0
 			FState = 1
 		End If
-	ElseIf Abs(fca) <= Abs(Flipper.endangle) and FlipperPress = 1 then
+	ElseIf ca <= Abs(Flipper.endangle) and FlipperPress = 1 then
 		if FCount = 0 Then FCount = GameTime
 
 		If FState <> 2 Then
@@ -21835,7 +21890,7 @@ Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState)
 			Flipper.endangle = FEndAngle
 			FState = 2
 		End If
-	Elseif Abs(fca) > Abs(Flipper.endangle) + 0.01 and FlipperPress = 1 Then
+	Elseif ca > Abs(Flipper.endangle) + 0.01 and FlipperPress = 1 Then
 		If FState <> 3 Then
 			Flipper.eostorque = EOST
 			Flipper.eostorqueangle = EOSA
@@ -21943,7 +21998,7 @@ Class Dampener
 		coef = desiredcor / realcor 
 		if debugOn then str = name & " in vel:" & round(cor.ballvel(aBall.id),2 ) & vbnewline & "desired cor: " & round(desiredcor,4) & vbnewline & _
 		"actual cor: " & round(realCOR,4) & vbnewline & "ballspeed coef: " & round(coef, 3) & vbnewline 
-		if Print then WriteToLog "     ", Round(cor.ballvel(aBall.id),2) & ", " & round(desiredcor,3)
+		if Print then If KeepLogs Then WriteToLog "     ", Round(cor.ballvel(aBall.id),2) & ", " & round(desiredcor,3)
 
 		aBall.velx = aBall.velx * coef : aBall.vely = aBall.vely * coef
 		if debugOn then TBPout.text = str
@@ -21999,7 +22054,8 @@ sub TargetBouncer(aBall,defvalue)
             Case 6: zMultiplier = 0.5*defvalue
         End Select
         aBall.velz = abs(vel * zMultiplier * TargetBouncerFactor)
-        aBall.velx = sgn(aBall.velx) * sqr(abs((vel^2 - aBall.velz^2)/(1+vratio^2)))
+        Dim tbVelz : tbVelz = aBall.velz  ' cache COM read for multiply
+        aBall.velx = sgn(aBall.velx) * sqr(abs((vel*vel - tbVelz*tbVelz)/(1+vratio*vratio)))
         aBall.vely = aBall.velx * vratio
         'WriteToLog "     ", "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
         'WriteToLog "     ", "conservation check: " & BallSpeed(aBall)/vel
@@ -22016,23 +22072,29 @@ dim cor : set cor = New CoRTracker
 Class CoRTracker
 	public ballvel, ballvelx, ballvely
 
-	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+	Private Sub Class_Initialize
+		' Pre-size to tnob — avoids per-tick ReDim when new balls appear
+		redim ballvel(tnob) : redim ballvelx(tnob) : redim ballvely(tnob)
+	End Sub
 
 	Public Sub Update()	'tracks in-ball-velocity
-		dim str, b, AllBalls, highestID : allBalls = getballs
+		dim b, AllBalls, bid, bvx, bvy : allBalls = getballs
 
+		' Single pass: find max ID, grow if needed, record velocities
+		dim highestID : highestID = 0
 		for each b in allballs
-			if b.id >= HighestID then highestID = b.id
+			bid = b.id
+			if bid > highestID then highestID = bid
 		Next
 
-		if uBound(ballvel) < highestID then redim ballvel(highestID)	'set bounds
-		if uBound(ballvelx) < highestID then redim ballvelx(highestID)	'set bounds
-		if uBound(ballvely) < highestID then redim ballvely(highestID)	'set bounds
+		if uBound(ballvel) < highestID then redim ballvel(highestID) : redim ballvelx(highestID) : redim ballvely(highestID)
 
+		dim bvz
 		for each b in allballs
-			ballvel(b.id) = BallSpeed(b)
-			ballvelx(b.id) = b.velx
-			ballvely(b.id) = b.vely
+			bid = b.id : bvx = b.velx : bvy = b.vely : bvz = b.VelZ
+			ballvel(bid) = SQR(bvx * bvx + bvy * bvy + bvz * bvz)
+			ballvelx(bid) = bvx
+			ballvely(bid) = bvy
 		Next
 	End Sub
 End Class
@@ -22216,11 +22278,9 @@ Function AudioFade(tableobj) ' Fades between front and back of the table (for su
 	end if
 
     If tmp > 0 Then
-		Dim t2 : t2 = tmp*tmp : Dim t4 : t4 = t2*t2 : Dim t8 : t8 = t4*t4
-		AudioFade = Csng(t8 * t2)
+		AudioFade = Csng(tmp ^10)
     Else
-        Dim nt : nt = -tmp : Dim nt2 : nt2 = nt*nt : Dim nt4 : nt4 = nt2*nt2 : Dim nt8 : nt8 = nt4*nt4
-        AudioFade = Csng(-(nt8 * nt2))
+        AudioFade = Csng(-((- tmp) ^10) )
     End If
 End Function
 
@@ -22235,20 +22295,18 @@ Function AudioPan(tableobj) ' Calculates the pan for a tableobj based on the X p
 	end if
 
     If tmp > 0 Then
-        Dim t2 : t2 = tmp*tmp : Dim t4 : t4 = t2*t2 : Dim t8 : t8 = t4*t4
-        AudioPan = Csng(t8 * t2)
+        AudioPan = Csng(tmp ^10)
     Else
-        Dim nt : nt = -tmp : Dim nt2 : nt2 = nt*nt : Dim nt4 : nt4 = nt2*nt2 : Dim nt8 : nt8 = nt4*nt4
-        AudioPan = Csng(-(nt8 * nt2))
+        AudioPan = Csng(-((- tmp) ^10) )
     End If
 End Function
 
 Function Vol(ball) ' Calculates the volume of the sound based on the ball speed
-	Dim v : v = BallVel(ball) : Vol = Csng(v * v)
+	Vol = Csng(BallVel(ball) ^2)
 End Function
 
 Function Volz(ball) ' Calculates the volume of the sound based on the ball speed
-	Dim vz : vz = ball.velz : Volz = Csng(vz * vz)
+	Volz = Csng((ball.velz) ^2)
 End Function
 
 Function Pitch(ball) ' Calculates the pitch of the sound based on the ball speed
@@ -22261,11 +22319,11 @@ Function BallVel(ball) 'Calculates the ball speed
 End Function
 
 Function VolPlayfieldRoll(ball) ' Calculates the roll volume of the sound based on the ball speed
-	Dim bv : bv = BallVel(ball) : VolPlayfieldRoll = RollingSoundFactor * 0.0005 * Csng(bv * bv * bv)
+	VolPlayfieldRoll = RollingSoundFactor * 0.0005 * Csng(BallVel(ball) ^3)
 End Function
 
 Function PitchPlayfieldRoll(ball) ' Calculates the roll pitch of the sound based on the ball speed
-    Dim bv : bv = BallVel(ball) : PitchPlayfieldRoll = bv * bv * 10
+    PitchPlayfieldRoll = BallVel(ball) ^2 * 10
 End Function
 
 Function RndInt(min, max)
@@ -22774,7 +22832,7 @@ End Sub
 	End Sub
 			
 	sub playclear(chan)
-		WriteToLog "     ", "play clear'd " & chan
+		If KeepLogs Then WriteToLog "     ", "play clear'd " & chan
 		bMediaSet(chan) = False
 		bMediaPaused(chan) = False
 
@@ -22894,7 +22952,7 @@ End Sub
 			cineon = 1
 		end If
 
-WriteToLog "     ", "PlayMedia " & channel & " Dir:" & playlist & " File:" & name & " Vol:" & audiolevel & " Pri:" & priority & " Len:" & length
+If KeepLogs Then WriteToLog "     ", "PlayMedia " & channel & " Dir:" & playlist & " File:" & name & " Vol:" & audiolevel & " Pri:" & priority & " Len:" & length
 		PuPlayer.playlistplayex channel,playlist,name,audiolevel,priority
 		if channel = pBackglass then PuPlayer.SetBackGround channel, 1
 '		if channel = pAudio then PuPlayer.SetLoop channel, 1
@@ -22944,6 +23002,7 @@ WriteToLog "     ", "PlayMedia " & channel & " Dir:" & playlist & " File:" & nam
 		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": "&pMusic&", ""FN"":11, ""VL"":"&VolMusic&" }"
 		'WriteToLog "     ", "turnitbackupcine "
 	End Sub
+
 
 	sub holder
 	end sub
@@ -23083,86 +23142,4 @@ Sub TurnOffDofUndercab 'Simple sub to turn off any of the undercab effects when 
 End Sub
 
 
-'*****************************************************************	
-'DOF Lookup Chart	
-'	
-'Special Thanks to RetroG33k, Shaggysrsg, Awalsh053, and LlamaStick for inital DOF testing	
-'*****************************************************************	
-'--------------------------------------	
-'Flashers	
-'--------------------------------------	
-'Lower Left (white)- 150	
-'Middle Right (blue)- 152	
-'Top Right (wRGB), 153,154,155,156	
-'--------------------------------------	
-'Targets	
-'--------------------------------------	
-'Pharoah-1- 159	
-'Pharoah-2- 160	
-'Pharaoh-3- 161	
-'Top Drop Target (lock)- 175	
-'Middle Drop Target (orb)- 176	
-'Bottom Drop Target (Bonus)- 177	
-'--------------------------------------	
-'Switches	
-'--------------------------------------	
-'L outlane-162	
-'L inlane- 163	
-'R outlane- 164	
-'R inlane- 165	
-'Left Ramp- 157	
-'Right Ramp- 158	
-'--------------------------------------	
-'Switches	
-'--------------------------------------	
-'Left Outer Orbit-183	
-'Left Inner Orbit-184	
-'Right Inner Orbit-185	
-'Right Outter Orbit-186	
-'--------------------------------------	
-'MUMMY Lights	
-'--------------------------------------	
-'M-210	
-'U-211	
-'M-212	
-'M-213	
-'Y-214	
-'--------------------------------------	
-'Other	
-'--------------------------------------	
-'DOF 126- award jackpot	
-'DOF 127- Skillshot	
-'DOF 121 -knocker effect	
-'DOF 180- Extra Ball	
-'Mystery Awarded- 151	
-'Spinners (both)- 166	
-'Ball indicator- 170	
-'Ball shot- 171	
-'Drained- 178	
-'Tilt- 167	
-'Underworld ramp up- 173	
-'Revive Enabled- 172	
-'Revive Used -174	
-'Underworld ramp moving- 179	
-'Coin Inserted- 220	
-'--------------------------------------	
-'Mechanical	
-'--------------------------------------	
-'Bumper 1- 107	
-'Bumper 2- 111	
-'Bumper 3- 109	
-'101- Left Flipper	
-'102- Right Flipper	
-'103- Left Sling	
-'105- Right Sling	
-'--------------------------------------	
-'Mode Undercab Scenarios	
-'--------------------------------------	
-'Attract- Multiple Flame Pattern- 200	
-'Normal- Gold- 201	
-'TwoMinutesToMidnight- Orange, 202	
-'FlightOfIcarus- Red, 203	
-'FearOfTheDark- Purple, 204	
-'AcesHigh- Dodger Blue, 205	
-'Hallowed- Orange, 206	
-'Mariner- Cyan,207	
+
