@@ -58,7 +58,7 @@ Const FreePlay					= True	' Coins or not
 Const Music8Bit					= True  ' Use 8Bit version of Music (View README.txt in pup music dir to get original songs)
 Const HasRealTiltBob			= 0 	' 0=No Tilt Bob, 1=Real TiltBob
 Const AttractSilent	= 0					' 0 = audio and DOF played during attract sequence, 1 = no audio and no DOF during attract sequence(after first play)
-Const kMaxSongs=14						' To Add Songs Drop Song in the Music dir, add a new image to "SongSelection" dir and then update the UpdateDMDSong function.
+Const kMaxSongs=15						' To Add Songs Drop Song in the Music dir, add a new image to "SongSelection" dir and then update the UpdateDMDSong function.
 Const StagedFlipperMod 			= 0 	' 0 = not staged, 1 - staged (dual leaf switches)
 Const ColorizeModeInserts		= False	' Nice mod that colors the mode inserts 
 Const OutlaneDifficulty			= 1		' 0=Hard, 1=Medium, 2=Easy : Moves outlane pegs
