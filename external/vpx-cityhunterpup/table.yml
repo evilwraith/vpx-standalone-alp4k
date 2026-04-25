@@ -1,6 +1,4 @@
 ---
-applyFixes:
-  - "bass"
 fps: 45
 pupArchiveFormat: "zip"
 pupArchiveRoot: 'Pup & M�dia/City_Hunter'
