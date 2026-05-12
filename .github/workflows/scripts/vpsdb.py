@@ -124,6 +124,7 @@ def get_table_meta(files, warn_on_error=True):
         altSoundChecksum = data.get("altSoundChecksum")
         backglassChecksum = data.get("backglassChecksum")
         coloredROMChecksum = data.get("coloredROMChecksum")
+        coloredROMChecksum2 = data.get("coloredROMChecksum2")
         diffChecksum = data.get("diffChecksum")
         romChecksum = data.get("romChecksum")
         vpxChecksum = data.get("vpxChecksum")
@@ -135,6 +136,8 @@ def get_table_meta(files, warn_on_error=True):
             backglassChecksum = backglassChecksum.lower()
         if coloredROMChecksum:
             coloredROMChecksum = coloredROMChecksum.lower()
+        if coloredROMChecksum2:
+            coloredROMChecksum2 = coloredROMChecksum2.lower()
         if diffChecksum:
             diffChecksum = diffChecksum.lower()
         if romChecksum:
@@ -155,6 +158,7 @@ def get_table_meta(files, warn_on_error=True):
             "backglassNotes": data.get("backglassNotes"),
             "coloredROMBundled": data.get("coloredROMBundled"),
             "coloredROMChecksum": coloredROMChecksum,
+            "coloredROMChecksum2": coloredROMChecksum2,
             "coloredROMFileUrl": data.get("coloredROMUrlOverride"),
             "coloredROMNotes": data.get("coloredROMNotes"),
             "coloredROMVersion": data.get("coloredROMVersionOverride"),
