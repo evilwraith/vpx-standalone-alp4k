@@ -56,11 +56,27 @@ class VPSDB:
 
     def get_diff_by_id(self, id):
         table = self.get_tablefile_by_id(id)
-        if table:
-            if "features" in table:
-                if "VPU Patch" in table["features"]:
-                    return table
-        return None
+        if not table:
+            return None
+
+        features = table.get("features", [])
+        is_vpu_patch = (
+            "VPU Patch" in features
+            or table.get("_group") == "VPU Patch"
+            or table.get("category") == "VPU Patch"
+        )
+
+        if not is_vpu_patch:
+            return None
+
+        # New VPU Patch parameter mapping:
+        # - diffVPSID = selected table id
+        # - vpxVPSId = parentId when present, otherwise table id
+        return {
+            "diffVPSID": table.get("id"),
+            "vpxVPSId": table.get("parentId") or table.get("id"),
+            "table": table,
+        }
             
     def get_pup_by_id(self, id):
         for table in self.tables:
