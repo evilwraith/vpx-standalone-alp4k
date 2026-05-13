@@ -283,13 +283,17 @@ def get_table_meta(files, warn_on_error=True):
             diff = vpsdb.get_diff_by_id(diffVPSId)
             if diff:
                 print(f"Parsing diff {diffVPSId} for {folder_name}")
+                diff_file = diff["table"]
+                table_meta["diffVPSID"] = diff["diffVPSID"]
+                table_meta["vpxVPSId"] = diff["vpxVPSId"]
 
                 if not table_meta["diffAuthors"]:
-                    table_meta["diffAuthors"] = diff.get("authors", [])
+                    table_meta["diffAuthors"] = diff_file.get("authors", [])
                 if not table_meta["diffFileUrl"]:
-                    table_meta["diffFileUrl"] = diff.get("urls", [])[0].get("url", "")
+                    urls_list = diff_file.get("urls", [])
+                    table_meta["diffFileUrl"] = urls_list[0].get("url", "") if urls_list else ""
                 if not table_meta["diffVersion"]:
-                    table_meta["diffVersion"] = diff.get("version", "")
+                    table_meta["diffVersion"] = diff_file.get("version", "")
             else:
                 print(f"{error_prefix}: diff id {diffVPSId} not found in VPSDB")
                 if warn_on_error:
