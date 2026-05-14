@@ -56,27 +56,11 @@ class VPSDB:
 
     def get_diff_by_id(self, id):
         table = self.get_tablefile_by_id(id)
-        if not table:
-            return None
-
-        features = table.get("features", [])
-        is_vpu_patch = (
-            "VPU Patch" in features
-            or table.get("_group") == "VPU Patch"
-            or table.get("category") == "VPU Patch"
-        )
-
-        if not is_vpu_patch:
-            return None
-
-        # New VPU Patch parameter mapping:
-        # - diffVPSID = selected table id
-        # - vpxVPSId = parentId when present, otherwise table id
-        return {
-            "diffVPSID": table.get("id"),
-            "vpxVPSId": table.get("parentId") or table.get("id"),
-            "table": table,
-        }
+        if table:
+            if "features" in table:
+                if "VPU Patch" in table["features"]:
+                    return table
+        return None
             
     def get_pup_by_id(self, id):
         for table in self.tables:
@@ -140,7 +124,6 @@ def get_table_meta(files, warn_on_error=True):
         altSoundChecksum = data.get("altSoundChecksum")
         backglassChecksum = data.get("backglassChecksum")
         coloredROMChecksum = data.get("coloredROMChecksum")
-        coloredROMChecksum2 = data.get("coloredROMChecksum2")
         diffChecksum = data.get("diffChecksum")
         romChecksum = data.get("romChecksum")
         vpxChecksum = data.get("vpxChecksum")
@@ -152,8 +135,6 @@ def get_table_meta(files, warn_on_error=True):
             backglassChecksum = backglassChecksum.lower()
         if coloredROMChecksum:
             coloredROMChecksum = coloredROMChecksum.lower()
-        if coloredROMChecksum2:
-            coloredROMChecksum2 = coloredROMChecksum2.lower()
         if diffChecksum:
             diffChecksum = diffChecksum.lower()
         if romChecksum:
@@ -174,7 +155,6 @@ def get_table_meta(files, warn_on_error=True):
             "backglassNotes": data.get("backglassNotes"),
             "coloredROMBundled": data.get("coloredROMBundled"),
             "coloredROMChecksum": coloredROMChecksum,
-            "coloredROMChecksum2": coloredROMChecksum2,
             "coloredROMFileUrl": data.get("coloredROMUrlOverride"),
             "coloredROMNotes": data.get("coloredROMNotes"),
             "coloredROMVersion": data.get("coloredROMVersionOverride"),
@@ -283,17 +263,13 @@ def get_table_meta(files, warn_on_error=True):
             diff = vpsdb.get_diff_by_id(diffVPSId)
             if diff:
                 print(f"Parsing diff {diffVPSId} for {folder_name}")
-                diff_file = diff["table"]
-                table_meta["diffVPSID"] = diff["diffVPSID"]
-                table_meta["vpxVPSId"] = diff["vpxVPSId"]
 
                 if not table_meta["diffAuthors"]:
-                    table_meta["diffAuthors"] = diff_file.get("authors", [])
+                    table_meta["diffAuthors"] = diff.get("authors", [])
                 if not table_meta["diffFileUrl"]:
-                    urls_list = diff_file.get("urls", [])
-                    table_meta["diffFileUrl"] = urls_list[0].get("url", "") if urls_list else ""
+                    table_meta["diffFileUrl"] = diff.get("urls", [])[0].get("url", "")
                 if not table_meta["diffVersion"]:
-                    table_meta["diffVersion"] = diff_file.get("version", "")
+                    table_meta["diffVersion"] = diff.get("version", "")
             else:
                 print(f"{error_prefix}: diff id {diffVPSId} not found in VPSDB")
                 if warn_on_error:
@@ -323,11 +299,7 @@ def get_table_meta(files, warn_on_error=True):
                 print(f"Parsing ROM {romVPSId} for {folder_name}")
                 table_meta["romAuthors"] = rom.get("authors", [])
                 table_meta["romComment"] = rom.get("comment", "")
-                urls_list = rom.get("urls", [])
-                if urls_list:  # This checks if the list is not empty
-                    table_meta["romFileUrl"] = urls_list[0].get("url", "")
-                else:
-                    table_meta["romFileUrl"] = "" # Assign a default empty string
+                table_meta["romFileUrl"] = rom.get("urls", [])[0].get("url", "")
                 if not table_meta["romVersion"]:
                     table_meta["romVersion"] = rom.get("version", "")
             else:

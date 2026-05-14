@@ -1,5 +1,8 @@
 ---
-fps: 57
+backglassVPSId: "Gl-EVBjkA5"
+backglassChecksum: "0BB47FC236BC581AC01C84877A7ACD72"
+backglassNotes: "Download version 1.0.0"
+fps: 58
 romUrlOverride: "https://pinballnirvana.com/forums/resources/freddy.1835/"
 romVersionOverride: "freddy"
 romChecksum: "30D614734072E3FD25475EA9320B2865"
