@@ -13,5 +13,3 @@ testers:
   - "OminousOsie"
 vpxVPSId: "a6q4djY5bP"
 vpxChecksum: "ecfef280791c3d29077fbac13fe0ba03"
-applyFixes:
-  - "bass"
