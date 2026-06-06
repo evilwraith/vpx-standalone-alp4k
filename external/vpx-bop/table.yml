@@ -15,5 +15,3 @@ testers:
   - "Boris"
 vpxVPSId: "V1dcVAchIZ"
 vpxChecksum: "8f04921f5df40aa49463b46a61285c73"
-applyFixes:
-  - "bass"
