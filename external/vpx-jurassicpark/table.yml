@@ -15,5 +15,3 @@ testers:
   - "kingargyle"
 vpxVPSId: "a4IeNxW1"
 vpxChecksum: "202A0FA0FF0869776026B182CEB8A029"
-applyFixes:
-  - "bass"
