@@ -15,5 +15,3 @@ testers:
 vpxVPSId: "HP5t0r1m"
 vpxChecksum: "f10f601997cf4581b383894f72238e6a"
 tableNotes: "Version 1.3"
-applyFixes:
-  - "bass"
