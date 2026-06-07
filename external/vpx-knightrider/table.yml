@@ -10,5 +10,3 @@ testers:
 vpxVPSId: "4VNt6aLoWD"
 vpxChecksum: "9FBE86F6AD064D55CC6FEBADBE8CD3DC"
 tableNotes: "Download KnightRider.vpx"
-applyFixes:
-  - "bass"
