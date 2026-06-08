@@ -12,5 +12,3 @@ testers:
   - "Mox"
 vpxVPSId: "BrZ-RApc"
 vpxChecksum: "16A2F1ED9CF7606D2B94D66D79D9D50B"
-applyFixes:
-  - "bass"
