@@ -21,5 +21,3 @@ testers:
   - "n-i-x"
 vpxChecksum: "1634db2d565973a6894c354a42ab1da8"
 vpxVPSId: "cqC1LMDt"
-applyFixes:
-  - "bass"
