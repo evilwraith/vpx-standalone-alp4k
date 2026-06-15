@@ -1,5 +1,8 @@
 ---
-fps: 50
+backglassBundled: True
+backglassNotes: "Use 'DUNE_wFULLDMD.directb2s' from 'MEDIA PACK.zip'"
+backglassChecksum: "2191235285C1975D74D605BC41D0924C" 
+fps: 60
 tableVPSId: "6t0bWHR24a"
 tagline: "You were not born to the spice as we were!"
 testers:

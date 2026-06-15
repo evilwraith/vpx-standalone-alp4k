@@ -1,7 +1,10 @@
 ---
 backglassVPSId: "sA8BNXIhOL"
 backglassChecksum: "f57b78558338ec5c0e9ae8b793377f84"
-fps: 35
+fps: 51
+coloredROMVPSId: "DNraALNUj8"
+coloredROMChecksum: "92B579B4C2975D5D1B5BF4E1E8C4B787"
+coloredROMNotes: "Download 'Cactus_Canyon_Ver_1_5_Final.pac'"
 romVPSId: "Gobv2EXY"
 romChecksum: "a3dfec88cba7951116aca6585b973d21"
 tableVPSId: "vZDUDUii"
