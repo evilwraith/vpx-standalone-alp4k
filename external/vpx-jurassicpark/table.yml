@@ -1,10 +1,13 @@
 ---
 backglassVPSId: "ulmJn9mNE6"
 backglassChecksum: "18fdf34ee41e8cfb58672cfa675a07d4"
+coloredROMChecksum: "323336DD285312CB49A2E684527E7FC1"
+coloredROMNotes: "Download version 1.0.0"
+coloredROMVPSId: "u-tQIZEs"
 romVPSId: "uML9auPR"
 romChecksum: "68a0d9b3221137ed2d7015a7c4094ca2"
 romVersionOverride: "jupk_600"
-fps: 36
+fps: 60
 tableVPSId: "i47o-Nvr"
 tablenotes: "Download version 2.0"
 tagline: "Welcome... to Jurassic Park!"
