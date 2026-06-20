@@ -6,7 +6,7 @@ pupArchiveRoot: "startrp2"
 pupRequired: true
 fps: 52
 mainNotes: "Starship Troopers VPinWorkshop edition. Enabled for PuP Pack."
-romChecksum: "ac756e2ab3643c1743b53ef6e51dfafe"
+romChecksum: "AC756E2AB3643C1743B53EF6E51DFAFE"
 romVPSId: "CwAwf-gs"
 tableNameOverride: "Starship Troopers PUP Pack (Sega 1997)"
 tableNotes: "Starship Troopers (Sega 1997) VPW Mod v2.0.vpx.zip"
