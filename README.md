@@ -373,10 +373,12 @@ Links to these products on Amazon are through affiliate links.
 | [Creature From The Black Lagoon - BW Edition (1992)](external/vpx-creaturebw) | :white_check_mark: |:white_check_mark: | :white_check_mark: | :x: | 40 | 
 | [Creepshow (Original 2022)](external/vpx-creepshow) | :white_check_mark: |:white_check_mark: | :white_check_mark: | :x: | 42 |
 | [Criterium 77 (Taito do Brasil 1977)](external/vpx-criterium77) | :white_check_mark: | :x: | :x: | :x: | 60 |
+| [Crystal-Ball (Talleres del Llobregat 1970)](external/vpx-crystalball) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Cue Ball Wizard (Gottlieb 1992)](external/vpx-cueball) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 33 |
 | [Cuphead Original (Original 2019)](external/vpx-cupheadoriginal) | :white_check_mark: | :x: | :x: | :x: | 47 |
 | [Cuphead Pro (Original 2020)](external/vpx-cuphead) | :white_check_mark: | :x: | :x: | :x: | 34 |
 | [Cybernaut (Bally 1985)](external/vpx-cybernaut) | :white_check_mark: | :x: | :white_check_mark: | :x: | 45 |
+| [Cyberrace (Original 2023)](external/vpx-cyberrace) | :white_check_mark: | :white_check_mark: | :x: | :x: | 40 |
 | [Cyclone - JP (Williams 1988)](external/vpx-cyclone) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
 | [Daredevil and The Defenders (Original 2024)](external/vpx-daredevil) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Dark Crystal, The (Non-PUP) (Original 2020)](external/vpx-darkcrystal) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
@@ -575,6 +577,7 @@ Links to these products on Amazon are through affiliate links.
 | [Mustang (Stern 2014)](external/vpx-mustang) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 33 |
 | [Mystery Castle (Alvin G 1993)](external/vpx-mysterycastle) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
 | [Mystic, JPs (Bally 1980)](external/vpx-jpmystic) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
+| [Nags (Williams 1960)](external/vpx-nags | :white_check_mark: | :x: | :x: | :x: | 50 |
 | [NBA Mac (MAC 1986)](external/vpx-nbamac) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Nemesis (Peyper 1986)](external/vpx-nemesis) | :white_check_mark: | :x: | :white_check_mark: | :x: | 50 |
 | [Neverending Story, The (Original 2021)](external/vpx-tnes) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
@@ -788,6 +791,7 @@ Links to these products on Amazon are through affiliate links.
 | [World Joker Tour, JP's (Original 2024)](external/vpx-jpwjt) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 48 |
 | [World Poker Tour (Stern 2006)](external/vpx-wpt) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 40 |
 | [WOW Monopoly, JPs (Original 2015)](external/vpx-wowmonopoly) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Wuthering Waves (Original 2026)](external/vpx-wutheringwaves) | :x: | :x: | :x: | :white_check_mark: | 57 |
 | [Xenon (Bally 1980)](external/vpx-xenon) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 40 |
 | [Xenon - JP (Bally 1980)](external/vpx-jpxenon) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [X Files (TastyWasps) (Sega 1997)](external/vpx-xfiles) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 40 |
