@@ -12,7 +12,5 @@ testers:
   - "Boris"
   - "Mox"
 vpxVPSId: "t9WZcMFwyU"
-vpxChecksum: "542BF12BECA54ABD70439EAD84681898"
-tableNotes: >-
-  Download VPX folder, open 'Table' folder, get the
-  'Megadeth (original)v.1.1.vpx' file
+vpxChecksum: "B750B23F2FC4EFAC12BF25645F9BE072"
+tableNotes: "Download VPX 'Megadeth (original)v.1.4.vpx' file"
