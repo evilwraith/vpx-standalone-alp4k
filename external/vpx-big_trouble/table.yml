@@ -1,7 +1,8 @@
 ---
 pupChecksum: "F58C9027505FB204AC026E8C1F7DEECB"
 pupArchiveFormat: "rar"
-pupArchiveRoot: "BigTrouble"
+pupArchiveRoot: "bigtroublepuppack/BigTrouble"
+pupNotes: "Download 'bigtroublepuppack.rar'"
 pupRequired: True
 pupVPSId: "xd1Mb4UU-V"
 fps: 60
