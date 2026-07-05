@@ -9,6 +9,7 @@ pupArchiveFormat: "zip"
 pupArchiveRoot: "baywatch"
 pupChecksum: "8E8CA8C78C59E099109502F588B74C31"
 pupVPSId: "vib9lFzS"
+pupRequired: True
 romVPSId: "Mc8ApoS-"
 romChecksum: "5fdc78f013d65c6e540ff3cd716fb7d0"
 tableNotes: "Download 'Baywatch (Sega 1995) Cabinet.zip'"
