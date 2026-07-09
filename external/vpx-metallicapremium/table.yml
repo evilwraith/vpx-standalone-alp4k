@@ -8,6 +8,7 @@ fps: 60
 romChecksum: "0CEB262B309EDCB96A166093279AF76D"
 romNotes: "Download 'mtl_180h.zip'"
 romUrlOverride: "https://mega.nz/file/UdJlEYiZ#_C-bDP2f-4encrRcSwj8_p6CbAjaHnXxeuEIRlbnbdw"
+romVersionOverride: "mtl_180h"
 tableVPSId: "oQwWzztd"
 tagline: "'We're off to Never-Never Land'"
 testers:
