@@ -10,12 +10,9 @@ coloredROMVPSId: "pKMTFH1e"
 diffChecksum: "7EA60F1ADA116289479B13C1EBFF75C7"
 diffVPSId: "gDzghIenvG"
 fps: 58
-romChecksum: 
-  - "CEB538FF672C976EF449CAD092DDD074"
-  - "C3D5FFDF380A1DE7CB6531D03D97BFC8"
+romChecksum: "CEB538FF672C976EF449CAD092DDD074"
 romVPSId: 
   - "DIAr2jWZ"
-  - "RCSTKO-_PI"
 romNotes: "Download stwr_104.zip and stwr_107.zip"
 tableVPSId: "ON5FmcPI"
 tagline: "'May The Force be with you...'"
