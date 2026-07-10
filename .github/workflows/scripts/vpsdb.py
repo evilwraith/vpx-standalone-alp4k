@@ -300,60 +300,22 @@ def get_table_meta(files, warn_on_error=True):
                 else:
                     sys.exit(1)
                     
-if romVPSId:
-            # --- normalize: single id and list of ids now behave identically ---
-            romVPSIds = romVPSId if isinstance(romVPSId, (list, tuple)) else [romVPSId]
-
-            rom_authors = []
-            rom_comments = []
-            rom_file_urls = []
-            rom_version = ""
-            missing_rom = False
-
-            for rid in romVPSIds:
-                rom = vpsdb.get_rom_by_id(rid)
-
-                if not rom:
-                    print(f"{error_prefix}: ROM id {rid} not found in VPSDB")
-                    missing_rom = True
-                    break
-
-                print(f"Parsing ROM {rid} for {folder_name}")
-
-                # --- AUTHORS: append, skipping duplicates ---
-                for author in rom.get("authors", []):
-                    if author not in rom_authors:
-                        rom_authors.append(author)
-
-                # --- COMMENT: collect non-empty ones ---
-                comment = rom.get("comment", "")
-                if comment:
-                    rom_comments.append(comment)
-
-                # --- FILE URLS: collect every url, skipping duplicates ---
-                for url_entry in rom.get("urls") or []:
-                    url = url_entry.get("url", "")
-                    if url and url not in rom_file_urls:
-                        rom_file_urls.append(url)
-
-                # --- VERSION: first one wins ---
-                if not rom_version:
-                    rom_version = rom.get("version", "")
-
-            # --- error handling, same behavior as before ---
-            if missing_rom:
+        if romVPSId:
+            rom = vpsdb.get_rom_by_id(romVPSId)
+            if rom:
+                print(f"Parsing ROM {romVPSId} for {folder_name}")
+                table_meta["romAuthors"] = rom.get("authors", [])
+                table_meta["romComment"] = rom.get("comment", "")
+                table_meta["romFileUrl"] = rom.get("urls", [])[0].get("url", "")
+                if not table_meta["romVersion"]:
+                    table_meta["romVersion"] = rom.get("version", "")
+            else:
+                print(f"{error_prefix}: ROM id {romVPSId} not found in VPSDB")
                 if warn_on_error:
                     print(f"WARNING: Skipping {folder_name}")
                     continue
                 else:
                     sys.exit(1)
-
-            # --- commit to table_meta ---
-            table_meta["romAuthors"] = rom_authors
-            table_meta["romComment"] = "; ".join(rom_comments)
-            table_meta["romFileUrl"] = rom_file_urls
-            if not table_meta["romVersion"]:
-                table_meta["romVersion"] = rom_version
 
         if altSoundVPSId:
             altSound = vpsdb.get_altsound_by_id(altSoundVPSId)
