@@ -300,7 +300,7 @@ def get_table_meta(files, warn_on_error=True):
                 else:
                     sys.exit(1)
                     
-if romVPSId:
+        if romVPSId:
             # --- normalize: single id and list of ids now behave identically ---
             romVPSIds = romVPSId if isinstance(romVPSId, (list, tuple)) else [romVPSId]
 
