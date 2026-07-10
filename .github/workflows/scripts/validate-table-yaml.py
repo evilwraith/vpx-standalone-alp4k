@@ -86,13 +86,7 @@ def check_bundled(meta):
                     sys.exit(1)
 
 def check_checksums(meta):
-    """Checks that required checksums are present.
-
-    Requiredness depends on rendered fields (e.g. backglassFileUrl), so it is
-    checked here on the vpsdb-rendered metadata. The string-vs-list format and
-    MD5 validity of the raw table.yml values are checked by
-    check_checksum_format instead, since vpsdb has already normalized every
-    present checksum to a list by this point.
+    """Checks if the checksums are valid MD5 hashes.
 
     Args:
       meta: The table metadata.
@@ -138,60 +132,25 @@ def check_checksums(meta):
             print(f"ERROR: romChecksum field not found in table: {table}")
             sys.exit(1)
 
+        for checksum_type in [
+            "backglassChecksum",
+            "coloredROMChecksum",
+            "pupChecksum",
+            "romChecksum",
+            "tableChecksum",
+        ]:
+            if checksum_type not in table_meta or table_meta[checksum_type] is None:
+                # We checked if it's required above, so we can skip it here
+                continue
 
-# Raw table.yml checksum keys. vpsdb renames vpxChecksum -> tableChecksum, so
-# these are the names as authored in table.yml (checked before rendering).
-CHECKSUM_YAML_KEYS = [
-    "altSoundChecksum",
-    "backglassChecksum",
-    "coloredROMChecksum",
-    "diffChecksum",
-    "pupChecksum",
-    "romChecksum",
-    "vpxChecksum",
-]
-
-
-def check_checksum_format(meta):
-    """Validates the format of raw table.yml checksum fields.
-
-    A checksum field holds one or more acceptable MD5 hashes:
-      - a single hash MUST be a plain string, and
-      - two or more hashes MUST be a list.
-    A single-element list is rejected (use a string instead). Every hash must
-    be a valid MD5. vpsdb normalizes both forms to a list for the manifest, so
-    this format rule only governs how table.yml is authored.
-
-    Args:
-      meta: The raw table.yml content (a single table's parsed dict).
-
-    Returns:
-      None
-    """
-    if not isinstance(meta, dict):
-        return
-
-    for key in CHECKSUM_YAML_KEYS:
-        value = meta.get(key)
-        if value is None:
-            continue
-
-        if isinstance(value, str):
-            hashes = [value]
-        elif isinstance(value, list):
-            if len(value) < 2:
-                print(
-                    f"ERROR: {key} has a single entry; use a string instead of a list"
-                )
+            if not isinstance(table_meta[checksum_type], str):
+                print(f"ERROR: {checksum_type} is not a string in table: {table}")
                 sys.exit(1)
-            hashes = value
-        else:
-            print(f"ERROR: {key} must be a string or a list of strings")
-            sys.exit(1)
 
-        for checksum in hashes:
-            if not isinstance(checksum, str) or not is_md5_hash(checksum.lower()):
-                print(f"ERROR: checksum {checksum} for {key} is not a valid MD5 hash")
+            if not is_md5_hash(table_meta[checksum_type]):
+                print(
+                    f"ERROR: checksum {table_meta[checksum_type]} for {checksum_type} is not a valid MD5 hash in table: {table}"
+                )
                 sys.exit(1)
 
 def check_fixes(meta):
@@ -331,7 +290,6 @@ if __name__ == "__main__":
 
         # Perform checks on the YAML file content
         check_overrides(table_yaml)
-        check_checksum_format(table_yaml)
 
     # Render metadata for all files in a single call, then run the meta-level checks
     meta = vpsdb.get_table_meta(files, warn_on_error=False)
