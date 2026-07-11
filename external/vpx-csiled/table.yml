@@ -1,7 +1,10 @@
 ---
 # yamllint disable-line rule:line-length
 backglassImageOverride: "https://virtualpinballspreadsheet.github.io/vps-db/img/gQRBUSML_b2s_1698248771391.webp"
-fps: 54
+backglassNotes: "Download version 1.0.0"
+backglassVPSId: "yGXSbW2IVx"
+backglassChecksum: "10EDB496B86011B7E996B2F4B1C15335" 
+fps: 60
 romVPSId: "AFalPfjb"
 romChecksum: "A207505B54EC80F1B0E9B87BCBEE562E"
 romNotes: "Download csi_240.zip"
@@ -13,5 +16,3 @@ testers:
   - "OminousOsie"
 vpxVPSId: "f15731PImN"
 vpxChecksum: "1761C4CEDE9B9F25F57C9476D8EDE48D"
-applyFixes:
-  - "bass"
