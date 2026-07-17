@@ -1,7 +1,8 @@
 ---
-coloredROMChecksums:
+coloredROMChecksum:
   - "AEE18DE9735CEA4FCA19C50C395A2384"
   - "3C5A105F586ED2814F0FBFF8D0EE97D2"
+coloredROMPin2DMD: true
 coloredROMNotes: "Download 'pin2dmd_v.vni' and 'pin2dmd_v.pal'"
 coloredROMVPSId: "wuw5xsFr"
 fps: 60

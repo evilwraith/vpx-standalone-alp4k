@@ -15,3 +15,6 @@ testers:
   - "CoffeeAtJoes"
 vpxVPSId: "Z7qrllPW"
 vpxChecksum: "1E7FF492987F69A180810304F0E9A068"
+altSoundVPSId: "uh9-lEk7"
+altSoundChecksum: "c4d6e709ef159268fd21692b86ec3f52"
+altSoundArchiveRoot: "cc_13"
