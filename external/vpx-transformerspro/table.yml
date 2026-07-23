@@ -1,0 +1,21 @@
+---
+coloredROMChecksum: "267F9B24CA349D8E448476773377068D"
+coloredROMVPSId: "g3uaskQOwb"
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "tf_180"
+pupChecksum: "D6A70D0812519DEF0C8017FA8358A55E"
+pupRequired: true
+pupVersion: "tf_180"
+pupVPSId: "FEiyZtxF"
+romChecksum:
+  - "995A8B225A416DA70A56AC0BB41C919F"
+  - "212435EC5A256236DCD3690B4F1F7D7E"
+romNotes: "Transformers 1.80 Game Code from Stern site, tf_180.zip from VPU"
+romVPSId: "cfpz4S1g"
+tableVPSId: "liKT-fsT"
+testers:
+  - "Wraith"
+  - "n-i-x"
+vpxChecksum: "6BC7D3D0AB34D14D1C16AEEC7F903BEB"
+vpxVPSId: "uyJ5RDRCu6"
