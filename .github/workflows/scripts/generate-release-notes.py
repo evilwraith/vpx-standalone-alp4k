@@ -8,7 +8,9 @@ import sys
 
 import yaml
 
-from github import Github, Auth
+import vpsdb
+
+from github import Github
 from pathlib import Path
 
 
@@ -91,7 +93,9 @@ def get_enabled_tables():
     for table_yml in table_yml_files:
         with open(table_yml, "r") as f:
             y = yaml.safe_load(f)
-            if "enabled" in y and not y["enabled"]:
+            # Shared predicate so this matches get_table_meta exactly — only an
+            # explicit `enabled: false` disables (enabled: null/absent = enabled).
+            if vpsdb.is_disabled(y):
                 print(f"Skipping {table_yml} because it is disabled.")
                 continue
 
@@ -185,8 +189,7 @@ def main():
         sys.exit(1)
 
     try:
-        from github import Auth
-        g = Github(auth=Auth.Token(github_token))
+        g = Github(github_token)
         repo = g.get_repo(repository or os.environ.get("GITHUB_REPOSITORY"))
     except Exception as e:
         print(f"Error connecting to GitHub: {e}", file=sys.stderr)
@@ -209,7 +212,7 @@ def main():
                 sys.exit(0)
             try:
                 release = repo.get_release(end_tag)
-                release.update_release(name=release.name, message=new_release_notes)
+                release.update_release(name=release.title, message=new_release_notes)
                 print(f"Release notes for tag '{end_tag}' updated successfully.")
             except Exception as e:
                 print(f"Error editing release notes: {e}", file=sys.stderr)
@@ -233,7 +236,7 @@ def main():
         print(new_release_notes)
         try:
             release = repo.get_release(end_tag)
-            release.update_release(name=release.name, message=new_release_notes)
+            release.update_release(name=release.title, message=new_release_notes)
             print(f"Release notes for tag '{end_tag}' updated successfully.")
         except Exception as e:
             print(f"Error editing release notes: {e}", file=sys.stderr)

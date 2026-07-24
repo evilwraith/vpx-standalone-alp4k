@@ -1,6 +1,6 @@
-﻿# F-14 Tomcat (Williams 1987)
+# Fireworks Mania (Orignial 2026)
 
-![Table Preview](../../images/vpx-f14tomcat.png)
+![Table Preview](../../images/vpx-fireworksmania-preview.png)
 
 <br>
 
@@ -8,13 +8,14 @@
 
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 60 |
+| ✅ | ❌ | ❌ | ❌ | 60 |
 
 <br>
 
 **VPXS 4KP Testers:**
-  - Bla1ze
-  - Ominous Osie 🌸
+  - pbw23
+  - MissileToad
+  - pointdablame
 
 <br>
 
@@ -33,9 +34,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`F-14 Tomcat (Williams 1987)`**
+4.  Find and select this table from the dropdown menu: **`Fireworks Mania (Orignial 2026)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"Hiiiiighwaaaay tooooooo theeee DANGER ZONNEEE!"*
+6. *"Celebrate .vpxs with a Fireworks Display! 🎆 🎇"*
 
 <br>
 

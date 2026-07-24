@@ -1,6 +1,6 @@
-﻿# F-14 Tomcat (Williams 1987)
+# Total Nuclear Annihilation (Spooky Pinball 2017)
 
-![Table Preview](../../images/vpx-f14tomcat.png)
+![Table Preview](../../images/d56VntTvLS-preview.webp)
 
 <br>
 
@@ -8,13 +8,12 @@
 
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 60 |
+| ✅ | ❌ | ❌ | ❌ | 60 |
 
 <br>
 
 **VPXS 4KP Testers:**
-  - Bla1ze
-  - Ominous Osie 🌸
+  - Wraith
 
 <br>
 
@@ -33,9 +32,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`F-14 Tomcat (Williams 1987)`**
+4.  Find and select this table from the dropdown menu: **`Total Nuclear Annihilation (Spooky Pinball 2017)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"Hiiiiighwaaaay tooooooo theeee DANGER ZONNEEE!"*
+6. *"Welcome to the future..."*
 
 <br>
 
