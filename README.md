@@ -34,6 +34,9 @@ The following hardware has been verified to work with the Legends Unchained Load
 Links to these products on Amazon are through affiliate links.
 
 #### Flash Drives
+- [Amazon Basics 128GB USB Flash Drive](https://amzn.to/4w0KmX0)
+- [Amazon Basics 256GB USB Flash Drive](https://amzn.to/4pPivYq)
+- [Amazon Basics 512GB USB Flash Drive](https://amzn.to/4bqSrgn)
 - [Kingston DataTraveler Max 256GB](https://amzn.to/42Ygu1k)
 - [Kingston DataTraveler Max 512GB](https://amzn.to/3ECtzFi)
 - [Samsung FIT 256GB Flash Drive](https://amzn.to/3ymA382)
@@ -256,7 +259,7 @@ Links to these products on Amazon are through affiliate links.
 | [Seawitch, JP's (Stern 1980)](external/vpx-jpseawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Seawitch, JP's (Stern 1980)](external/vpx-seawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Secret Service (Data East 1988)](external/vpx-secretservice) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
-| [Sexy Girl Nude Mod (Arkon 1980) (Arkon 1980)](external/vpx-sexygirlnude) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Sexy Girl Nude Mod (Arkon 1980)](external/vpx-sexygirlnude) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Shadow, The (Bally 1994)](external/vpx-theshadow) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Shark (Taito do Brasil 1982)](external/vpx-shark) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Sharkey's Shootout (Stern 2000)](external/vpx-sharkeys) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -745,7 +748,7 @@ Links to these products on Amazon are through affiliate links.
 | [Student Prince (Williams 1968)](external/vpx-studentprince) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Sultan (Taito do Brasil 1979)](external/vpx-sultan) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Summer Time (Williams 1972)](external/vpx-summertime) | :white_check_mark: | :x: | :x: | :x: | 60 |
-| [Super Mario Bros. (Gottlieb 1992)](external/vpx-supermario) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 38 |
+| [Super Mario Bros. (Gottlieb 1992)](external/vpx-supermario) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Super Mario Bros. Mushroom World (Premier 1992)](external/vpx-smbmushroom) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
 | [Super Mario Galaxy (Original 2021)](external/vpx-mariogalaxy) | :white_check_mark: | :white_check_mark: | :x: | :x: | 58 |
 | [Super Spin (Gottlieb 1977)](external/vpx-superspin) | :white_check_mark: | :x: | :x: | :x: | 48 |
