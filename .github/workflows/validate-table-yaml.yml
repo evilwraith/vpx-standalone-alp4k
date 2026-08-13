@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '**table.yml'
+  workflow_dispatch:
 
 jobs:
   validate:
@@ -34,29 +35,36 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const pr = context.payload.pull_request;
-            const files = await github.paginate(github.rest.pulls.listFiles, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.number,
-              per_page: 100,
-            });
+            if (context.eventName === 'pull_request') {
+              const pr = context.payload.pull_request;
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                per_page: 100,
+              });
 
-            const tableFiles = files
-              .map((f) => f.filename)
-              .filter((name) => name.endsWith('table.yml'));
+              const tableFiles = files
+                .map((f) => f.filename)
+                .filter((name) => name.endsWith('table.yml'));
 
-            core.setOutput('table_files', tableFiles.join('\n'));
-            core.info(`Found ${tableFiles.length} changed table.yml file(s).`);
+              core.setOutput('table_files', tableFiles.join('\n'));
+              core.info(`Found ${tableFiles.length} changed table.yml file(s).`);
+            } else {
+              core.setOutput('table_files', '__ALL__');
+              core.info('workflow_dispatch run: validating all external/**/table.yml files.');
+            }
 
       - name: Validate table.yml files
         run: |
-          if [[ -z "${{ steps.changed-files.outputs.table_files }}" ]]; then
+          if [[ "${{ steps.changed-files.outputs.table_files }}" == "__ALL__" ]]; then
+            mapfile -t FILES < <(find external -type f -name 'table.yml' | sort)
+          elif [[ -z "${{ steps.changed-files.outputs.table_files }}" ]]; then
             echo "No changed table.yml files reported by PR Files API; nothing to validate."
             exit 0
+          else
+            mapfile -t FILES < <(printf '%s\n' "${{ steps.changed-files.outputs.table_files }}" | sed '/^$/d')
           fi
-
-          mapfile -t FILES < <(printf '%s\n' "${{ steps.changed-files.outputs.table_files }}" | sed '/^$/d')
 
           echo "Running validator on ${#FILES[@]} changed file(s) with VPSDB checks..."
           python .github/workflows/scripts/validate-table-yaml.py "${FILES[@]}"
