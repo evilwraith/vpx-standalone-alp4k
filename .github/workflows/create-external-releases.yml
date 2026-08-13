@@ -50,6 +50,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r .github/workflows/scripts/requirements.txt
 
+      - name: Full table.yml validation (release gate)
+        run: |
+          echo "Running full table.yml validation across external/ with VPSDB checks..."
+          python .github/workflows/scripts/validate-table-yaml.py
+
       - name: Generate changed zips only
         run: python .github/workflows/scripts/generate-release.py
 
