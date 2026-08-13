@@ -1,0 +1,16 @@
+---
+fps: 53
+mainNotes: "Move Music folder and MFDOOMDMD folder within DMD folder to table directory"
+pupArchiveFormat: "zip"
+pupArchiveRoot: "MFDOOM"
+pupBundled: true
+pupChecksum: "90EF4527C3F97774E0F956E90A19B243"
+pupNotes: "Note: MFDOOM-PuP-v1.1.zip is nested inside PuPVideos folder in the MFDOOM table archive."
+pupRequired: true
+pupVersion: "MFDOOM"
+tableVPSId: "6A2KHPqZc9"
+tagline: "DOOM TOOTS AS DOOM PLEASES"
+testers:
+  - "Wraith"
+vpxChecksum: "E4831DBB14857269AB8A0670F6F9FCE0"
+vpxVPSId: "Ug53LOj8gf"
