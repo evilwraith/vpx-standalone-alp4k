@@ -60,6 +60,7 @@ Links to these products on Amazon are through affiliate links.
 | [250 cc (Inder 1992)](external/vpx-250cc) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [4 Aces (Williams 1970)](external/vpx-4aces) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Aaron Spelling (Data East 1992)](external/vpx-aaronspelling) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
+| [Abra Ca Dabra (Gottlieb 1975)](external/vpx-abracadabra) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Ace High (Gottlieb 1957)](external/vpx-acehigh) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Addams Family, JP's (Bally 1992)](external/vpx-jptaf) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Addams Family, The (Bally 1992)](external/vpx-taf) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
@@ -103,6 +104,7 @@ Links to these products on Amazon are through affiliate links.
 | [Bram Stoker's Dracula (Williams 1993)](external/vpx-bsdracula) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Bram Stoker's Dracula - BLOOD EDITION (Original 2025)](external/vpx-dracblood) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Bugs Bunny's Birthday Ball (Bally 1990)](external/vpx-bugs) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 52 |
+| [Burner (Original 2026)](external/vpx-burner) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Cactus Canyon (Bally 1998)](external/vpx-cactuscanyon) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
 | [Casino (Williams 1958)](external/vpx-casino) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Cat Burglars (Original 2024)](external/vpx-catburglars) | :white_check_mark: | :x: | :x: | :x: | 60 |
@@ -140,6 +142,7 @@ Links to these products on Amazon are through affiliate links.
 | [Dragon Ball: Super Saiyan Edition (Original 2025)](external/vpx-dbsse) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Drakor (Taito do Brasil 1979)](external/vpx-drakor) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [DUNE (Original 2024)](external/vpx-dune) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
+| [Dungeons & Dragons (Bally 1987)](external/vpx-dungeonsndragons) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Earthshaker (Williams 1989)](external/vpx-earthshaker) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
 | [El Dorado City of Gold (Gottlieb 1975)](external/vpx-eldorado84) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Evil Dead 3 Army of Darkness (Original 2020)](external/vpx-armyofdarkness) | :white_check_mark: | :x: | :x: | :x: | 60 |
@@ -158,6 +161,7 @@ Links to these products on Amazon are through affiliate links.
 | [Flight 2000 (Stern 1980)](external/vpx-flight2000) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Flintstones, The (Williams 1994)](external/vpx-flintstones) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
 | [Fortnite (Original 2024)](external/vpx-fortnite) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
+| [Four Million B.C. (Bally 1971)](external/vpx-fourmillionbc) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Frank Thomas' Big Hurt (Gottlieb 1995)](external/vpx-bighurt) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Freddy A Nightmare on Elm Street (Gottlieb 1994)](external/vpx-freddy) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
 | [Freddy's Nightmares (Original 2025)](external/vpx-freddysnm) | :x: | :x: | :x: | :white_check_mark: | 55 |
@@ -225,6 +229,7 @@ Links to these products on Amazon are through affiliate links.
 | [Megadeth (Original 2023)](external/vpx-megadeth) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Metallica (Premium Monsters) (Stern 2013)](external/vpx-metallicapremium) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Meteor (Taito do Brasil 1979)](external/vpx-meteort) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
+| [MF Doom (Original 2024)](external/vpx-mfdoom) | :x: | :x: | :x: | :white_check_mark: | 60 |
 | [Mighty Morphin Power Rangers (Original 2024)](external/vpx-powerrangers) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Mission Impossible Limited Edition (Original 2022)](external/vpx-missionimp) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Monster Bash (Williams 1998)](external/vpx-monsterbashreskin) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -260,7 +265,7 @@ Links to these products on Amazon are through affiliate links.
 | [Seawitch, JP's (Stern 1980)](external/vpx-jpseawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Seawitch, JP's (Stern 1980)](external/vpx-seawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Secret Service (Data East 1988)](external/vpx-secretservice) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
-| [Sexy Girl Nude Mod (Arkon 1980)](external/vpx-sexygirlnude) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Sexy Girl Nude Mod (Arkon 1980) (Arkon 1980)](external/vpx-sexygirlnude) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Shadow, The (Bally 1994)](external/vpx-theshadow) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Shark (Taito do Brasil 1982)](external/vpx-shark) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Sharkey's Shootout (Stern 2000)](external/vpx-sharkeys) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -281,6 +286,8 @@ Links to these products on Amazon are through affiliate links.
 | [Starship Troopers (Sega 1997)](external/vpx-starship) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
 | [Starship Troopers VPW - SEGA (1997)](external/vpx-starshipvpw) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | 55 |
 | [Street Fighter II, JP's (Gottlieb 1993)](external/vpx-sfii) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Super Mario Bros. (Gottlieb 1992)](external/vpx-supermario) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Super Mario Bros. Mushroom World (Gottlieb 1992)](external/vpx-smbmushroom) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Tales from the Crypt (Data East 1993)](external/vpx-tftc) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
 | [Tales of the Arabian Nights, JP's (Williams 1996)](external/vpx-totan) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Taxi (Williams 1988)](external/vpx-taxi) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
@@ -328,7 +335,6 @@ Links to these products on Amazon are through affiliate links.
 |:------|:---------:|:---:|:------------:|:---:|:---:|
 | [301 Bullseye (Grand Products 1986)](external/vpx-301bullseye) | :white_check_mark: | :x: | :white_check_mark: | :x: | 57 |
 | [A Real American Hero - Operation P.I.N.B.A.L.L. (Original 2017)](external/vpx-gijoe) | :white_check_mark: | :x: | :white_check_mark: | :x: | 52 |
-| [Abra Ca Dabra (Gottlieb 1975)](external/vpx-abracadabra) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Ace of Speed (Original 2019)](external/vpx-aceofspeed) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 30 |
 | [Ace Ventura Pet Detective (TBA 2019)](external/vpx-aceventura) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Aerosmith (Pro) (Stern/Tribute 2017)](external/vpx-aerosmith) | :white_check_mark: | :white_check_mark: | :x: | :x: | 44 |
@@ -455,7 +461,6 @@ Links to these products on Amazon are through affiliate links.
 | [Dragon Ball Z (Original 2018)](external/vpx-dbz) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Ducktales Quest For Money](external/vpx-ducktales) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Duke Nukem 3D (Original 2020)](external/vpx-dukenukem3d) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
-| [Dungeons & Dragons (Bally 1987)](external/vpx-dungeonsndragons) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 48 |
 | [Duotron (Gottlieb 1974)](external/vpx-duotron) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Eclipse (Gottlieb 1982)](external/vpx-eclipse) | :white_check_mark: | :x: | :white_check_mark: | :x: | 45 |
 | [Eight Ball (Bally 1977)](external/vpx-jpeightball) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
@@ -604,7 +609,6 @@ Links to these products on Amazon are through affiliate links.
 | [Metallica Pro, JPs (Stern 2013)](external/vpx-jpmetallica) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Meteor (Stern 1979)](external/vpx-meteor) | :white_check_mark: | :x: | :white_check_mark: | :x: | 42 |
 | [Metropolis (Original 2022)](external/vpx-metropolis) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 46 |
-| [MF DOOM (GOILL773 2024)](external/vpx-mfdoom) | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: | 35 |
 | [MF Doom (Original 2024) FlexDMD version](external/vpx-mfdoomflexdmd) | :white_check_mark: | :white_check_mark: | :x: | :x: | 58 |
 | [Miami Vice (TBA 2020)](external/vpx-miamivice) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 37 |
 | [Michael Jordan (Data East 1992)](external/vpx-michaeljordan) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
@@ -748,8 +752,6 @@ Links to these products on Amazon are through affiliate links.
 | [Student Prince (Williams 1968)](external/vpx-studentprince) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Sultan (Taito do Brasil 1979)](external/vpx-sultan) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Summer Time (Williams 1972)](external/vpx-summertime) | :white_check_mark: | :x: | :x: | :x: | 60 |
-| [Super Mario Bros. (Gottlieb 1992)](external/vpx-supermario) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
-| [Super Mario Bros. Mushroom World (Premier 1992)](external/vpx-smbmushroom) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Super Mario Galaxy (Original 2021)](external/vpx-mariogalaxy) | :white_check_mark: | :white_check_mark: | :x: | :x: | 58 |
 | [Super Spin (Gottlieb 1977)](external/vpx-superspin) | :white_check_mark: | :x: | :x: | :x: | 48 |
 | [Superman (Atari 1979)](external/vpx-superman) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 50 |
