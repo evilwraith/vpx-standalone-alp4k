@@ -1,5 +1,5 @@
 ---
-fps: 60
+fps: 53
 mainNotes: "Move Music folder and MFDOOMDMD folder within DMD folder to table directory"
 pupArchiveFormat: "zip"
 pupArchiveRoot: "MFDOOM"
