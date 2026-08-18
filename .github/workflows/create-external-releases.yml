@@ -29,12 +29,10 @@ jobs:
         with:
           # Full commit graph is required so generate-release.py can call
           # git.iter_commits(paths=..., max_count=1) per external folder.
-          # A blobless partial clone keeps all commits + tree objects but
-          # skips historical blob content, cutting the initial transfer
-          # dramatically as external/ grows. Blobs for the current tip are
-          # fetched on demand when the release script reads folder files.
+          # This job traverses history and reads large parts of the tree, so a
+          # full checkout can be faster and more predictable than lazy blob
+          # hydration from a partial clone.
           fetch-depth: 0
-          filter: blob:none
           submodules: false
           lfs: false
 
@@ -47,23 +45,38 @@ jobs:
 
       - name: Install Python dependencies
         run: |
+          START_TS=$(date +%s)
           python -m pip install --upgrade pip
           pip install -r .github/workflows/scripts/requirements.txt
+          END_TS=$(date +%s)
+          echo "timing.install_python_dependencies.seconds=$((END_TS-START_TS))"
 
       - name: Full table.yml validation (release gate)
         run: |
+          START_TS=$(date +%s)
           echo "Running full table.yml validation across external/ with VPSDB checks..."
           python .github/workflows/scripts/validate-table-yaml.py
+          END_TS=$(date +%s)
+          echo "timing.full_table_yaml_validation.seconds=$((END_TS-START_TS))"
 
       - name: Generate changed zips only
-        run: python .github/workflows/scripts/generate-release.py
+        run: |
+          START_TS=$(date +%s)
+          python .github/workflows/scripts/generate-release.py
+          END_TS=$(date +%s)
+          echo "timing.generate_changed_zips.seconds=$((END_TS-START_TS))"
 
       - name: Update Release notes (optional)
-        run: python .github/workflows/scripts/generate-release-notes.py
+        run: |
+          START_TS=$(date +%s)
+          python .github/workflows/scripts/generate-release-notes.py
+          END_TS=$(date +%s)
+          echo "timing.update_release_notes.seconds=$((END_TS-START_TS))"
 
       - name: Regenerate README table listings
         id: readme_gen
         run: |
+          START_TS=$(date +%s)
           # On a release run, rewrite README.md in place and stage the change.
           # On a manual workflow_dispatch run, only print what would change
           # (dry-run) so operators can review before committing.
@@ -73,6 +86,8 @@ jobs:
             echo "workflow_dispatch: dry-run only (no README write, no commit)."
             python .github/workflows/scripts/generate-readme-tables.py --check
           fi
+          END_TS=$(date +%s)
+          echo "timing.regenerate_readme_tables.seconds=$((END_TS-START_TS))"
 
       - name: Table Manager Achievements Config
         run: gh release upload ${{ github.ref_name }} tm-config/achievements.json
