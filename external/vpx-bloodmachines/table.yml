@@ -1,0 +1,14 @@
+---
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "Blood Machines PuP 1.58/bloodmach"
+pupBundled: true
+pupChecksum: "E1EAE469AE2AA133312FCF48AF003FD6"
+pupNotes: "Download is next to table download"
+pupRequired: true
+pupVersion: "bloodmach"
+tableVPSId: "Iox4EmTcwu"
+testers:
+  - "Wraith"
+vpxChecksum: "4C120ABDD02BF56A9B000F8ED733F27D"
+vpxVPSId: "8ptfy_gf-Q"
