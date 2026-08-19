@@ -1,0 +1,13 @@
+---
+fps: 50
+pupArchiveFormat: "zip"
+pupArchiveRoot: "Matrix"
+pupChecksum: "DCCCD45AB7B1B380DADE7A5FCC5F1B81"
+pupRequired: true
+pupVersion: "Matrix"
+pupVPSId: "nOOCpSBmj6"
+tableVPSId: "WyxpJ3Wjt3"
+testers:
+  - "Wraith"
+vpxChecksum: "7372ED0150DED36D3A5E87FB10611608"
+vpxVPSId: "-jx_W0iRkv"
