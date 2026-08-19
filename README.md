@@ -51,7 +51,7 @@ Links to these products on Amazon are through affiliate links.
 <br>
 
 
-## Wizard Tables (274)
+## Wizard Tables (281)
 
 | Table | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |:------|:---------:|:---:|:------------:|:---:|:---:|
@@ -101,6 +101,7 @@ Links to these products on Amazon are through affiliate links.
 | [Black Magic 4 (Recel 1980)](external/vpx-blackmagic4) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Black Pyramid (Bally 1980)](external/vpx-blackpyramid) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Black Rose (Bally 1992)](external/vpx-blackrose) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Blood Machines (Original 2022)](external/vpx-bloodmachines) | :x: | :x: | :x: | :white_check_mark: | 60 |
 | [Bob Cuspe (Original 2025)](external/vpx-bobcuspe) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Bond 60th (Stern 2022)](external/vpx-jamesbond007) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Bram Stoker's Dracula (Williams 1993)](external/vpx-bsdracula) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -129,6 +130,7 @@ Links to these products on Amazon are through affiliate links.
 | [CSI (Stern 2008)](external/vpx-csiled) | :x: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Dark Chaos (Original 2025)](external/vpx-darkchaos) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Dark Crystal Pinball, The (Original 2020)](external/vpx-dcrystalpup) | :x: | :x: | :x: | :white_check_mark: | 60 |
+| [Darkest Dungeon (Original 2023)](external/vpx-darkestdungeon) | :x: | :x: | :x: | :white_check_mark: | 60 |
 | [Deadpool, JPs (Original 2021)](external/vpx-deadpool) | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: | 60 |
 | [Demolition Man (Williams 1994)](external/vpx-demoman) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Devil Riders (Zaccaria 1984)](external/vpx-devilriders) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
@@ -159,6 +161,7 @@ Links to these products on Amazon are through affiliate links.
 | [Fireball II (Bally 1981)](external/vpx-fireballii) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Firepower (Williams 1980)](external/vpx-firepower) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Firepower II (Williams 1983)](external/vpx-firepower2) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Fireworks Mania (Orignial 2026)](external/vpx-fireworksmania) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Fish Tales (Williams 1992)](external/vpx-fishtales) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 57 |
 | [Flight 2000 (Stern 1980)](external/vpx-flight2000) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Flintstones, The (Williams 1994)](external/vpx-flintstones) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
@@ -229,11 +232,13 @@ Links to these products on Amazon are through affiliate links.
 | [Mad Max - Fury Road (Original 2021)](external/vpx-madmax) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Mary Shelley's Frankenstein (Sega 1995)](external/vpx-maryshelleyfrank) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Mata Hari (Bally 1978)](external/vpx-matahari) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Matrix, The (Original 2026)](external/vpx-thematrix2026) | :x: | :x: | :x: | :white_check_mark: | 50 |
 | [Maverick (Data East 1994)](external/vpx-maverick) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
 | [Medieval Madness (Williams 1997)](external/vpx-mm) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 56 |
 | [Megadeth (Original 2023)](external/vpx-megadeth) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Metallica (Premium Monsters) (Stern 2013)](external/vpx-metallicapremium) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Meteor (Taito do Brasil 1979)](external/vpx-meteort) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
+| [MF Doom (Original 2024)](external/vpx-mfdoom) | :x: | :x: | :x: | :white_check_mark: | 53 |
 | [Mighty Morphin Power Rangers (Original 2024)](external/vpx-powerrangers) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Mission Impossible Limited Edition (Original 2022)](external/vpx-missionimp) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
 | [Monster Bash (Williams 1998)](external/vpx-monsterbashreskin) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -265,6 +270,7 @@ Links to these products on Amazon are through affiliate links.
 | [Ripley's Believe it or Not! (Stern 2004)](external/vpx-ripleys) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Road Runner (Atari 1979)](external/vpx-roadrunner) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Rollergames (Williams 1990)](external/vpx-rollergames) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
+| [Safe Cracker (Bally 1996)](external/vpx-safecracker) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Scared Stiff (Bally 1996)](external/vpx-scaredstiff) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Seawitch, JP's (Stern 1980)](external/vpx-jpseawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Seawitch, JP's (Stern 1980)](external/vpx-seawitch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -303,6 +309,7 @@ Links to these products on Amazon are through affiliate links.
 | [Torpedo Alley (Data East 1988)](external/vpx-torpedoalley) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Total Nuclear Annihilation (Spooky Pinball 2017)](external/vpx-tna) | :white_check_mark: | :x: | :x: | :white_check_mark: | 60 |
 | [Trailer Park Boys - Pin-Ballers (Original 2024)](external/vpx-trailerparkboys) | :white_check_mark: | :white_check_mark: | :x: | :x: | 60 |
+| [Transformers (Pro) (Stern 2011)](external/vpx-transformerspro) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | 60 |
 | [Transformers (Pro) [Marcade Mod] (Original 2025)](external/vpx-transformersmod) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 58 |
 | [Trident (Stern 1979)](external/vpx-trident) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Twister (Sega 1996)](external/vpx-twister) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
@@ -332,7 +339,7 @@ Links to these products on Amazon are through affiliate links.
 
 <br>
 
-## Manual Install Tables (507)
+## Manual Install Tables (503)
 
 | Table | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |:------|:---------:|:---:|:------------:|:---:|:---:|
@@ -390,7 +397,6 @@ Links to these products on Amazon are through affiliate links.
 | [Black Fever (Playmatic 1980)](external/vpx-blackfever) | :white_check_mark: | :x: | :white_check_mark: | :x: | 50 |
 | [Black Hole (Gottlieb 1981)](external/vpx-blackhole) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 30 |
 | [Blackout (Williams 1980)](external/vpx-blackout) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
-| [Blood Machines (Original 2022)](external/vpx-bloodmachines) | :white_check_mark: | :white_check_mark: | :x: | :x: | 27 |
 | [BMX (Radical Rick) (Bally 1983)](external/vpx-bmx) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 55 |
 | [Bobby Orr Power Play (Bally 1977)](external/vpx-bobbyorr) | :white_check_mark: | :x: | :x: | :x: | 40 |
 | [Bonanza (Original 2022)](external/vpx-bonanza) | :white_check_mark: | :x: | :white_check_mark: | :x: | 58 |
@@ -488,7 +494,6 @@ Links to these products on Amazon are through affiliate links.
 | [Fast Draw (Gottlieb 1975)](external/vpx-fastdraw) | :white_check_mark: | :x: | :x: | :x: | 51 |
 | [Fire Action (Taito do Brasil 1980)](external/vpx-jpfireaction) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Fire Action de Luxe (Taito do Brasil 1983)](external/vpx-jpfireactiondeluxe) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
-| [Fireworks Mania (Orignial 2026)](external/vpx-fireworksmania) | :white_check_mark: | :x: | :x: | :x: | 60 |
 | [Five Nights at Freddy's Original (2021)](external/vpx-fivenightatfreddys) | :white_check_mark: | :white_check_mark: | :x: | :x: | 48 |
 | [Flash (Williams 1979)](external/vpx-flash) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Flash Gordon (Bally 1981) 2.0.2](external/vpx-flashgordon) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 35 |
@@ -610,7 +615,6 @@ Links to these products on Amazon are through affiliate links.
 | [Metallica Pro, JPs (Stern 2013)](external/vpx-jpmetallica) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 60 |
 | [Meteor (Stern 1979)](external/vpx-meteor) | :white_check_mark: | :x: | :white_check_mark: | :x: | 42 |
 | [Metropolis (Original 2022)](external/vpx-metropolis) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 46 |
-| [MF DOOM (GOILL773 2024)](external/vpx-mfdoom) | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: | 35 |
 | [MF Doom (Original 2024) FlexDMD version](external/vpx-mfdoomflexdmd) | :white_check_mark: | :white_check_mark: | :x: | :x: | 58 |
 | [Miami Vice (TBA 2020)](external/vpx-miamivice) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 37 |
 | [Michael Jordan (Data East 1992)](external/vpx-michaeljordan) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
@@ -700,7 +704,6 @@ Links to these products on Amazon are through affiliate links.
 | [Rolling Stones (Bally 1980)](external/vpx-jprollingstones) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
 | [Roman Victory (Taito do Brasil 1978)](external/vpx-jpromanvictory) | :white_check_mark: | :x: | :x: | :x: | 58 |
 | [Royal Flush (Gottlieb 1976)](external/vpx-royalflush) | :white_check_mark: | :x: | :x: | :x: | 57 |
-| [Safe Cracker (Bally 1996)](external/vpx-safecracker) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | 45 |
 | [Samba (LTD do Brasil 1976)](external/vpx-samba) | :white_check_mark: | :x: | :x: | :x: | 47 |
 | [Scooby Doo (2022)](external/vpx-scoobydoo) | :white_check_mark: | :white_check_mark: | :x: | :x: | 50 |
 | [Scooby Doo! and KISS Rock n' Roll Mystery (Original 2021)](external/vpx-sdookiss) | :white_check_mark: | :x: | :white_check_mark: | :x: | 60 |
