@@ -1,5 +1,4 @@
 ---
-enabled: false
 fps: 55
 pupArchiveFormat: "rar"
 pupArchiveRoot: "fallout"
@@ -12,5 +11,10 @@ romVPSId: "8KEkqK9jYd"
 tableVPSId: "7lRqLeldtK"
 testers:
   - "Wraith"
-vpxChecksum: "a2874742de5186b402fb05cbf98be255"
+vpxArchiveFormat: "zip"
+vpxChecksum:
+  - "a2874742de5186b402fb05cbf98be255"
+  - "41ED3120FF03EE5D3EA4D6C378849541"
+vpxExtractExtra:
+  - "Fallout Vault Edition 2.0 (LTek 2024)/Fallout.FlexDMD"
 vpxVPSId: "mUYcb63dvR"
