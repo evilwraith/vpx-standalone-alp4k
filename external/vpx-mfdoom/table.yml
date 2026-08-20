@@ -12,6 +12,7 @@ tagline: "DOOM TOOTS AS DOOM PLEASES"
 testers:
   - "Wraith"
   - "Curt"
+vpxArchiveFormat: "zip"
 vpxChecksum:
   - "e4831dbb14857269ab8a0670f6f9fce0"
   - "51649b94b76d6cdaa7417fab9656373d"
