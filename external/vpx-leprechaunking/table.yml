@@ -1,0 +1,17 @@
+---
+fps: 60
+pupArchiveFormat: "rar"
+pupArchiveRoot: "tlk35/PUPVideos/leprechaun"
+pupBundled: true
+pupChecksum: "FA0100D972559834008F42C565317B7F"
+vpxMagic: 
+  - "bHVja3lkYXk="
+pupNotes: "PUP bundled with table"
+pupRequired: true
+pupVersion: "leprechaun"
+tableNotes: "Password on OrbitalPin download site"
+tableVPSId: "VAx9weFV"
+testers:
+  - "Wraith"
+vpxChecksum: "14F49B4F707EACE88F7609A7D19735FC"
+vpxVPSId: "65U2ADbg"
