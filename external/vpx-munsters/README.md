@@ -1,6 +1,6 @@
-# NFL (Stern 2001)
+# Munsters, The (Original 2020)
 
-![Table Preview](../../images/9VRfEyjf50-preview.webp)
+![Table Preview](../../images/Z-unsHBi1c-preview.webp)
 
 <br>
 
@@ -8,12 +8,13 @@
 
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 60 |
+| ✅ | ❌ | ❌ | ✅ | 60 |
 
 <br>
 
 **VPXS 4KP Testers:**
   - Filth
+  - MissleToad
 
 <br>
 
@@ -32,9 +33,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`NFL (Stern 2001)`**
+4.  Find and select this table from the dropdown menu: **`Munsters, The (Original 2020)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"You Better Believe It!"*
+6. *"Cross their welcome mat and you're apt to die laughing!"*
 
 <br>
 

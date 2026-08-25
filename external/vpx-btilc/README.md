@@ -1,6 +1,6 @@
-# NFL (Stern 2001)
+# Big Trouble in Little China (Original 2026)
 
-![Table Preview](../../images/9VRfEyjf50-preview.webp)
+![Table Preview](../../images/qI3NAhCmY4-preview.webp)
 
 <br>
 
@@ -8,7 +8,7 @@
 
 | Backglass | DMD | ROM Required | Has Puppack | FPS |
 |-----------|-----|-----|-----|-----|
-| ✅ | ✅ | ✅ | ❌ | 60 |
+| ❌ | ❌ | ❌ | ✅ | 60 |
 
 <br>
 
@@ -32,9 +32,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`NFL (Stern 2001)`**
+4.  Find and select this table from the dropdown menu: **`Big Trouble in Little China (Original 2026)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"You Better Believe It!"*
+6. *"Some people pick the darnedest places to start a fight!"*
 
 <br>
 

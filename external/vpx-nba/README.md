@@ -1,6 +1,6 @@
-# NFL (Stern 2001)
+# NBA (Stern 2009)
 
-![Table Preview](../../images/9VRfEyjf50-preview.webp)
+![Table Preview](../../images/78eitoFTLi-preview.webp)
 
 <br>
 
@@ -32,9 +32,9 @@ This table is available through the Table Manager Wizard, which makes installati
 1.  Open the **Table Manager**
 2.  Click the **Add Table** button
 3.  Select the **Wizard** tab
-4.  Find and select this table from the dropdown menu: **`NFL (Stern 2001)`**
+4.  Find and select this table from the dropdown menu: **`NBA (Stern 2009)`**
 5.  Follow the on-screen instructions to download and upload the required files
-6. *"You Better Believe It!"*
+6. *"I Love This Game!"*
 
 <br>
 
