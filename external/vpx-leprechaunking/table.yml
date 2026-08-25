@@ -4,6 +4,8 @@ pupArchiveFormat: "rar"
 pupArchiveRoot: "tlk35/PUPVideos/leprechaun"
 pupBundled: true
 pupChecksum: "FA0100D972559834008F42C565317B7F"
+vpxMagic: 
+  - "bHVja3lkYXk="
 pupNotes: "PUP bundled with table"
 pupRequired: true
 pupVersion: "leprechaun"
