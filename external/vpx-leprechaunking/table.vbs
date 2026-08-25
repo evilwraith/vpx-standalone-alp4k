@@ -65,7 +65,7 @@
 	sfxvol = 60 'set the volme you'd like for the videos
 	calloutvol = 100 ' set this to whatever you're like your callouts to be
 	turnonultradmd = 0 ' change to 1 to turn on ultradmd
-	toppervideo = 0 'set to 1 to turn on the topper
+	toppervideo = 1 'set to 1 to turn on the topper
 	dim havedof:havedof = 0 'set to 1 if you have dof and want to remove some mech sounds as you have your own mechs
 
 
@@ -137,7 +137,7 @@
 	Const cGameName = "leprechaun"
 	Const TableName = "leprechaun"
 	Const myVersion = "1.0.0"
-	
+	Const bladeArt	= 1	'1=On (Art),2=Art Plain 0=Sideblades Off.
 
 
 
@@ -172,7 +172,7 @@ CustomBallGlow(0) = 		False
 CustomBallImage(0) = 		"pinball"
 CustomBallLogoMode(0) = 	False
 CustomBallDecal(0) = 		"scratches"
-CustomBulbIntensity(0) = 	0.01
+'CustomBulbIntensity(0) = 	0.01
 Red3(0) = 0 : Green3(0)	= 0 : Blue3(0) = 0
 
 ' Magma GlowBall
@@ -709,6 +709,19 @@ End Sub
 		End If
 
 	End Sub
+
+' Choose Side Blades 
+	if bladeArt = 1 then
+		PinCab_Blades.Image = "Sidewalls LK"
+		PinCab_Blades.visible = 1
+    elseif bladeArt = 2 then
+		PinCab_Blades.Image = "Sidewalls LK2"
+		PinCab_Blades.visible = 1
+	elseif bladeArt = 0 then
+		PinCab_Blades.visible = 0
+	End if 
+
+
 
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1379,7 +1392,7 @@ End Sub
 
 	Dim PuPlayer
 
-	Const pTopper=0
+	Const pTopper=5
 	Const pDMD=1
 	Const pBackglass=2
 	Const pPlayfield=3
