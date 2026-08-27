@@ -14,6 +14,8 @@
 
 **VPXS 4KP Testers:**
   - MissleToad
+  - Wraith
+  - Filth
 
 <br>
 
