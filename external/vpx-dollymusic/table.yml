@@ -1,0 +1,21 @@
+---
+backglassChecksum: "D2092F6654357AA0216C622CEBABBBE9"
+backglassNotes: "Download 'Dolly Parton (Bally 1979) 7digit.zip'"
+backglassVPSId: "jPdDfup10S"
+fps: 60
+romChecksum: "57ED716D60DF66D4F868619C332B0CB7"
+romVPSId: "0aFG05ZT"
+tableNameOverride: "Dolly Music and Sound Mod"
+tableVPSId: "bRgTaBG7"
+testers:
+  - "Wraith"
+vpxArchiveFormat: "zip"
+vpxChecksum: 
+  - "EEF36777EE43A264AF2B22ED8464EEE0"
+  - "FA5595615CAC611BCA856BC0C20FCC98"
+vpxVPSId: "KJySoO25I9"
+vpxExtractExtra:
+  - "Dolly"
+postInstallRename:
+   - source: "Dolly"
+     destination: "music/Dolly"
