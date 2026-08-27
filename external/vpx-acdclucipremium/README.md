@@ -15,6 +15,9 @@
 **VPXS 4KP Testers:**
   - MissleToad
   - Wraith
+  - OminousOsie
+  - Onegoodball
+ 
 
 <br>
 
