@@ -283,7 +283,7 @@ Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scor
 	Const stencilfont = "Stardos Stencil"
 	Const munsterfont = "1313 MockingbiRd Lane"
 	Const zoombgfont = "Fundamental 3D  Brigade" ' needs to be an outline of the zoomfont
-	Const scorefont = "AkiNixieNumber" '"Comic Neue" '"Nixie One"
+	Const scorefont = "Nixie One" '"Comic Neue" '"Nixie One"
 	Const cGameName = "mmunsters"
 	Const TableName = "mmunsters"
 	Const myVersion = "1.05"
@@ -395,10 +395,15 @@ Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scor
 
 	Dim objShell
 	Dim objShell2, objFs
-	' LINUX/VPXS STANDALONE FIX: shell.application and Scripting.Filesystemobject
-	' are Windows-only COM objects and don't exist on the ALP 4K / standalone build.
-	' Left as empty vars (still Dim'd so nothing downstream throws "variable undefined").
-	' The only caller (GetTimes/PUP video length pre-scan) is disabled below.
+	' VPXS STANDALONE FIX: shell.application does not exist on standalone builds, and an
+	' unhandled CreateObject error at global scope aborts ALL remaining global code (this
+	' was the root cause of the Type mismatch / Object required cascade in the log).
+	' FSO is real on standalone (wine scrrun) and stays. objShell2 stays Empty here;
+	' gnGetFileDetails checks IsObject() before using it.
+	On Error Resume Next
+	set objShell2 = CreateObject("shell.application")
+	set objFs = CreateObject("Scripting.Filesystemobject")
+	On Error Goto 0
 
 	Dim EnableBallControl
 	EnableBallControl = false 'Change to true to enable manual ball control (or press C in-game) via the arrow keys and B (boost movement) keys
@@ -466,10 +471,14 @@ Sub Table1_Init()
 
 	DOF 140, DOFOn
 
-	' LINUX/VPXS STANDALONE FIX: GetTimes() relied on objFs (Scripting.FileSystemObject,
-	' Windows-only) and an undefined "Folder" variable, guaranteed to error on this build.
-	' It only pre-indexes PUP video lengths; PUP playback works without it. Disabled.
-	' GetTimes(objFs.GetFolder(Folder))
+	' VPXS STANDALONE FIX: degrade gracefully if the pupvideos walk fails -- an error here
+	' would otherwise abort the rest of Table1_Init.
+	On Error Resume Next
+	GetTimes(objFs.GetFolder(Folder))
+	On Error Goto 0
+
+	set objShell2 = Nothing
+	set objFs = Nothing
 
 	'Impulse Plunger as autoplunger
 	Const IMPowerSetting = 50 ' Plunger Power
@@ -5819,7 +5828,7 @@ Dim scoopdelay:scoopdelay=0
 		ScoopEject.Kick 200 + (5 * Rnd()), 8
 		Playsound SoundFXDOF("fx_kicker",116,DOFPulse,DOFContactors)
 		DOF 115, DOFPulse
-		PuPlayer.playlistplayex pCallouts,"audioevents","Sound-0x068 - shoot ballpopper.mp4",100, 1
+		PuPlayer.playlistplayex pCallouts,"audioevents","Sound-0x068 - shoot ballpopper.mp3",100, 1 ' VPXS FIX: pack ships .mp3, .mp4 was a typo
 	End Sub
 
 ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
@@ -6039,6 +6048,7 @@ Dim hp,hc,hd:hp=0:hc=0:hd=0
 Function gnGetFileDetails(fo, fn)
         dim objFolder    
 		gnGetFileDetails = ""
+        if Not IsObject(objShell2) Then Exit Function ' VPXS STANDALONE FIX: no shell metadata
         set objFolder = objShell2.NameSpace(fo)
 
         if (not objFolder is nothing) then
@@ -6066,7 +6076,7 @@ Sub GetTimes(myfolder)
 		fo(0)=fo(0)+1  ' tally of number of folders processed
 		fo(fo(0))=myfolder.Name
 		for each file in myfolder.Files
-			If file.type = "MP4 File" Then 
+			If LCase(Right(file.name, 4)) = ".mp4" Then ' VPXS STANDALONE FIX: file.Type unimplemented
 				fn(fo(0),0)=fn(fo(0),0)+1
 				fn(fo(0),fn(fo(0),0))=file.name
 				fs(fo(0),fn(fo(0),0))=InSeconds(gnGetFileDetails(folder & myfolder.Name, file.name))
@@ -6075,7 +6085,7 @@ Sub GetTimes(myfolder)
 	End If
 	If myfolder.name = "audiobg" Then
 		for each file in myfolder.Files
-			If file.type = "MP3 Format Sound" Then 
+			If LCase(Right(file.name, 4)) = ".mp3" Then ' VPXS STANDALONE FIX: file.Type unimplemented
 				MaxSongs=MaxSongs+1
 				fn(40,MaxSongs)=file.name
 		End If
@@ -6101,7 +6111,7 @@ Function GetTime(ifo,ifn)
 			Exit For
 		End If
 	Next
-	if f <> 0 and n <> 0 Then
+	if f <> 0 and n <> 0 and fs(f,n) > 0 Then ' VPXS STANDALONE FIX: unknown duration -> keep 2000ms default
 		I "Found a match " & ifo & "::" & ifn & ">>>" & fo(f) & "::" & fn(f,n) & " Times: " & CStr(fs(f,n))
 		GetTime=fs(f,n)*1000
 	End If
@@ -6179,23 +6189,20 @@ Sub LoadController(TableType)
 	B2SOnALT = False
 	tempC = 0
 	on error resume next
-	' LINUX/VPXS STANDALONE FIX: WScript.Shell and the Windows registry don't exist on
-	' this build (that's the "ActiveX component can't create object" / line 398 error
-	' and the Controller.vbs popup you were seeing). Registry reads/writes replaced with
-	' hardcoded defaults matching what the original code wrote on first run:
-	'   ForceDisableB2S = 0 (B2S/backglass enabled)
-	'   All DOFeffects   = 2 (DOF enabled, default intensity)
-	' Adjust the values below directly if you want to change DOF behavior for this table.
-	tempC = 0
-	DOFeffects(1)=2 ' DOFContactors
-	DOFeffects(2)=2 ' DOFKnocker
-	DOFeffects(3)=2 ' DOFChimes
-	DOFeffects(4)=2 ' DOFBell
-	DOFeffects(5)=2 ' DOFGear
-	DOFeffects(6)=2 ' DOFShaker
-	DOFeffects(7)=2 ' DOFFlippers
-	DOFeffects(8)=2 ' DOFTargets
-	DOFeffects(9)=2 ' DOFDropTargets
+	' VPXS STANDALONE FIX: no Windows registry here (wine's is empty and ephemeral), so the
+	' RegRead probe fails on every launch: the Controller.vbs popup fires each boot and the
+	' RegWrite defaults are lost. Set the same values the original code writes on a Windows
+	' first run. Edit these directly to tune DOF for this table.
+	tempC = 0             ' ForceDisableB2S = 0 -> B2S stays enabled
+	DOFeffects(1)=2       ' DOFContactors
+	DOFeffects(2)=2       ' DOFKnocker
+	DOFeffects(3)=2       ' DOFChimes
+	DOFeffects(4)=2       ' DOFBell
+	DOFeffects(5)=2       ' DOFGear
+	DOFeffects(6)=2       ' DOFShaker
+	DOFeffects(7)=2       ' DOFFlippers
+	DOFeffects(8)=2       ' DOFTargets
+	DOFeffects(9)=2       ' DOFDropTargets
 
 	If TableType = "PROC" or TableType = "VPMALT" Then
 		If TableType = "PROC" Then
@@ -8235,7 +8242,7 @@ Flasherlight5.IntensityScale = 0
 
 	Sub ClearVideo
 		D "ClearVideo"
-		PuPlayer.playlistplayex pBackglass,"videoothers","nothing.mp4",100,7
+		PuPlayer.playstop pBackglass ' VPXS FIX: pack has no nothing.mp4 -- stop the layer instead
 	End Sub
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
