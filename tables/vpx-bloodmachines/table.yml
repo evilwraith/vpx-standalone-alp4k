@@ -1,5 +1,5 @@
 ---
-fps: 60
+fps: 50
 pupArchiveFormat: "zip"
 pupArchiveRoot: "Blood Machines PuP 1.58/bloodmach"
 pupBundled: true
