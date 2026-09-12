@@ -1,5 +1,8 @@
 ---
-fps: 50
+backglassChecksum: "8AC245446D7501B17D9A02A89499333D"
+backglassVPSId: "lbFKiVGbZq"
+fps: 58
+nsfw: true
 pupArchiveFormat: "zip"
 pupArchiveRoot: "Blood Machines PuP 1.58/bloodmach"
 pupBundled: true
