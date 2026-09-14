@@ -14,7 +14,6 @@
 
 **VPXS 4KP Testers:**
   - Wraith
-  - Ominous Osie
 
 <br>
 
