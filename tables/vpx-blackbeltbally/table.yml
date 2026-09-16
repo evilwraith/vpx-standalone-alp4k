@@ -1,0 +1,18 @@
+---
+coloredROMBundled: true
+coloredROMChecksum: "7DCAAC2254788113C1CE429DAC6BD97B"
+coloredROMNotes: "Download from VPX download page"
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "blackblt"
+pupChecksum: "2B54D73AB7AFFD40CD2CDF3CF994AC56"
+pupRequired: true
+pupVersion: "blackblt"
+pupVPSId: "4lTBRNRbke"
+romChecksum: "1BAF8129506898EEC23F3B375884B367"
+romVPSId: "o7E1ZzVk"
+tableVPSId: "atmZ8zPG"
+testers:
+  - "Wraith"
+vpxChecksum: "523942685DCEDD78A47F84C95429413D"
+vpxVPSId: "O9eFJLi_rV"
