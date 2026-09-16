@@ -1,0 +1,20 @@
+---
+backglassChecksum: "B0D8A41D4A1DA761DAD399156BF5E1AE"
+backglassVPSId: "EvbOULUX0f"
+diffAuthorsOverride:
+  - "xenonph"
+diffChecksum: "133D4735ED139AC4DEBDA6F9FBA696E8"
+diffNotes: "Flash Gordon (Bally 1981) SoundMOD Hybrid (DT-FS-FSS-VR) v2.2"
+diffUrlOverride: "https://www.vpforums.org/index.php?app=downloads&showfile=18234"
+diffVersionOverride: "2.2"
+fps: 60
+romChecksum: "B61D06317759F9B04211E31A1499A850"
+romVPSId: "HFE2u_HS"
+tableNameOverride: "Flash Gordon Sound Mod"
+tableNotes: "Flash Gordon (Bally 1981) 2.0.2.zip"
+tableVPSId: "18iwweY9"
+tagline: "'DIIIIIIIIIVE'"
+testers:
+  - "Wraith"
+vpxChecksum: "993ADACA537C20E788FE8D09E9B8EE3B"
+vpxVPSId: "M1FFYDXz"
