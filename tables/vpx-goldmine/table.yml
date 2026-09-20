@@ -1,0 +1,18 @@
+---
+backglassAuthorsOverride:
+  - "Wildman"
+backglassChecksum: "D8194EFBD17508C745C862221CAC35BE"
+# yamllint disable-line rule:line-length
+backglassImageOverride: "https://vpuniverse.com/screenshots/monthly_03_2013/e784fdf53e54adcc0f9418a7bb0f14b4-good-mine.png"
+backglassNotes: "Backglass image"
+# yamllint disable-line rule:line-length
+backglassUrlOverride: "https://vpuniverse.com/files/file/2122-gold-mine-shuffle-alley-williams-1988-rascal-and-wildman-fs-db2s-2-and-3-screen/"
+fps: 60
+romChecksum: "E81607D39603CA2A2FE63DFE0613572F"
+romVPSId: "mSHTM-vw"
+tableVPSId: "_HDz15xn"
+tagline: "'Bowling for dollars called, you're old.'"
+testers:
+  - "Wraith"
+vpxChecksum: "C3E866167252D61E33B14E079705E81F"
+vpxVPSId: "nDcrUuaK"
