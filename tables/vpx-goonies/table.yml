@@ -1,0 +1,13 @@
+---
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "TheGoonies"
+pupChecksum: "22B4C3455F2A9C53225782625A76CFE1"
+pupRequired: true
+pupVersion: "2.0.0"
+pupVPSId: "NRaxZsJTm3"
+tableVPSId: "34pZqivK"
+testers:
+  - "Wraith"
+vpxChecksum: "BE4DFD71C9BA3B3641F7AE05E7720D67"
+vpxVPSId: "RJ5FwXlX"
