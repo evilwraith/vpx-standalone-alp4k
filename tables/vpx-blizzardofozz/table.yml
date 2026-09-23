@@ -1,0 +1,16 @@
+---
+fps: 60
+mainNotes: "create music folder, move BLIZZARD from MEDIA PACK.zip to music"
+pupArchiveFormat: "zip"
+pupArchiveRoot: "BlizzardOfOzz"
+pupBundled: true
+pupChecksum: "F97788F704D7F0766D23EF5C5AD8E714"
+pupNotes: "Download 'BlizzardOfOzz-PuP-v1.0.1.zip'"
+pupVersion: "1.0.1"
+tableNotes: "Download 'BLIZZARDOFOZZ_v1.0.3a.vpx'"
+tableVPSId: "8CVzv2wI_z"
+tagline: "'Shaaaaarrrrrooooonnnn!!!'"
+testers:
+  - "Wraith"
+vpxChecksum: "625B4FCDC09B091251D4C89D7285FFB8"
+vpxVPSId: "ecjSchd5Od"
