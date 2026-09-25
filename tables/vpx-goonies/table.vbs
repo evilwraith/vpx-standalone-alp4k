@@ -1,6 +1,5 @@
-Option Explicit
-Randomize
-'                                          ....                   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                 ..                                                         
+'
+'                                          ....                   #@@@@@@@@@@@@@@@@@@@VPW@@@@@@@@@@@@@@@@@@@(                 ..                                                         
 '                                  ...               ./&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#,              ...                                                  
 '                              ..                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@               ..                                             
 '                           .          .%@@@@@@@@@@@@@@@@@@@@@@@@@@@@.        .&@#     /@@@@     %@@,@@@//@@@@@@@@@@@@@@@@@@@@@@@%*           ..                                         
@@ -103,9 +102,88 @@ Randomize
 '1.3.12 - fluffhead35 - Added inreact to stop ball collision sound on wire ramp when ball is locked.
 '1.3.13 - fluffhead35 - Fixed drop targets when they are being immediately raised again.  Race condition found by apophis
 'Release v1.4
+'1.4.2 - fluffhead35 - Set bakground color to black
+'1.4.3 - Release
+'1.4.4 - Lumi - sound changes, mild rebalancing, new double scoring insert text
+'1.4.5 - apophis - Fixed flipper trigger shapes. Opened up right outlane a little (to match left). Multiball fix.
+'1.4.6 - DGrimmReaper - VR Backglass animations for non pup.
+'1.4.7 - apophis - Fixed some ramp and wall sound effects (thanks Studlygoorite)
+'1.4.8 - apophis - Adjusted height of backwall lights. Added visible rubber to trust post. Disabled unused timer.
+'1.4.9 - DaRdog - Added MEGA VR room. Updated one-eyed-willy skull on table,
+'1.4.10 - apophis - Moved table options to Tweak menu.
+'1.4.11 - apophis - Fixed VR room option order. Lowered some reflection strengths, bloom, and SSR. Converted dynamic shadows to new RTX shadows. Added some missing visual rubbers. Moved some color options to tweak menu. Added visual blocker behind VR backglass.
+'1.4.12 - DaRdog - Adjusted one-eyed-willy skull size.
+'1.4.13 - apophis - Image manager cleanup. Added instruction and moved LUT selection to tweak menu.
+'Release v1.5
 
 
-Const UsingROM = False
+' RULES
+'
+'		Overall Goal of the game is to complete The Goonies Motto "Never Say Die"
+'
+'		Skill Shot:
+'
+'		When a new ball starts the 5 lights under the plunger ramp will flash in sequence.
+'		Launch the ball and when it passes under the Skill Shot sign, the current light will be awarded as follows:
+'
+'		Sloth:
+'		This starts Sloth 2x scoring for 30 seconds, can also be started by spelling sloth at his targets. (Adds "N")
+'
+'		Fratellis:
+'		This start a hurry up mode where you have to get one of the balls in the Fratellis hideout into the kicker at the back  right of the hideout, can also be started by hitting the Fratellis hideout a few times. (Adds "E")
+'
+'		Data:
+'		this lights the Data gadget award scoop, hit the scoop to get a randow reward. Can also be lit by spelling Data at his  targets.
+'
+'		Super Pops:
+'		Starts the pop bumpers flashing for a higher value. Will end if a pop bumper is not hit for 10 seconds or you loose a  ball.
+'
+'		Open Trap:
+'		This opens the captive ball trap to the right of Datas scoop. Lock 3 ball in here to start multiball. Can also be  opened by hitting the trap several times. Locking the first ball adds "E", Starting multiball adds "R"
+'
+'		--------------------------------------------------------------------------------------------------------------------------------
+'
+'		Chunk Loop: This is the left orbit, each orbit lights an arrow when they are all lit Truffle Shuffle starts.
+'
+'		Truffle Shuffle: Each target is worth 50,000 points and a Chunk loop scores a Jackpot. Ends after 30 seconds or you loose a ball. Starting truffle shuffle adds "S"
+'
+'		Mikey Loop: This is the right orbit, each loop adds a Marble Bonus, with more loops scoring more points. Points are added on at the end of the ball. Resets for each ball.
+'
+'		Key Spinner: each spin adds akey bonus, bonus collected at end of ball
+'
+'		Doubloon Spinner: each spin adds a doubloon bonus, collet at end of ball
+'
+'		BAD Targets: Spell BAD in the Fratellis hideout to increase the Jackpot for other modes.
+'
+'		RICH Lanes: Spell RICH to increase the bonus multiplier. Resets for each ball.
+'
+'		DATAs GADGET Awards:
+'
+'		Adds "V"
+'		Spy Eyes: this set the bonus multiplier to max (10x)
+'		Slick Shoes: this sets the jackpot score to max (10,000,000)
+'		This is not a candle: shoot the ramp to score the current jackpot
+'		Wings of Flight: Instant jackpot award
+'		Sticky Dart: extra ball awarded
+'		Pincers of peril: open trap
+'		Bully Blinders: Starts Truffle shuffle
+'		Bully Buster: adds 10,000 to marble bonus
+'
+'		Ramp Shot scores 5,000 for the first 10 shots, lights extra ball at 10 shots, worth 10,000 after that. Also adds a bonus award for the end of ball bonus.
+'
+'		Well Target (to the left of the bumpers, hit 3 times to add big points. Also adds time during timed modes.
+'
+'		Drop targets under bone organ, drop them all to open the wall under the bone organ. Get ball in there to start mode: (All modes light a letter towards NEVER SAY DIE)
+'
+'		Find the key, hit the left spinner to find the key (spinner must spin 20 times)
+'		Boulders, hit loops to avoid the boulders.
+'		Bone organ, hit the bone organ scoop 3 times to win.
+'		Water slide, hit the ramp to slide.
+'		Fight the Fratellis, hit the BAD targets to collect jackpots.
+
+
+Option Explicit
+Randomize
 
 Const BallSize = 50
 Const BallMass = 1
@@ -128,90 +206,185 @@ End Sub
 
 Const cGameName = "goonies"
 Const TableName = "The_Goonies"
-Const myVersion = "1.4"
-Const MaxPlayers = 1      ' from 1 to 4
-Const BallSaverTime = 15  ' in seconds
+Const myVersion = "1.5"
+
+
+
+'*******************************************
+'  User Options
+'*******************************************
+
+' These will not be in the Tweak (F12) menu
+Const enablePupPack		= True
+Const enablePupDMD      = True ' Enable PupPack must be true if this is set to true
+Const enableFlexDmd		= False 
+Const MaxPlayers = 4      ' from 1 to 4
+Const BallSaverTime = 10  ' in seconds
 Const BallsPerGame = 3    ' usually 3 or 5
 
-'///////////////////////-----General Sound Options-----///////////////////////
-'// VolumeDial:
-'// VolumeDial is the actual global volume multiplier for the mechanical sounds.
-'// Values smaller than 1 will decrease mechanical sounds volume.
-'// Recommended values should be no greater than 1.
-Const VolumeDial = 0.7 ' Mechanical Sound Volume
-Const BallRollVolume = 0.5 			'Level of ball rolling volume. Value between 0 and 1
-Const RampRollVolume = 0.5 			'Level of ramp rolling volume. Value between 0 and 1
-Const MusicVolumeDial = 0.4 'Background Music Volume
-Const BackGlassVolumeDial = 0.5 ' Callout Sound Volume
-
-'///////////////////////-----Shadow Options-----///////////////////////
-Const DynamicBallShadowsOn = 0		'0 = no dynamic ball shadow ("triangles" near slings and such), 1 = enable dynamic ball shadow
-Const AmbientBallShadowOn = 0		'0 = Static shadow under ball ("flasher" image, like JP's)
-									'1 = Moving ball shadow ("primitive" object, like ninuzzu's)
-									'2 = flasher image shadow, but it moves like ninuzzu's
+Const VRTest = 0
 
 
-Const enablePupPack		= False
-Const enablePupDMD      = False ' Enable PupPack must be true if this is set to true
+' These are in the Tweak menu
 
-Const enableFlexDmd		= True
+Dim VolumeDial : VolumeDial = 0.7 				' Mechanical Sound Volume
+Dim BallRollVolume : BallRollVolume = 0.5 		' Level of ball rolling volume. Value between 0 and 1
+Dim RampRollVolume : RampRollVolume = 0.5 		'Level of ramp rolling volume. Value between 0 and 1
+Dim MusicVolumeDial : MusicVolumeDial = 0.4 	'Background Music Volume
+Dim BackGlassVolumeDial : BackGlassVolumeDial = 0.5 ' Callout Sound Volume
+Dim enableEyeColors	: enableEyeColors = True
+Dim enableRampColors : enableRampColors = True
+Dim LUTset : LUTset = 0
 
-Const enableEyeColors	= True
-Const enableRampColors	= True
+Dim VRRoom : VRRoom = 2
+Dim ShowVRTopper : ShowVRTopper = 1
 
-Dim DisableLUTSelector
-DisableLUTSelector = 0  ' Disables the ability to change LUT option with magna saves in game when set to 1
+'Dim DisableLUTSelector
+'DisableLUTSelector = 0  ' Disables the ability to change LUT option with magna saves in game when set to 1
+
+
+' Called when options are tweaked by the player. 
+' - 0: game has started, good time to load options and adjust accordingly
+' - 1: an option has changed
+' - 2: options have been reseted
+' - 3: player closed the tweak UI, good time to update staticly prerendered parts
+' Table1.Option arguments are: 
+' - option name, minimum value, maximum value, step between valid values, default value, unit (0=None, 1=Percent), an optional arry of literal strings
+Dim dspTriggered : dspTriggered = False
+Sub Table1_OptionEvent(ByVal eventId)
+    If eventId = 1 And Not dspTriggered Then dspTriggered = True : DisableStaticPreRendering = True : End If
+	Dim v
+
+    ' Sound volumes
+    VolumeDial = Table1.Option("Mechanical Sounds Volume", 0, 1, 0.01, 0.7, 1)
+    BallRollVolume = Table1.Option("Ball Roll Volume", 0, 1, 0.01, 0.5, 1)
+	RampRollVolume = Table1.Option("Ramp Roll Volume", 0, 1, 0.01, 0.5, 1)
+	MusicVolumeDial = Table1.Option("Table Music Volume", 0, 1, 0.01, 0.4, 1)
+	BackGlassVolumeDial = Table1.Option("Table Callout Volume", 0, 1, 0.01, 0.5, 1)
+
+	' Color options
+	LUTset = Table1.Option("Color LUT", 0, 17, 1, 12, 0, _
+		Array("Fleep Natural Dark 1", _
+			  "Fleep Natural Dark 2", _
+			  "Fleep Warm Dark", _
+			  "Fleep Warm Bright", _
+			  "Fleep Warm Vivid Soft", _
+			  "Fleep Warm Vivid Hard", _
+			  "Skitso Natural and Balanced", _
+			  "Skitso Natural gametimeHigh Contrast", _
+			  "3rdaxis Referenced THX Standard", _
+			  "CalleV Punchy Brightness and Contrast", _
+			  "HauntFreaks Desaturated", _
+			  "Tomate washed out", _
+			  "VPW original 1on1", _
+			  "bassgeige", _
+			  "blacklight", _
+			  "B&W Comic Book", _
+			  "Oqq's Spooky Greenies", _
+			  "Oqq's Scary Greenies"))
+	SetLUT
+	ShowLUT
+	
+	v = Table1.Option("Eye Colors", 0, 1, 1, 1, 0, Array("Disabled", "Enabled"))
+	if v = 0 then enableEyeColors = False Else enableEyeColors = True
+
+	v = Table1.Option("Ramp Colors", 0, 1, 1, 1, 0, Array("Disabled", "Enabled"))
+	if v = 0 then enableRampColors = False Else enableRampColors = True
+
+	' VR
+	VRRoom = Table1.Option("VR Room", 0, 2, 1, 2, 0, Array("Minimal Room", "360 Sphere", "MEGA"))
+	ShowVRTopper = Table1.Option("VR Topper", 0, 1, 1, 1, 0, Array("Hide", "Show"))
+	
+	SetupRoom
+
+    If eventId = 3 And dspTriggered Then dspTriggered = False : DisableStaticPreRendering = False : End If
+End Sub
+
+
 
 '----- VR Room Options and Auto-Detect -----
-Dim VRRoom, VR_Obj
 
-VRRoom = 0 '1 = 360 Sphere, 0 = Minimal Room
-If RenderingMode = 2 Then
+Sub SetupRoom
 
-	sidewalls.visible = 0
-	backwall.visible = 0
-	Shadows001.visible = 0
-	d1.visible = 0
-    d2.visible = 0
-    DispDmd2.visible = 0
-	LeftRailtop.visible = 0
-	RightRailtop.visible = 0
-	Ramp008.visible = 0
+	Dim VR_Obj, VRMode
 
-	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
 
-	If VRRoom = 1 Then
-		For Each VR_Obj in VRSphere : VR_Obj.Visible = 1 : Next
-		For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
+	If RenderingMode = 2 or VRTest = 1 Then
+		VRMode = True
+		sidewalls.visible = 0
+		backwall.visible = 0
+		Shadows001.visible = 0
+		d1.visible = 0
+		d2.visible = 0
+		DispDmd2.visible = 0
+		LeftRailtop.visible = 0
+		RightRailtop.visible = 0
+		Ramp008.visible = 0
+
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
+
+		If VRRoom = 1 Then
+			For Each VR_Obj in VRSphere : VR_Obj.Visible = 1 : Next
+			For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRMegaRoom : VR_Obj.Visible = 0 : Next
+		End If
+		If VRRoom = 0 Then
+			For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 1 : Next
+			For Each VR_Obj in VRMegaRoom : VR_Obj.Visible = 0 : Next
+		End If
+		If VRRoom = 2 Then
+			For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRMegaRoom : VR_Obj.Visible = 1 : Next
+			Pincab_MetalsLegsBack.z=-25
+			Pincab_MetalsLegsBack.size_y=1100
+		End if
+		VR_Topper.Visible = ShowVRTopper
 	Else
-		For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 1 : Next
+		VRMode = False
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
+		For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
 		For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
-	End if
-Else
-	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
-	For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
-	For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
-End If
+		For Each VR_Obj in VRMegaRoom : VR_Obj.Visible = 0 : Next
+	End If
 
-if Table1.ShowDT and RenderingMode <> 2 Then
-	hdisplay1.visible =1
-	display1.visible = 1
-	hdisplay2.visible = 1
-	display2.visible = 1
-	DispDmd1.visible = 0
-	LeftRailtop.visible = 1
-	RightRailtop.visible = 1
-	Ramp008.visible = 1
-Else
-	hdisplay1.visible = 0
-	display1.visible = 0
-	hdisplay2.visible = 0
-	display2.visible = 0
-	DispDmd1.visible = 0
-	LeftRailtop.visible = 0
-	RightRailtop.visible = 0
-	Ramp008.visible = 0
-End If
+	if Table1.ShowDT and VRMode = False Then
+		hdisplay1.visible =1
+		display1.visible = 1
+		hdisplay2.visible = 1
+		display2.visible = 1
+		DispDmd1.visible = 0
+		LeftRailtop.visible = 1
+		RightRailtop.visible = 1
+		Ramp008.visible = 1
+	Else
+		hdisplay1.visible = 0
+		display1.visible = 0
+		hdisplay2.visible = 0
+		display2.visible = 0
+		DispDmd1.visible = 0
+		LeftRailtop.visible = 0
+		RightRailtop.visible = 0
+		Ramp008.visible = 0
+	End If
+
+	If VRMode = True and enablePupPack = False Then
+		vrBGAn1.enabled = 1	
+		vrBGAn2.enabled = 1
+		vrBGAn3.enabled = 1	
+		vrBGAn4.enabled = 1
+	Else
+		vrBGAn1.enabled = 0	
+		vrBGAn2.enabled = 0
+		vrBGAn3.enabled = 0	
+		vrBGAn4.enabled = 0
+	End if
+
+End Sub
+
+
+
 
 'P002.Image = "InsertRectangleDDOn_25frst"
 '**************************
@@ -267,7 +440,7 @@ Dim bMultiBallMode          ' multiball mode active ?
 
 Const EOBspinnerKeys = 2000	
 Const EOBdubloons = 5000	
-Const EOBrampbonus = 200000 
+Const EOBrampbonus = 50000 ' changed from 200k - Lumi
 Const EOBmarbles = 20000	' 1x 2x 4x 10x ( how many lights are lit )
 Const MultiballBallsaver = 10000  ' adds a Random reward each time, up to a max at 15 seconds
 
@@ -282,7 +455,7 @@ Const ReplayScoreMin = 7500000 ' used for the add if won too
 Const sJackpotExtra		= 1000000
 Const sMaxJackpot		= 5000000
 Const sJackpotscore		= 1000000
-Const sAddToJackpot		= 1000000	'was 500000
+Const sAddToJackpot		= 500000	'was 1M
 Const sAddToJackSmal	= 100000	'was 25000
 
 Const wishingWellJackpot    = 3000000
@@ -436,6 +609,7 @@ Sub Table1_Init()
 	vpmtimer.addtimer 1100,	"luzblinks=5 '"
 	vpmtimer.addtimer 1400,	"OrganBlinks=3 '"	
  	vpmtimer.addtimer 1800,	"Gioff '"
+	vpmtimer.addtimer 1900, "Gion '"
 
 End Sub
 
@@ -453,18 +627,18 @@ Sub Boot_Timer
 			Playsound "Apron_Soft_6"
 			PlaySoundAtLevelStatic ("Drain_" & Int(Rnd*11)+1), 0.06, drain
 		Case 2: 
-			Playsound "Apron_Soft_7"
-			Playsound "andyyougoonie",1,0.001
-			Playsound "bonus1",1,0.001
-			Playsound "bonus2",1,0.001
-			Playsound "bonewrong",1,0.001
-			Playsound "jerkalert",1,0.001
-			Playsound "greatlookatthat",1,0.001
-			Playsound "takingitback",1,0.001
-			Playsound "marblesbag",1,0.001
-			Playsound "jeezmister",1,0.001
-			Playsound "ToggleButton",1,0.001	
-			Playsound "ToggleButton",1,0.0011	
+			'Playsound "Apron_Soft_7"
+			'Playsound "andyyougoonie",1,0.001
+			'Playsound "bonus1",1,0.001
+			'Playsound "bonus2",1,0.001
+			'Playsound "bonewrong",1,0.001
+			'Playsound "jerkalert",1,0.001
+			'Playsound "greatlookatthat",1,0.001
+			'Playsound "takingitback",1,0.001
+			'Playsound "marblesbag",1,0.001
+			'Playsound "jeezmister",1,0.001
+			'Playsound "ToggleButton",1,0.001	
+			'Playsound "ToggleButton",1,0.0011	
 
 
 			PlaySoundAtLevelStatic ("Drain_" & Int(Rnd*11)+1), 0.06, drain
@@ -1115,18 +1289,6 @@ End Sub
 'Sub aGates_Hit(idx):PlaySound "fx_Gate", 0, Vol(ActiveBall), pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0:End Sub
 'Sub aWoods_Hit(idx):PlaySound "fx_Woodhit", 0, Vol(ActiveBall), pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0:End Sub
 
-Sub TriggerRamp_Hit 
-	PuPEvent 806
-	'StopSound "wirerolling"
-	RandomSoundWireRampStop triggerRamp
-	WireRampOn False
-End Sub
-
-Sub TriggerRamp1_Hit
-	WireRampOff
-	RandomSoundWireRampStop TriggerRamp1
-End Sub
-
 
 'Sub RHelp2_Hit() 
 '	PuPEvent 807
@@ -1182,8 +1344,8 @@ Sub Table1_KeyDown(ByVal Keycode)
 		stopsound "match_strike"
 		playsound "match_strike", 0, 1 * BackGlassVolumeDial
 		If fInAttract = True Then
-			vpmtimer.addtimer 200,	"GIon '"
-			vpmtimer.addtimer 400,	"GIoff '"
+			vpmtimer.addtimer 200,	"GIoff '"
+			vpmtimer.addtimer 400,	"GIon '"
 			Exit Sub
 		End if
 
@@ -1203,18 +1365,18 @@ Sub Table1_KeyDown(ByVal Keycode)
 			End If
 		End If
 	End If
-	If Keycode = LeftMagnaSave Then
-		if DisableLUTSelector = 0 then
-			'SND TEST
-			'playsound "click",1,0.2
-			playsound "click", 0, 1 * BackGlassVolumeDial
-            LUTSet = LUTSet  + 1
-			if LutSet > 17 then LUTSet = 0
-			SetLUT
-'			SaveValue TableName, "Lut", LUTset
-			ShowLUT
-		End If
-	End If
+'	If Keycode = LeftMagnaSave Then
+'		if DisableLUTSelector = 0 then
+'			'SND TEST
+'			'playsound "click",1,0.2
+'			playsound "click", 0, 1 * BackGlassVolumeDial
+'            LUTSet = LUTSet  + 1
+'			if LutSet > 17 then LUTSet = 0
+'			SetLUT
+''			SaveValue TableName, "Lut", LUTset
+'			ShowLUT
+'		End If
+'	End If
 
 	If keycode = 19 then ScoreCard=1 : CardTimer.enabled=True
 	If hsbModeActive Then EnterHighScoreKey(keycode) : Exit Sub
@@ -1626,10 +1788,10 @@ Sub Loadhs
 	x = LoadValue(TableName, "DoOrDieReplay")
 	If(x <> "") then DoOrDieReplay = CDbl(x) Else DoOrDieReplay = DoOrDieReplayMin End If
 
-	x = LoadValue(TableName, "Lut")
-	If(x <> "") then LUTset = CInt(x) Else LUTset = 12 End If
+	'x = LoadValue(TableName, "Lut")
+	'If(x <> "") then LUTset = CInt(x) Else LUTset = 12 End If
 
-	SetLUT
+	'SetLUT
 
 End Sub
 
@@ -1761,7 +1923,7 @@ Sub CheckHighscore()
 	Else
 		vpmtimer.addtimer 2000, "EndOfBallComplete '"
 	End If
-	GiOff
+	'GiOff
 End Sub
 
 
@@ -1812,7 +1974,7 @@ Sub CheckHighscore2()
 
 		vpmtimer.addtimer 2000, "EndOfBallComplete '"
 	End If
-	GiOff
+	'GiOff
 End Sub
 
 Sub HighScoreEntryInit()
@@ -1945,7 +2107,7 @@ Sub HighScoreCommitName()
 	'2=5sec stop mid way
 	ShowHSfiveSec=160
 	ShowPlayer=1 : ShowPlayertext= FormatScore(Score(CurrentPlayer))
-	vpmtimer.addtimer 2000, "GIoff '"  
+	'vpmtimer.addtimer 2000, "GIoff '"  
 ' fixing other displays ?=??
 
 	enableKeys=False 
@@ -2538,7 +2700,7 @@ End Function
 
 
 Sub StartAttractMode()
-	gioff
+	'gioff
 	bGameInPLay = False
 	bAttractMode = true
 	Tilted = False
@@ -2731,7 +2893,8 @@ Sub ResetForNewGame()
 	spb1 174,160,3,2,2,1
 	'SND TEST
 	'Playsound "Scary-organ", 1, 0.05 , 0, 0,0,0, 0, 0
-	Playsound "Scary-organ" , 1, 1 * BackGlassVolumeDial
+	'Playsound "Scary-organ" , 1, 1 * BackGlassVolumeDial
+	
 
 	Dim	i
 	StopAttractMode
@@ -2774,6 +2937,7 @@ Sub ResetForNewGame()
 
 	Game_Init
 	' you may wish to start some music, play a sound, do whatever at this point
+	PlaySong "intro"
 
 	' set up the start delay to handle any Start of Game Attract Sequence
 	FirstBallDelayTimer.Interval = 500
@@ -3294,12 +3458,12 @@ Sub EndOfGame()
 		fDmdSplash1 "GAME OVER",2000,50
 	end If
 
-	Select case (RandomNumber(4))
-		case 1: PlaySong  "intro"
-		case 2: PlaySong  "goodenough"
-		case 3: PlaySong  "intro"
-		case 4: PlaySong  "goodenough"
-	end select
+	'Select case (RandomNumber(4))
+	'	case 1: PlaySong  "intro"
+	'	case 2: PlaySong  "goodenough"
+	'	case 3: PlaySong  "intro"
+	'	case 4: PlaySong  "goodenough"
+	'end select
 
 
 	nevertimer1.interval = 2000
@@ -3676,6 +3840,12 @@ Sub LeftSlingshotRubber_Slingshot()
 	Lemk.RotX = 26
 	LStep = 0
 	RandomSoundSlingshotLeft Lemk
+	if tilted = false Then
+		Select case (RandomNumber(2))
+			case 1: PlaySound "SFX_wood-break-1", 1, 1 * BackGlassVolumeDial,,0.25
+			case 2: PlaySound "SFX_wood-break-2", 1, 1 * BackGlassVolumeDial,,0.25
+		end select
+	end if
 	LeftSlingshotRubber.TimerEnabled = True
 End Sub
 
@@ -3732,6 +3902,12 @@ Sub RightSlingshotRubber_Slingshot()
 	Remk.RotX = 26
 	RStep = 0
 	RandomSoundSlingshotRight Remk 
+	if tilted = false Then
+		Select case (RandomNumber(2))
+			case 1: PlaySound "SFX_wood-break-1", 1, 1 * BackGlassVolumeDial,,0.25
+			case 2: PlaySound "SFX_wood-break-2", 1, 1 * BackGlassVolumeDial,,0.25
+		end select
+	end if
 	RightSlingShotRubber.TimerEnabled = True
 End Sub
 
@@ -3768,7 +3944,20 @@ Sub RightSlingshotRubber1_Timer
 	RStep1 = RStep1 + 1
 End Sub
 
-
+Sub InlaneSound()
+	if RecentRampHit Then
+		Select case (RandomNumber(3))
+			case 1: PlaySound "SFX_inlane-sploosh-1", 1, 1 * BackGlassVolumeDial,,0.25
+			case 2: PlaySound "SFX_inlane-sploosh-2", 1, 1 * BackGlassVolumeDial,,0.25
+			case 3: PlaySound "SFX_inlane-sploosh-3", 1, 1 * BackGlassVolumeDial,,0.25
+		end select
+	else
+		Select case (RandomNumber(2))
+			case 1: PlaySound "SFX_inlane-long", 1, 1 * BackGlassVolumeDial,,0.25
+			case 2: PlaySound "SFX_inlane-short", 1, 1 * BackGlassVolumeDial,,0.25
+		end select
+	end if
+end Sub
 '
 ' The Left InLane trigger has been Hit
 '
@@ -3777,6 +3966,7 @@ Sub LeftInLaneTrigger_Hit()
 
 	DOF 207, DOFPulse
 	PlaySoundAt "fx_sensor", LeftInLaneTrigger
+	InlaneSound
 
 	if SLS(16,1) = 0 then
 		SLS(16,1) = 1
@@ -3798,6 +3988,7 @@ Sub RightInLaneTrigger_Hit()
 
 	DOF 208, DOFPulse
 	PlaySoundAt "fx_sensor", RightInLaneTrigger
+	InlaneSound
 	' add some points
 	AddScore(RightinlaneValue )
 	if SLS(18,1)=0  then
@@ -3817,25 +4008,36 @@ Sub RightInLaneTrigger_Hit()
 	set LastSwitchHit = RightInLaneTrigger
 End Sub
 
-
+sub OutlaneSound
+	Select case (RandomNumber(2))
+		case 1: PlaySound "jerkalert", 0, 1 * BackGlassVolumeDial
+		case 2: PlaySound "chunkawshit", 0, 1 * BackGlassVolumeDial
+	end select
+	
+	if bBallSaverActive = false then
+		PlaySong "end"
+		restartmusic.Interval = 8000
+		restartmusic.Enabled = true ', 8000
+		Select case (RandomNumber(2))
+			case 1: PlaySound "SFX_outlane-stinger-1", 0, 1 * BackGlassVolumeDial
+			case 2: PlaySound "SFX_outlane-stinger-2", 0, 1 * BackGlassVolumeDial
+		end select
+	end if
+end sub
 ' The Left OutLane trigger has been Hit
 '
 Sub LeftOutLaneTrigger_Hit()
 	Lookout=165
 
 	DOF 206, DOFPulse
-	Select case (RandomNumber(2))
-		case 1: PlaySound "jerkalert", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "chunkawshit", 0, 1 * BackGlassVolumeDial
-	end select
-
+	
+	OutlaneSound
 	'playsound "ballrollinga"
 	' add some points
 	if SLS(17,1) = 0 then
 		SLS(17,1) = 1
 		checkrich
 	end if
-
 
 	AddScore(LeftOutlaneValue)
 
@@ -3850,11 +4052,7 @@ End Sub
 Sub RightOutLaneTrigger_Hit()
 	Lookout=127
 	DOF 209, DOFPulse
-	Select case (RandomNumber(2))
-		case 1: PlaySound "jerkalert", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "chunkawshit", 0, 1 * BackGlassVolumeDial
-	end select
-
+	OutlaneSound
 
 	if SLS(19,1) = 0 then
 		SLS(19,1) = 1
@@ -4029,20 +4227,20 @@ sub restartmusic_Timer()
 	restartmusic.Enabled = false
 	PlaySong "end"
 
-	if modename = "" and SLS(41,1) = 0 then
+	if modename = "" then
 		PlaySong "end"
 		PlaySong "maintheme"',true 
 	end if
 
-	if slothmulti = 2 and modename = "" then
-		PlaySong "end"
-		PlaySong "slothmulti"', true 
-	end if
+	'if slothmulti = 2 and modename = "" then
+		'PlaySong "end"
+		'PlaySong "slothmulti"', true 
+	'end if
 
-	if SLS(41,1) >1 and modename = "" then
-		PlaySong "end"
-		PlaySong "data" ', true
-	end if
+	'if SLS(41,1) >1 and modename = "" then
+	'	PlaySong "end"
+	'	PlaySong "data" ', true
+	'end if
 
 	if modename = "boulder" then 
 		PlaySong "end"
@@ -4081,7 +4279,7 @@ sub restartmusic_Timer()
 
 	if modename = "trapmulti" then
 		PlaySong "end"
-		PlaySong "multiball"', true 
+		PlaySong "slothmulti"', true 
 	end if
 
 
@@ -4210,7 +4408,7 @@ sub kicker7_hit()
 	Stopsound"rattle3"
 	'SND TEST
 	'playsound "boneright",1,0.6
-	playsound "boneright", 1, 0.3 * BackGlassVolumeDial
+	'playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 	ShakerOrgan
 	'SND TEST
 	'playsound "rattle2",1,0.5
@@ -4972,13 +5170,16 @@ sub target10_hit()
 	DTHit 10
 end Sub
 
+Dim OrganCooldown : OrganCooldown = false
 sub target10_code()
 	ShadowT10.visible=False
 	DMDflash=1
 	Lookout=192
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1,0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1,0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	
+
 	ShakerArms
 
 '	debug.print "DT10 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5007,7 +5208,15 @@ sub target10_code()
 		organhitsleft = organhitsleft - 1
 		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5054,7 +5263,7 @@ sub target11_code()
 	Lookout=205
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT11 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5085,9 +5294,17 @@ sub target11_code()
 		'if modename = "" then
 	else
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5132,7 +5349,7 @@ sub target12_code()
 	Lookout=225
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT12 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5166,9 +5383,17 @@ sub target12_code()
 		'	if modename = "" then
 	else
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5215,7 +5440,7 @@ sub target13_code()
 
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT13 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5248,9 +5473,17 @@ sub target13_code()
 		'if modename = "" then
 	else
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5296,7 +5529,7 @@ sub target14_code()
 
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT14 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5329,9 +5562,17 @@ sub target14_code()
 		'if modename = "" then
 	else
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 
@@ -5379,7 +5620,7 @@ sub target15_code()
 
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT15 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5419,9 +5660,17 @@ sub target15_code()
 		'bulb19.state = bulbblink
 		'flasheroff.set true , 500
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5466,7 +5715,7 @@ sub target16_code()
 	Lookout=128
 	'SND TEST
 	'If int(Rnd(1)*7)=1 Then playsound "bonewrong",1,0.1 Else playsound "rattle2",1,0.08
-	If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
+	'If int(Rnd(1)*7)=1 Then playsound "bonewrong", 1, 0.2 * BackGlassVolumeDial Else playsound "rattle2", 1, 0.2 * BackGlassVolumeDial
 	ShakerArms
 
 '	debug.print "DT16 modename=" & modename & "  organhitsleft=" & organhitsleft
@@ -5507,9 +5756,17 @@ sub target16_code()
 		'bulb19.state = bulbblink
 		'flasheroff.set true , 500
 		organhitsleft = organhitsleft - 1
-		if organhitsleft = 0 and mapModeIdx < 5  then 
+		if organhitsleft = 0 and mapModeIdx < 5 then 
 			startmap
+			stopsound "bonewrong"
+			playsound "boneright", 1, 0.3 * BackGlassVolumeDial
 			exit sub
+		else
+			If OrganCooldown = false then
+				playsound "bonewrong", 1,0.2 * BackGlassVolumeDial,,0.5
+				OrganCooldown = true
+				vpmtimer.addtimer 1000, "OrganCooldown = false '"
+			End if
 		end if
 
 		if scoreupdate = true then
@@ -5837,7 +6094,7 @@ Sub Popup1_Timer
 		Case 1: popup1.IsDropped = 0: Popup.TransY = 0
 		Case 3: popup1.IsDropped = 1: Popup.TransY = -25: PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
 		Case 4: popup1.IsDropped = 0: Popup.TransY = 0
-		Case 6: popup1.IsDropped = 1: Popup.TransY = -25: PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
+		Case 6: popup1.IsDropped = 1: Popup.TransY = -100: PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
 		Case 7: popup1.IsDropped = 0: Popup.TransY = 0: PopupCount=0: Popup1.TimerEnabled = False
 	End Select
 End Sub
@@ -5939,6 +6196,22 @@ sub kicker1_hit()
 			SLS(41,1) = 0
 			exit sub
 		end if
+
+		for i = 27 to 30
+			if SLS(i,1) > 1 then 
+				SLS(i,1) = 1
+				select case i
+					case 27: dataD = "D"' & chr(46)
+					case 28: dataA = "A"' & chr(47)
+					case 29: dataT = "T"' & chr(48)
+					case 30: dataA2 = "A"' & chr(49)
+				end select
+				exit for
+			end If
+		next
+
+		checkdata
+		Playsound "SFX_mystery-letter-spotted",, 1 * BackGlassVolumeDial
 		kicker1timer.Interval = 1500
 		kicker1timer.Enabled = true ', 1500
 		vpmtimer.addtimer 1000, "SPB1 41,41,6,0,0,1 '"
@@ -5955,6 +6228,7 @@ sub kicker1timer_Timer()
 	kicker1solenoidpulse()
 	SoundSaucerKick 1, Kicker1
 	kicker1timer.Enabled =  false
+	DataSound
 end sub
 
 sub kicker1timer2_Timer()
@@ -5962,6 +6236,7 @@ sub kicker1timer2_Timer()
 	kicker1solenoidpulse()
 	SoundSaucerKick 1, Kicker1
 	kicker1timer.Enabled =  false
+	DataSound
 end sub
 
 sub resettempledisplay_Timer()
@@ -5994,6 +6269,7 @@ Dim RampEBDONE
 '*******************************************************
 'skull ramp
 '*******************************************************
+Dim RecentRampHit : RecentRampHit = false
 sub trigger7_hit()
 
 	SPB1 180,180,1,50,0,1
@@ -6032,6 +6308,13 @@ sub trigger7_hit()
 	end if
 
 	rampsthisball=rampsthisball+1
+	
+	if RecentRampHit then 
+		vpmtimer.AddResetObj "RampSploosh"
+	else
+		vpmtimer.addtimer2 3000, "RecentRampHit = false '","RampSploosh"
+	end if
+	RecentRampHit = true
 
 	rampshots = rampshots + 1
 	neverRampShots = neverRampShots + 1
@@ -6050,6 +6333,7 @@ sub trigger7_hit()
 				flushdmdtimer.Enabled = true ', 1500
 				pupDMDDisplay "default", "5 Ramp Loops^Never Say Die Letter Awarded", "", 3, 0, 20 
 				fDmdSplash3 "5 RAMP LOOPS", "Never Say Die", "Letter Awarded",3000,30
+				Playsound "SFX_evil-skull", 0, 1 * BackGlassVolumeDial
 			'End If
 		Case 15
 			SLS(49,1) = 1
@@ -6063,6 +6347,7 @@ sub trigger7_hit()
 				flushdmdtimer.Enabled = true ', 1500
 				pupDMDDisplay "default", "15 Ramp Loops^Never Say Die Letter Awarded", "", 3, 0, 20 
 				fDmdSplash3 "15 RAMP LOOPS", "Never Say Die", "Letter Awarded",3000,30
+				Playsound "SFX_evil-skull", 0, 1 * BackGlassVolumeDial
 			'End If
 		Case 30
 			SLS(44,1) = 1
@@ -6075,6 +6360,7 @@ sub trigger7_hit()
 				flushdmdtimer.Enabled = true ', 1500
 				pupDMDDisplay "default", "30 Ramp Loops^Never Say Die Letter Awarded", "", 3, 0, 20 
 				fDmdSplash3 "30 RAMP LOOPS", "Never Say Die", "Letter Awarded",3000,30
+				Playsound "SFX_evil-skull", 0, 1 * BackGlassVolumeDial
 			'End If
 	End Select
 	
@@ -6140,9 +6426,31 @@ End Sub
 
 
 Sub Trigger001_Hit
-	'StopSound "fx_PlasticRamp"
-	'Playsound "fx_RampPlasticHit2"
 	WireRampOn True
+End Sub
+
+Sub Trigger001_UnHit
+	if activeball.vely > 0 then WireRampOff
+End Sub
+
+Sub Trigger005_Hit
+	WireRampOn True
+End Sub
+
+Sub Trigger005_UnHit
+	if activeball.vely > 0 then WireRampOff
+End Sub
+
+Sub TriggerRamp_Hit 
+	PuPEvent 806
+	'StopSound "wirerolling"
+	RandomSoundWireRampStop triggerRamp
+	WireRampOn False
+End Sub
+
+Sub TriggerRamp1_Hit
+	WireRampOff
+	RandomSoundWireRampStop TriggerRamp1
 End Sub
 
 
@@ -6160,11 +6468,16 @@ End Sub
 '	end select
 'End Sub
 
+Dim DataSoundCooldown : DataSoundCooldown = false
 Sub Datasound
-	Select case (RandomNumber(2))
-		case 1: PlaySound "boing4", 1, 1 * BackGlassVolumeDial
-		case 2: PlaySound "boing6", 1, 1 * BackGlassVolumeDial
-	end select
+	if not DataSoundCooldown Then
+		Select case (RandomNumber(2))
+			case 1: PlaySound "boing4", 1, 1 * BackGlassVolumeDial,,0.25
+			case 2: PlaySound "boing6", 1, 1 * BackGlassVolumeDial,,0.25
+		end select
+		DataSoundCooldown = true
+		vpmTimer.AddTimer 1000,"DataSoundCooldown = false '"
+	end if
 End Sub
 
 ' Data D Target
@@ -6324,6 +6637,13 @@ end sub
 'Sloth 2x scoring
 '*******************************************************************************
 
+sub SlothSound()
+	Select case (RandomNumber(2))
+		case 1: PlaySound "SFX_chain-pull-1", 0, 1 * BackGlassVolumeDial,,0.25,,1
+		case 2: PlaySound "SFX_chain-pull-2", 0, 1 * BackGlassVolumeDial,,0.25,,1
+	end select
+end sub
+
 ' Sloth S target
 sub target1_hit()
 	STHit 1
@@ -6337,12 +6657,7 @@ sub target1_code()
 	DOF 127, DOFPulse
 	SPB1 31,35,2,0,0,1
 
-	Select case (RandomNumber(4))
-		case 1: PlaySound "sloth_laugh1", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "sloth_laugh2", 0, 1 * BackGlassVolumeDial
-		case 3: PlaySound "sloth_laugh3", 0, 1 * BackGlassVolumeDial
-		case 4: PlaySound "slothsloth", 0, 1 * BackGlassVolumeDial
-	end select
+	SlothSound()
 
 
 	if modename = "wizard" Then
@@ -6384,12 +6699,7 @@ sub target2_code()
 	DOF 127, DOFPulse
 	SPB1 31,35,2,0,0,1
 
-	Select case (RandomNumber(4))
-		case 1: PlaySound "sloth_laugh1", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "sloth_laugh2", 0, 1 * BackGlassVolumeDial
-		case 3: PlaySound "sloth_laugh3", 0, 1 * BackGlassVolumeDial
-		case 4: PlaySound "slothsloth", 0, 1 * BackGlassVolumeDial
-	end select
+	SlothSound()
 
 	if modename = "wizard" Then
 		addscore(SlothTargetWizardValue )
@@ -6430,12 +6740,7 @@ sub target3_code()
 	SPB1 31,35,2,0,0,1
 
 
-	Select case (RandomNumber(4))
-		case 1: PlaySound "sloth_laugh1", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "sloth_laugh2", 0, 1 * BackGlassVolumeDial
-		case 3: PlaySound "sloth_laugh3", 0, 1 * BackGlassVolumeDial
-		case 4: PlaySound "slothsloth", 0, 1 * BackGlassVolumeDial
-	end select
+	SlothSound()
 
 
 	if modename = "wizard" Then
@@ -6478,12 +6783,7 @@ sub target4_code()
 	SPB1 31,35,2,0,0,1
 
 
-	Select case (RandomNumber(4))
-		case 1: PlaySound "sloth_laugh1", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "sloth_laugh2", 0, 1 * BackGlassVolumeDial
-		case 3: PlaySound "sloth_laugh3", 0, 1 * BackGlassVolumeDial
-		case 4: PlaySound "slothsloth", 0, 1 * BackGlassVolumeDial
-	end select
+	SlothSound()
 
 	if modename = "wizard" Then
 		addscore(SlothTargetWizardValue )
@@ -6523,12 +6823,7 @@ sub target5_code()
 	DOF 127, DOFPulse
 	SPB1 31,35,2,0,0,1
 
-	Select case (RandomNumber(4))
-		case 1: PlaySound "sloth_laugh1", 0, 1 * BackGlassVolumeDial
-		case 2: PlaySound "sloth_laugh2", 0, 1 * BackGlassVolumeDial
-		case 3: PlaySound "sloth_laugh3", 0, 1 * BackGlassVolumeDial
-		case 4: PlaySound "slothsloth", 0, 1 * BackGlassVolumeDial
-	end select
+	SlothSound()
 
 	if modename = "wizard" Then
 		addscore(SlothTargetWizardValue )
@@ -6656,13 +6951,10 @@ Dim slothNever : slothNever = 0
 
 ' Start Sloth Mode
 sub startsloth()
-	if slothNever = 0 then
-		addNever
-		SLS(172,1)=1
-		SPB1 172,172,5,5,0,1
-		slothNever = 1
-		checknever
-	end if 
+	StopSound "SFX_chain-pull-1"
+	StopSound "SFX_chain-pull-2"
+
+	PlaySound "SFX_sloth-chain-pull", 0, 1 * BackGlassVolumeDial,,,,1
 
 	slothtimer.Interval = 60000
 	slothtimer.Enabled = true ', 30000
@@ -6691,7 +6983,17 @@ sub startsloth()
 	SLS(34,1)=1
 	SLS(35,1)=1
 
+	vpmTimer.AddTimer 1500,"SlothLetterCheck '"
+end sub
 
+Sub SlothLetterCheck()
+	if slothNever = 0 then
+		addNever
+		SLS(172,1)=1
+		SPB1 172,172,5,5,0,1
+		slothNever = 1
+		checknever
+	end if 
 end sub
 
 sub slothtimer_Timer()
@@ -7012,6 +7314,7 @@ sub kicker2_hit()
 			scoreupdate = false
 			flushdmdtimer.Interval = 1800
 			flushdmdtimer.Enabled = true ', 2000
+			PlaySound "SFX_mode-jackpot-increased", 0, 1 * BackGlassVolumeDial
 		end if
 
 		if jackpotscore = MaxJackpot(CurrentPlayer) then
@@ -7649,13 +7952,6 @@ Dim mysteryNever : mysteryNever = 0
 
 Dim sillypriority
 Sub startmystery()
-	if mysteryNever = 0 then
-		mysteryNever = 1
-		addNever
-		SLS(170,1)=1
-		SPB1 170,170,5,5,0,1
-		checknever
-	end if
 
 	if modename = "wizard" then
 
@@ -7674,7 +7970,8 @@ Sub startmystery()
 	PupEvent 810
 	if not HasPuP then
 		'PlaySoundAt "databoody", Kicker1
-		playsound "databoody", 0, 1 * BackGlassVolumeDial
+		'playsound "databoody", 0, 1 * BackGlassVolumeDial
+		PlaySound "SFX_mystery-awarded",,1 * BackGlassVolumeDial
 	end if
 	Select case (RandomNumber(8))
 		case 1: mysterymode = "SPY EYES" ' bonus at max DONE
@@ -7714,6 +8011,17 @@ Sub startmystery()
 	dataA = " "
 	dataT = " "
 	dataA2 = " "
+	vpmTimer.AddTimer 3000, "MysteryLetterCheck '"
+end sub
+
+sub MysteryLetterCheck()
+	if mysteryNever = 0 then
+		mysteryNever = 1
+		addNever
+		SLS(170,1)=1
+		SPB1 170,170,5,5,0,1
+		checknever
+	end if
 end sub
 
 
@@ -8656,6 +8964,7 @@ sub updateNeverLetter(idx, value)
 	SLS(130+idx,1)=value
 end Sub
 
+Dim NeverSayDieFanfareCooldown : NeverSayDieFanfareCooldown = false
 ' Enable the next leter in Never Say Die
 sub addNever()
 	GiOff
@@ -8666,6 +8975,11 @@ sub addNever()
     if neverIdx < neverPhraseSize Then
 		updateNeverLetter neverIdx, 1
 		neverIdx = neverIdx + 1
+		if NeverSayDieFanfareCooldown = false then 
+			PlaySound "SFX_never-say-die-letter", 0, 1 * BackGlassVolumeDial
+			NeverSayDieFanfareCooldown = true
+			vpmtimer.addtimer 5500, "NeverSayDieFanfareCooldown = false '"
+		end if
 	end if
 end sub
 
@@ -11269,6 +11583,7 @@ Class Dampener
 		
 		aBall.velx = aBall.velx * coef
 		aBall.vely = aBall.vely * coef
+		aBall.velz = aBall.velz * coef
 		If debugOn Then TBPout.text = str
 	End Sub
 	
@@ -11630,14 +11945,29 @@ End Sub
 '/////////////////////////////  BUMPER SOLENOID SOUNDS  ////////////////////////////
 Sub RandomSoundBumperTop(Bump)
 	PlaySoundAtLevelStatic SoundFX("Bumpers_Top_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+	playsound "rattle4",1,0.25
+	Select case (RandomNumber(2))
+		case 1: PlaySound "SFX_inlane-long", 1, 0.5 * BackGlassVolumeDial,,0.25
+		case 2: PlaySound "SFX_inlane-short", 1, 0.5 * BackGlassVolumeDial,,0.25
+	end select
 End Sub
 
 Sub RandomSoundBumperMiddle(Bump)
 	PlaySoundAtLevelStatic SoundFX("Bumpers_Middle_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+	playsound "rattle4",1,0.25
+	Select case (RandomNumber(2))
+		case 1: PlaySound "SFX_inlane-long", 1, 0.5 * BackGlassVolumeDial,,0.25
+		case 2: PlaySound "SFX_inlane-short", 1, 0.5 * BackGlassVolumeDial,,0.25
+	end select
 End Sub
 
 Sub RandomSoundBumperBottom(Bump)
 	PlaySoundAtLevelStatic SoundFX("Bumpers_Bottom_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+	playsound "rattle4",1,0.25
+	Select case (RandomNumber(2))
+		case 1: PlaySound "SFX_inlane-long", 1, 0.5 * BackGlassVolumeDial,,0.25
+		case 2: PlaySound "SFX_inlane-short", 1, 0.5 * BackGlassVolumeDial,,0.25
+	end select
 End Sub
 
 '/////////////////////////////  SPINNER SOUNDS  ////////////////////////////
@@ -12069,7 +12399,7 @@ End Sub
 '******************************************************
 
 Const tnob = 10 ' total number of balls
-Const lob = 3 ' number of enclosed balls
+Const lob = 0 ' number of enclosed balls
 ReDim rolling(tnob)
 InitRolling
 
@@ -12092,9 +12422,6 @@ Sub RollingUpdate()
 
 	' stop the sound of deleted balls
 	For b = UBound(BOT) + 1 to tnob
-		' LINUX/VPXS STANDALONE FIX: BallShadowA0-A10 flasher objects don't exist on
-		' this table build (see Part C notes below); guarded out to prevent crash.
-		' If AmbientBallShadowOn = 0 Then BallShadowA(b).visible = 0
 		rolling(b) = False
 		StopSound("BallRoll_" & b)
 	Next
@@ -12137,21 +12464,6 @@ Sub RollingUpdate()
 			DropCount(b) = DropCount(b) + 1
 		End If
 
-		' "Static" Ball Shadows
-		' LINUX/VPXS STANDALONE FIX: BallShadowA0-A10 flasher objects don't exist on
-		' this table build, so this whole block is guarded out to prevent a runtime
-		' crash. The table still has real BallShadow0-9 primitives (used by
-		' DynamicBSUpdate's AmbientBallShadowOn=1 mode), just not the flasher variant.
-		' If AmbientBallShadowOn = 0 Then
-		' 	If BOT(b).Z > 30 Then
-		' 		BallShadowA(b).height=BOT(b).z - BallSize/4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping
-		' 	Else
-		' 		BallShadowA(b).height=BOT(b).z - BallSize/2 + 5
-		' 	End If
-		' 	BallShadowA(b).Y = BOT(b).Y + Ballsize/5 + fovY
-		' 	BallShadowA(b).X = BOT(b).X
-		' 	BallShadowA(b).visible = 1
-		' End If
 	Next
 End Sub
 
@@ -12295,7 +12607,7 @@ Sub UpdateLights
 
 	FadeL 1  : SetL ShootAgainLight,17 : SetL ShootAgainLightb,10 : Setp2 P1,1 : SetP2 P1off,.1			'
 	FadeL 2  : SetL Light2,20 : SetL Light2b,6															' marbles ( not used so set to always on can blink )
-	FadeL 3  : Primitive245.blenddisablelighting=0.1+(i/15)+NewsignLights/4 : SetL LSkull01,9 : SetL LSkull001,4																' skull 
+	FadeL 3  : Primitive245.blenddisablelighting=0.35+(i/15)+NewsignLights/4 : SetL LSkull01,9 : SetL LSkull001,4																' skull 
 	FadeL 43 : SetL Light43,0.4 : SetL Light43b,0.6 : SetP2 p43,1 : Setp2 p43off,1	' translate 
 	FadeL 47 : SetL Light47,0.3 : SetL Light47b,0.6 : SetL Light006,7.5 : SetP2 p47,1 : Setp2 p47off,1		' fratellis
 
@@ -12565,14 +12877,6 @@ Dim SkullImageNumber
 Dim SkullLight
 SetSkullColor "white"
 
-
-	If LUTset=16 OR LUTset=17 Then
-		ramp_A.material = "InsertDarkBlueOnTri"
-		ramp_B.material = "InsertDarkBlueOnTri"
-	Else
-		ramp_A.material = "colormaxnoreflection3quarter"
-		ramp_B.material = "colormaxnoreflection3quarter"
-	End If
 
 Sub SetSkullColor(cola)
 
@@ -12896,7 +13200,7 @@ End Sub
 dim lastgametime : lastgametime = 0
 
 Sub FrameTimer_Timer
-	If DynamicBallShadowsOn Or AmbientBallShadowOn Then DynamicBSUpdate 'update ball shadows
+	BSUpdate
 	Primitive013.RotZ = LeftFlipper.currentangle-123
 	Primitive014.RotZ = RightFlipper.currentangle-118
 
@@ -13226,284 +13530,56 @@ Sub Divertertimer_timer
 	DiverterOpenOrClose
 End Sub
 
-
 '***************************************************************
-'****  VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
+'* ZSHD : Ball shadows
 '***************************************************************
+' For dynamic ball shadows, Check the "Raytraced ball shadows" box for the specific light. 
+' Also make sure the light's z position is around 25 (mid ball)
 
-'****** INSTRUCTIONS please read ******
+'Ambient (Room light source)
+Const AmbientBSFactor = 0.9    '0 To 1, higher is darker
+Const AmbientMovement = 1	   '1+ higher means more movement as the ball moves left and right
+Const offsetX = 0			   'Offset x position under ball (These are if you want to change where the "room" light is for calculating the shadow position,)
+Const offsetY = 0			   'Offset y position under ball (^^for example 5,5 if the light is in the back left corner)
 
-'****** Part A:  Table Elements ******
-'
-' Import the "bsrtx7" and "ballshadow" images
-' Import the shadow materials file (3 sets included) (you can also export the 3 sets from this table to create the same file)
-' Copy in the BallShadowA flasher set and the sets of primitives named BallShadow#, RtxBallShadow#, and RtxBall2Shadow#
-'	* with at least as many objects each as there can be balls, including locked balls
-' Ensure you have a timer with a -1 interval that is always running
+' *** Trim or extend these to match the number of balls/primitives/flashers on the table!  (will throw errors if there aren't enough objects)
+Dim objBallShadow(9)
 
-' Create a collection called DynamicSources that includes all light sources you want to cast ball shadows
-'***These must be organized in order, so that lights that intersect on the table are adjacent in the collection***
-'
-' This is because the code will only project two shadows if they are coming from lights that are consecutive in the collection
-' The easiest way to keep track of this is to start with the group on the left slingshot and move clockwise around the table
-'	For example, if you use 6 lights: A & B on the left slingshot and C & D on the right, with E near A&B and F next to C&D, your collection would look like EBACDF
-'
-'																E
-'	A		 C													B
-'	 B		D			your collection should look like		A		because E&B, B&A, etc. intersect; but B&D or E&F do not
-'  E		  F													C
-'																D
-'																F
-'
-'****** End Part A:  Table Elements ******
+'Initialization
+BSInit
 
-
-'****** Part B:  Code and Functions ******
-
-' *** Timer sub
-' The "DynamicBSUpdate" sub should be called by a timer with an interval of -1 (framerate)
-'Sub FrameTimer_Timer()
-'	If DynamicBallShadowsOn Or AmbientBallShadowOn Then DynamicBSUpdate 'update ball shadows
-'End Sub
-
-' *** These are usually defined elsewhere (ballrolling), but activate here if necessary
-'Const tnob = 10 ' total number of balls
-'Const lob = 0	'locked balls on start; might need some fiddling depending on how your locked balls are done'
-'Dim tablewidth: tablewidth = Table1.width
-'Dim tableheight: tableheight = Table1.height
-
-' *** User Options - Uncomment here or move to top
-'----- Shadow Options -----
-'Const DynamicBallShadowsOn = 1		'0 = no dynamic ball shadow ("triangles" near slings and such), 1 = enable dynamic ball shadow
-'Const AmbientBallShadowOn = 1		'0 = Static shadow under ball ("flasher" image, like JP's)
-'									'1 = Moving ball shadow ("primitive" object, like ninuzzu's)
-'									'2 = flasher image shadow, but it moves like ninuzzu's
-Const fovY					= 0		'Offset y position under ball to account for layback or inclination (more pronounced need further back)
-Const DynamicBSFactor 		= 0.95	'0 to 1, higher is darker
-Const AmbientBSFactor 		= 0.7	'0 to 1, higher is darker
-Const AmbientMovement		= 2		'1 to 4, higher means more movement as the ball moves left and right
-Const Wideness				= 20	'Sets how wide the dynamic ball shadows can get (20 +5 thinness should be most realistic for a 50 unit ball)
-Const Thinness				= 5		'Sets minimum as ball moves away from source
-
-
-' *** This segment goes within the RollingUpdate sub, so that if Ambient...=0 and Dynamic...=0 the entire DynamicBSUpdate sub can be skipped for max performance
-'	' stop the sound of deleted balls
-'	For b = UBound(BOT) + 1 to tnob
-'		If AmbientBallShadowOn = 0 Then BallShadowA(b).visible = 0
-'		rolling(b) = False
-'		StopSound("BallRoll_" & b)
-'	Next
-'		' "Static" Ball Shadows
-'		If AmbientBallShadowOn = 0 Then
-'			If BOT(b).Z > 30 Then
-'				BallShadowA(b).height=BOT(b).z - BallSize/4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping
-'			Else
-'				BallShadowA(b).height=BOT(b).z - BallSize/2 + 5
-'			End If
-'			BallShadowA(b).Y = BOT(b).Y + Ballsize/5 + fovY
-'			BallShadowA(b).X = BOT(b).X
-'			BallShadowA(b).visible = 1
-'		End If
-
-' *** Required Functions, enable these if they are not already present elswhere in your table
-Function DistanceFast(x, y)
-	dim ratio, ax, ay
-	ax = abs(x)					'Get absolute value of each vector
-	ay = abs(y)
-	ratio = 1 / max(ax, ay)		'Create a ratio
-	ratio = ratio * (1.29289 - (ax + ay) * ratio * 0.29289)
-	if ratio > 0 then			'Quickly determine if it's worth using
-		DistanceFast = 1/ratio
-	Else
-		DistanceFast = 0
-	End if
-end Function
-
-
-'****** End Part B:  Code and Functions ******
-
-
-'****** Part C:  The Magic ******
-Dim sourcenames, currentShadowCount
-sourcenames = Array ("","","","","","","","","","","","")
-currentShadowCount = Array (0,0,0,0,0,0,0,0,0,0,0,0)
-
-' *** Trim or extend these to match the number of balls/primitives/flashers on the table!
-dim objrtx1(10), objrtx2(10)
-dim objBallShadow(10)
-' LINUX/VPXS STANDALONE FIX: none of the BallShadowA0-A10 flasher objects this table's
-' dynamic ambient-shadow system expects exist on this build (nor do RtxBallShadow0-10 /
-' RtxBall2Shadow0-10, which DynamicBSInit below also references via Eval; only the plain
-' BallShadow0-9 primitives are present). The comment above ("Copy in the BallShadowA
-' flasher set...") suggests this feature was never finished for this table export.
-' BallShadowA compile-time array and its runtime init are both disabled below rather
-' than patched piecemeal, since three separate object families in this one routine are
-' missing. Regular ball shadows from the BallShadow0-9 primitives are unaffected.
-' Dim BallShadowA
-' BallShadowA = Array (BallShadowA0,BallShadowA1,BallShadowA2,BallShadowA3,BallShadowA4,BallShadowA5,BallShadowA6,BallShadowA7,BallShadowA8,BallShadowA9,BallShadowA10)
-
-' DynamicBSInit
-
-sub DynamicBSInit()
+Sub BSInit()
 	Dim iii
-
-	for iii = 0 to tnob - 1								'Prepares the shadow objects before play begins
-		Set objrtx1(iii) = Eval("RtxBallShadow" & iii)
-		objrtx1(iii).material = "RtxBallShadow" & iii
-		objrtx1(iii).z = iii/1000 + 0.01
-		objrtx1(iii).visible = 0
-
-		Set objrtx2(iii) = Eval("RtxBall2Shadow" & iii)
-		objrtx2(iii).material = "RtxBallShadow2_" & iii
-		objrtx2(iii).z = (iii)/1000 + 0.02
-		objrtx2(iii).visible = 0
-
-		currentShadowCount(iii) = 0
-
+	'Prepare the shadow objects before play begins
+	For iii = 0 To tnob - 1
 		Set objBallShadow(iii) = Eval("BallShadow" & iii)
 		objBallShadow(iii).material = "BallShadow" & iii
 		UpdateMaterial objBallShadow(iii).material,1,0,0,0,0,0,AmbientBSFactor,RGB(0,0,0),0,0,False,True,0,0,0,0
-		objBallShadow(iii).Z = iii/1000 + 0.04
+		objBallShadow(iii).Z = 3 + iii / 1000
 		objBallShadow(iii).visible = 0
-
-		BallShadowA(iii).Opacity = 100*AmbientBSFactor
-		BallShadowA(iii).visible = 0
 	Next
-end sub
+End Sub
 
 
-Sub DynamicBSUpdate
-	Dim falloff:	falloff = 150			'Max distance to light sources, can be changed if you have a reason
-	Dim ShadowOpacity, ShadowOpacity2 
-	Dim s, Source, LSd, currentMat, AnotherSource, BOT
-	BOT = GetBalls
+Sub BSUpdate
+	Dim BOT: BOT = getballs
+	Dim s: For s = lob To UBound(BOT)
+		' *** Normal "ambient light" ball shadow
+		
+		'Primitive shadow on playfield, flasher shadow in ramps
+		'** If on main and upper pf
+		If BOT(s).Z > 20 And BOT(s).Z < 30 Then
+			objBallShadow(s).visible = 1
+			objBallShadow(s).X = BOT(s).X + (BOT(s).X - (tablewidth / 2)) / (Ballsize / AmbientMovement) + offsetX
+			objBallShadow(s).Y = BOT(s).Y + offsetY
+			'objBallShadow(s).Z = BOT(s).Z + s/1000 + 1.04 - 25	
 
-	'Hide shadow of deleted balls
-	For s = UBound(BOT) + 1 to tnob - 1
-		objrtx1(s).visible = 0
-		objrtx2(s).visible = 0
-		objBallShadow(s).visible = 0
-		BallShadowA(s).visible = 0
-	Next
-
-	If UBound(BOT) < lob Then Exit Sub		'No balls in play, exit
-
-'The Magic happens now
-	For s = lob to UBound(BOT)
-
-' *** Normal "ambient light" ball shadow
-	'Layered from top to bottom. If you had an upper pf at for example 80 and ramps even above that, your segments would be z>110; z<=110 And z>100; z<=100 And z>30; z<=30 And z>20; Else invisible
-
-		If AmbientBallShadowOn = 1 Then			'Primitive shadow on playfield, flasher shadow in ramps
-			If BOT(s).Z > 30 Then							'The flasher follows the ball up ramps while the primitive is on the pf
-				If BOT(s).X < tablewidth/2 Then
-					objBallShadow(s).X = ((BOT(s).X) - (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) + 5
-				Else
-					objBallShadow(s).X = ((BOT(s).X) + (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) - 5
-				End If
-				objBallShadow(s).Y = BOT(s).Y + BallSize/10 + fovY
-				objBallShadow(s).visible = 1
-
-				BallShadowA(s).X = BOT(s).X
-				BallShadowA(s).Y = BOT(s).Y + BallSize/5 + fovY
-				BallShadowA(s).height=BOT(s).z - BallSize/4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping
-				BallShadowA(s).visible = 1
-			Elseif BOT(s).Z <= 30 And BOT(s).Z > 20 Then	'On pf, primitive only
-				objBallShadow(s).visible = 1
-				If BOT(s).X < tablewidth/2 Then
-					objBallShadow(s).X = ((BOT(s).X) - (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) + 5
-				Else
-					objBallShadow(s).X = ((BOT(s).X) + (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) - 5
-				End If
-				objBallShadow(s).Y = BOT(s).Y + fovY
-				BallShadowA(s).visible = 0
-			Else											'Under pf, no shadows
-				objBallShadow(s).visible = 0
-				BallShadowA(s).visible = 0
-			end if
-
-		Elseif AmbientBallShadowOn = 2 Then		'Flasher shadow everywhere
-			If BOT(s).Z > 30 Then							'In a ramp
-				BallShadowA(s).X = BOT(s).X
-				BallShadowA(s).Y = BOT(s).Y + BallSize/5 + fovY
-				BallShadowA(s).height=BOT(s).z - BallSize/4		'This is technically 1/4 of the ball "above" the ramp, but it keeps it from clipping
-				BallShadowA(s).visible = 1
-			Elseif BOT(s).Z <= 30 And BOT(s).Z > 20 Then	'On pf
-				BallShadowA(s).visible = 1
-				If BOT(s).X < tablewidth/2 Then
-					BallShadowA(s).X = ((BOT(s).X) - (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) + 5
-				Else
-					BallShadowA(s).X = ((BOT(s).X) + (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/(Ballsize/AmbientMovement))) - 5
-				End If
-				BallShadowA(s).Y = BOT(s).Y + Ballsize/10 + fovY
-				BallShadowA(s).height=BOT(s).z - BallSize/2 + 5
-			Else											'Under pf
-				BallShadowA(s).visible = 0
-			End If
-		End If
-
-' *** Dynamic shadows
-		If DynamicBallShadowsOn Then
-			If BOT(s).Z < 30 Then 'And BOT(s).Y < (TableHeight - 200) Then 'Or BOT(s).Z > 105 Then		'Defining when and where (on the table) you can have dynamic shadows
-				For Each Source in DynamicSources
-					LSd=DistanceFast((BOT(s).x-Source.x),(BOT(s).y-Source.y))	'Calculating the Linear distance to the Source
-					If LSd < falloff and Source.state=1 Then	    			'If the ball is within the falloff range of a light and light is on
-						currentShadowCount(s) = currentShadowCount(s) + 1		'Within range of 1 or 2
-						if currentShadowCount(s) = 1 Then						'1 dynamic shadow source
-							sourcenames(s) = source.name
-							currentMat = objrtx1(s).material
-							objrtx2(s).visible = 0 : objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
-	'						objrtx1(s).Z = BOT(s).Z - 25 + s/1000 + 0.01						'Uncomment if you want to add shadows to an upper/lower pf
-							objrtx1(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
-							ShadowOpacity = (falloff-LSd)/falloff									'Sets opacity/darkness of shadow by distance to light
-							objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness						'Scales shape of shadow with distance/opacity
-							UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^2,RGB(0,0,0),0,0,False,True,0,0,0,0
-							If AmbientBallShadowOn = 1 Then
-								currentMat = objBallShadow(s).material									'Brightens the ambient primitive when it's close to a light
-								UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-ShadowOpacity),RGB(0,0,0),0,0,False,True,0,0,0,0
-							Else
-								BallShadowA(s).Opacity = 100*AmbientBSFactor*(1-ShadowOpacity)
-							End If
-
-						Elseif currentShadowCount(s) = 2 Then
-																	'Same logic as 1 shadow, but twice
-							currentMat = objrtx1(s).material
-							set AnotherSource = Eval(sourcenames(s))
-							objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
-	'						objrtx1(s).Z = BOT(s).Z - 25 + s/1000 + 0.01							'Uncomment if you want to add shadows to an upper/lower pf
-							objrtx1(s).rotz = AnglePP(AnotherSource.x, AnotherSource.y, BOT(s).X, BOT(s).Y) + 90
-							ShadowOpacity = (falloff-(((BOT(s).x-AnotherSource.x)^2+(BOT(s).y-AnotherSource.y)^2)^0.5))/falloff
-							objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness
-							UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
-
-							currentMat = objrtx2(s).material
-							objrtx2(s).visible = 1 : objrtx2(s).X = BOT(s).X : objrtx2(s).Y = BOT(s).Y + fovY
-	'						objrtx2(s).Z = BOT(s).Z - 25 + s/1000 + 0.02							'Uncomment if you want to add shadows to an upper/lower pf
-							objrtx2(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
-							ShadowOpacity2 = (falloff-LSd)/falloff
-							objrtx2(s).size_y = Wideness*ShadowOpacity2+Thinness
-							UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity2*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
-							If AmbientBallShadowOn = 1 Then
-								currentMat = objBallShadow(s).material									'Brightens the ambient primitive when it's close to a light
-								UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-max(ShadowOpacity,ShadowOpacity2)),RGB(0,0,0),0,0,False,True,0,0,0,0
-							Else
-								BallShadowA(s).Opacity = 100*AmbientBSFactor*(1-max(ShadowOpacity,ShadowOpacity2))
-							End If
-						end if
-					Else
-						currentShadowCount(s) = 0
-						BallShadowA(s).Opacity = 100*AmbientBSFactor
-					End If
-				Next
-			Else									'Hide dynamic shadows everywhere else
-				objrtx2(s).visible = 0 : objrtx1(s).visible = 0
-			End If
+		'** No shadow if ball is off the main playfield (this may need to be adjusted per table)
+		Else
+			objBallShadow(s).visible = 0
 		End If
 	Next
 End Sub
-'****************************************************************
-'****  END VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
-'****************************************************************
 
 
 Dim SkeletonCoin
@@ -13536,7 +13612,7 @@ End Sub
 
 Sub SkeletonHeadTimer_Timer
     organpart001.TransZ = SkeletonHead
-    If SkeletonHead = 0 Then SkeletonHeadTimer.Enabled = False : playsound "rattle4",1,0.25 : Exit Sub
+    If SkeletonHead = 0 Then SkeletonHeadTimer.Enabled = False : Exit Sub
     If SkeletonHead < 0 Then
         SkeletonHead = ABS(SkeletonHead) - 1
     Else
@@ -13680,7 +13756,6 @@ Sub Trigger003_hit
 	SPB1 125,127,5,0,0,1
 
 	playeruptimer.enabled=False
-
 End Sub
 
 Dim SkeletonArms
@@ -14089,7 +14164,7 @@ Sub Lightshow
 		SPB1 175,175,1,10,0,1
 
 		Case 4 :
-		If int(rnd(1)*2)=1 Then : GiOn : vpmtimer.addtimer 140,	"GIoff '"
+		'If int(rnd(1)*2)=1 Then : GiOn : vpmtimer.addtimer 140,	"GIoff '"
 		SPB1 152,152,3+Int(Rnd(1)*3),0,0,1
 		SPB1 19,16,2,16,0,1
 		vpmtimer.addtimer 200,	"SPB1 130,140,2,0,0,1 : SPB1 62,57,2,0,0,1 '"
@@ -14119,7 +14194,7 @@ End Sub
 ' 					LUT
 '******************************************************
 
-Dim LUTset
+
 
 Sub SetLUT  'AXS
 	If LUTset=16 OR LUTset=17 Then
@@ -14549,11 +14624,7 @@ Function DTAnimate(primary, secondary, prim, switch, animate)
 			prim.transz =  - DTDropUnits
 			secondary.collidable = 0
 			DTArray(ind).isDropped = True 'Mark target as dropped
-			If UsingROM Then
-				controller.Switch(Switchid) = 1
-			Else
-				DTAction switchid
-			End If
+			DTAction switchid
 			primary.uservalue = 0
 			DTAnimate = 0
 			Exit Function
@@ -14609,7 +14680,6 @@ Function DTAnimate(primary, secondary, prim, switch, animate)
 		primary.collidable = 0
 		secondary.collidable = 1
 		DTArray(ind).isDropped = False 'Mark target as not dropped
-		If UsingROM Then controller.Switch(Switchid) = 0
 	End If
 	
 	If animate =  - 2 And animtime > DTRaiseDelay Then
@@ -14856,11 +14926,7 @@ Function STAnimate(primary, prim, switch,  animate)
 	If animate = 1 Then
 		primary.collidable = 0
 		prim.transy =  - STMaxOffset
-		If UsingROM Then
-			vpmTimer.PulseSw switch
-		Else
-			STAction switch
-		End If
+		STAction switch
 		STAnimate = 2
 		Exit Function
 	ElseIf animate = 2 Then
@@ -14912,4 +14978,170 @@ End Sub
 '****   END STAND-UP TARGETS
 '******************************************************
 
+'vr bg animations
 
+dim vran1st: vran1st = 1
+
+Sub vrBGAn1_timer()
+
+	Select Case vran1st
+
+		Case 1: VRBG1.visible = 1:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 2: VRBG2.visible = 0:VRBG2.visible = 1:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 3: VRBG3.visible = 0:VRBG2.visible = 0:VRBG3.visible = 1:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 4: VRBG4.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 1:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 5: VRBG5.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 1:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 6: VRBG6.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 1:VRBG7.visible = 0
+
+		Case 7: VRBG7.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 1
+
+		Case 8: VRBG6.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 1:VRBG7.visible = 0
+
+		Case 9: VRBG5.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 1:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 10: VRBG4.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 1:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 11: VRBG3.visible = 0:VRBG2.visible = 0:VRBG3.visible = 1:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 12: VRBG2.visible = 0:VRBG2.visible = 1:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 13: VRBG1.visible = 1:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 14: VRBG1.visible = 0:VRBG2.visible = 1:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 15: VRBG1.visible = 0:VRBG2.visible = 0:VRBG3.visible = 1:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 16: VRBG1.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 1:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 17: VRBG1.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 1:VRBG6.visible = 0:VRBG7.visible = 0
+
+		Case 18: VRBG1.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 1:VRBG7.visible = 0
+
+		Case 19: VRBG1.visible = 0:VRBG2.visible = 0:VRBG3.visible = 0:VRBG4.visible = 0:VRBG5.visible = 0:VRBG6.visible = 0:VRBG7.visible = 1
+
+	End Select
+
+	vran1st = vran1st + 1
+	
+	if vran1st = 20 Then
+
+		vran1st = 1
+
+
+	end If
+end sub
+
+dim vran2nd: vran2nd = 1
+
+Sub vrBGAn2_timer()
+
+	Select Case vran2nd
+
+		Case 1: VRBGkey20.visible = 1:VRBGkey40.visible = 0:VRBGkey60.visible = 0:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+		Case 21: VRBGkey20.visible = 0:VRBGkey40.visible = 1:VRBGkey60.visible = 0:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+		Case 22: VRBGkey20.visible = 0:VRBGkey40.visible = 0:VRBGkey60.visible = 1:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+		Case 23: VRBGkey20.visible = 0:VRBGkey40.visible = 0:VRBGkey60.visible = 0:VRBGkey80.visible = 1:VRBGkey100.visible = 0
+
+		Case 24: VRBGkey20.visible = 0:VRBGkey40.visible = 0:VRBGkey60.visible = 0:VRBGkey80.visible = 0:VRBGkey100.visible = 1
+
+		Case 104: VRBGkey20.visible = 0:VRBGkey40.visible = 0:VRBGkey60.visible = 0:VRBGkey80.visible = 1:VRBGkey100.visible = 0
+
+		Case 105: VRBGkey20.visible = 0:VRBGkey40.visible = 0:VRBGkey60.visible = 1:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+		Case 106: VRBGkey20.visible = 0:VRBGkey40.visible = 1:VRBGkey60.visible = 0:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+		Case 107: VRBGkey20.visible = 1:VRBGkey40.visible = 0:VRBGkey60.visible = 0:VRBGkey80.visible = 0:VRBGkey100.visible = 0
+
+	End Select
+
+	vran2nd = vran2nd + 1
+	
+	if vran2nd = 125 Then
+
+		vran2nd = 1
+
+
+	end If
+end sub
+
+dim vran3rd: vran3rd = 1
+
+Sub vrBGAn3_timer()
+
+	Select Case vran3rd
+
+		Case 1: VRBGship20.visible = 1:VRBGship40.visible = 0:VRBGship60.visible = 0:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+		Case 15: VRBGship20.visible = 0:VRBGship40.visible = 1:VRBGship60.visible = 0:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+		Case 16: VRBGship20.visible = 0:VRBGship40.visible = 0:VRBGship60.visible = 1:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+		Case 17: VRBGship20.visible = 0:VRBGship40.visible = 0:VRBGship60.visible = 0:VRBGship80.visible = 1:VRBGship100.visible = 0
+
+		Case 18: VRBGship20.visible = 0:VRBGship40.visible = 0:VRBGship60.visible = 0:VRBGship80.visible = 0:VRBGship100.visible = 1
+
+		Case 88: VRBGship20.visible = 0:VRBGship40.visible = 0:VRBGship60.visible = 0:VRBGship80.visible = 1:VRBGship100.visible = 0
+
+		Case 89: VRBGship20.visible = 0:VRBGship40.visible = 0:VRBGship60.visible = 1:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+		Case 90: VRBGship20.visible = 0:VRBGship40.visible = 1:VRBGship60.visible = 0:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+		Case 91: VRBGship20.visible = 1:VRBGship40.visible = 0:VRBGship60.visible = 0:VRBGship80.visible = 0:VRBGship100.visible = 0
+
+
+	End Select
+
+	vran3rd = vran3rd + 1
+	
+	if vran3rd = 125 Then
+
+		vran3rd = 1
+
+
+	end If
+end sub
+
+dim vran4th: vran4th = 1
+
+Sub vrBGAn4_timer()
+
+	Select Case vran4th
+
+		Case 1: VRBGwilly20.visible = 1:VRBGwilly40.visible = 0:VRBGwilly60.visible = 0:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+		Case 11: VRBGwilly20.visible = 0:VRBGwilly40.visible = 1:VRBGwilly60.visible = 0:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+		Case 12: VRBGwilly20.visible = 0:VRBGwilly40.visible = 0:VRBGwilly60.visible = 1:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+		Case 13: VRBGwilly20.visible = 0:VRBGwilly40.visible = 0:VRBGwilly60.visible = 0:VRBGwilly80.visible = 1:VRBGwilly100.visible = 0
+
+		Case 14: VRBGwilly20.visible = 0:VRBGwilly40.visible = 0:VRBGwilly60.visible = 0:VRBGwilly80.visible = 0:VRBGwilly100.visible = 1
+
+		Case 94: VRBGwilly20.visible = 0:VRBGwilly40.visible = 0:VRBGwilly60.visible = 0:VRBGwilly80.visible = 1:VRBGwilly100.visible = 0
+
+		Case 95: VRBGwilly20.visible = 0:VRBGwilly40.visible = 0:VRBGwilly60.visible = 1:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+		Case 96: VRBGwilly20.visible = 0:VRBGwilly40.visible = 1:VRBGwilly60.visible = 0:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+		Case 97: VRBGwilly20.visible = 1:VRBGwilly40.visible = 0:VRBGwilly60.visible = 0:VRBGwilly80.visible = 0:VRBGwilly100.visible = 0
+
+
+	End Select
+
+	vran4th = vran4th + 1
+	
+	if vran4th = 125 Then
+
+		vran4th = 1
+
+
+	end If
+end sub
