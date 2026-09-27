@@ -1,0 +1,20 @@
+---
+diffAuthorsOverride:
+  - "GameOver"
+diffChecksum: "82B0AF8BB0846290DF9FB33E6498E0D4"
+diffNotes: "dif inside pup folder"
+diffUrlOverride: "https://vpuniverse.com/files/file/22770-nightmare-before-christmas-puppack-table-dif-file/"
+diffVersionOverride: "1.0.0"
+fps: 60
+pupArchiveFormat: "rar"
+pupArchiveRoot: "NBC_tuga/nightmarebc"
+pupChecksum: "EC906326A42F9FE3913A374C77E12373"
+pupRequired: true
+pupVersion: "1.0.0"
+pupVPSId: "Ho3yQcKRvy"
+tableVPSId: "7jN8q3noP6"
+testers:
+  - "Wraith"
+  - "PBW23"
+vpxChecksum: "24EFA8858AA00A86DD613BCD134619A6"
+vpxVPSId: "LI9FmU9PDM"
