@@ -1,0 +1,13 @@
+---
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "BatmanTAS"
+pupBundled: true
+pupChecksum: "FA7F6A3E75B343A87609A0528359F5F6"
+pupNotes: "Download included with vpx"
+pupVersion: "2.0"
+tableVPSId: "1K2wSOPfcy"
+testers:
+  - "Wraith"
+vpxChecksum: "DDDC197E1E73B02F7CDE535B0A40CB78"
+vpxVPSId: "-Z8JCoCog8"

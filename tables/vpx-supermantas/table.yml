@@ -1,0 +1,14 @@
+---
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "SupermanTAS"
+pupBundled: true
+pupChecksum: "82D1BDB0F07D22C4D2F7A0418135D725"
+pupNotes: "Bundled with the vpx"
+pupRequired: true
+pupVersion: "1.0"
+tableVPSId: "Bmc6pzk_"
+testers:
+  - "Wraith"
+vpxChecksum: "B3F34458890B1FC1394101E8F86428D4"
+vpxVPSId: "PSGPiAErXZ"
