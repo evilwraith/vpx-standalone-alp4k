@@ -1,0 +1,14 @@
+---
+backglassChecksum: "CD43CB66C1898BB7EC7A80B1D0FD38D7"
+backglassNotes: "Download 'SlugFest (Williams 1991) b2s + full dmd.zip'"
+backglassVPSId: "DusywNPTgP"
+fps: 60
+romChecksum: "D3066E7EF03D74DA7F73B39ACC1BE9D6"
+romNotes: "Download sf_l1.zip"
+romUrlOverride: "https://vpuniverse.com/files/file/1486-sf_l1zip/"
+romVersionOverride: "sf_l1"
+tableVPSId: "wvQOuyNftE"
+testers:
+  - "Wraith"
+vpxChecksum: "6AE2522FA328EE60B5BB2165D23DDE01"
+vpxVPSId: "iplnrWmwh-"
