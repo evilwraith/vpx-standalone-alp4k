@@ -1,0 +1,22 @@
+---
+coloredROMChecksum: "8A92463DFE082E668EA40D87769F75F0"
+coloredROMVPSId: "CBsMXaMY_0"
+diffChecksum: "DDFE7911EFBDEEE9F4CE8D55F5D8277C"
+diffVPSId: "Bh5PJXddd7"
+fps: 60
+pupArchiveFormat: "zip"
+pupArchiveRoot: "grease"
+pupBundled: true
+pupChecksum: "BCDA35C545E8EC90FB4C7B5FB46E0C02"
+pupNotes: "Download next to the vpx 'Grease Pup Pack v2.1.zip'"
+pupRequired: true
+pupVersion: "1.0"
+romChecksum: "95432F7585D7F00F57903EBFFC54C103"
+romVPSId: "gr1-MpNQ"
+tableNotes: "Download 'Grease (Original 2023) v2.1.zip'"
+tableVPSId: "23qg1A7x"
+testers:
+  - "Wraith"
+  - "Miku"
+vpxChecksum: "3DF195CAF5B19EA3B0A1EE896DB8458B"
+vpxVPSId: "Ojo-q0Crkr"
