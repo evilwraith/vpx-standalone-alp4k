@@ -1,15 +1,14 @@
 ---
-backglassChecksum: "3E63D735FC2D28FEE900BA41CF8A45AB"
-backglassVPSId: "c7uc02P6"
+backglassChecksum: "167AAAC7E6672C126167BB3D1915572F"
+backglassVPSId: "YbvGusexgX"
 diffChecksum: "FFAFD1CA39AF97986DE42173ADF9CEE5"
 diffVPSId: "xbfPxrLWSV"
 fps: 60
-romChecksum: "A3DFEC88CBA7951116ACA6585B973D21"
-romNotes: "Not sure if needed"
-romUrlOverride: "https://www.vpforums.org/index.php?app=downloads&showfile=1257"
-romVersionOverride: "cc_13"
+mainNotes: >-
+  Download P-ROC_Offline_Installer-v3.4.zip from
+  https://vpuniverse.com/files/file/5522-cactus-canyon-continued-bally-1998/
 tableVPSId: "gBpX0hxi"
 testers:
-  - "Wraith"
+  - "The Wizard Team"
 vpxChecksum: "1E7FF492987F69A180810304F0E9A068"
 vpxVPSId: "ZgnyWyHG"
