@@ -1,10 +1,9 @@
 ---
+backglassChecksum: "FDFC646B05B2AA7192E78EF2D81A38B6"
 backglassVPSId: "Opn9fORWsf"
-backglassChecksum: "fdfc646b05b2aa7192e78ef2d81a38b6"
 fps: 60
-romVPSId: "nVXGpSW4"
 romChecksum: "AD98A8CAB537EF07D05370549653AE1E"
-tableNotes: "Download version 3.0"
+romVPSId: "nVXGpSW4"
 tableVPSId: "025ojqP4"
 tagline: "My honor is loyalty"
 testers:
@@ -15,5 +14,5 @@ testers:
   - "bhhob"
   - "Boris"
   - "shaver"
-vpxVPSId: "yQ0r4Lwj"
-vpxChecksum: "091EDF1F4644579834E799177C87A18F"
+vpxChecksum: "B4E5AF2970FF7B9EC54E1E74CF3B4814"
+vpxVPSId: "4E9ujYYkWq"
