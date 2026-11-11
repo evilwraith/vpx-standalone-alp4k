@@ -1,0 +1,15 @@
+---
+fps: 45
+pupArchiveFormat: "zip"
+pupArchiveRoot: "DieHard"
+pupBundled: true
+pupChecksum: "570B3667FA6C858E4D0EE48FC0E63B43"
+pupFileUrl: "https://mega.nz/file/69MBzJDR#uG_lUhuvuCySANQc5EE7UkQTXNY4bf48UgtYh5RhIss"
+pupNotes: "Link is in the vpx description"
+pupRequired: true
+pupVersion: "1.0"
+tableVPSId: "p3G02PPK_q"
+testers:
+  - "Wraith"
+vpxChecksum: "A752E163F59278C5F6B5ECC5F8D588C2"
+vpxVPSId: "C1m5TY2-TY"
